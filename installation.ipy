@@ -1,0 +1,37 @@
+# Installation guide for IPython Notebooks
+
+# Sorry, this is pretty bare, and hasn't been tested. Basically, you need:
+
+# Python
+# IPython
+# Java
+# Tregex
+# Matplotlib
+# NLTK WordNet Lemmatiser
+# data---optimally, syntax trees in files in numbered subfolders.
+
+# We'll assume you have (I)Python, because you got this far. For the rest:
+
+# if pip not installed:
+# ! curl -O https://bootstrap.pypa.io/get-pip.py
+# ! python get-pip.py
+
+# if admin needed:
+# sudo ! python get.pip.py
+
+# dit4c people without java:
+# ! sudo yum install java
+
+# Tregex
+!curl -O http://nlp.stanford.edu/software/stanford-tregex-2014-01-04.zip
+!unzip -f stanford-tregex-2014-01-04.zip stanford-tregex-2014-01-04/stanford-tregex.jar stanford-tregex-2014-01-04/tregex.sh
+
+# nltk, numpy, matplotlib
+! sudo pip install ipython nltk numpy matplotlib
+
+# nyt data:
+! curl -O  https://github.com/interrogator/sfl_corpling/blob/master/data/nyt.tar.gz
+! tar -zxvf nyt.tar.gz
+
+# cleanup
+! rm get-pip.py stanford-tregex-2014-01-04.zip nyt.tar.gz

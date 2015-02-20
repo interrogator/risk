@@ -1,0 +1,1127 @@
+# <markdowncell>
+# Discourse-semantics of *risk* in the *New York Times*, 1963-2014
+# ==========================================
+# <headingcell level=2>
+
+# <markdowncell>
+# **[Jens Zinn](mailto:jzinn@unimelb.edu.au?Subject=IPython%20NYT%20risk%20project), [Daniel McDonald](mailto:mcdonaldd@unimelb.edu.au?Subject=IPython%20NYT%20risk%20project)**
+#---------------------------
+# <markdowncell>
+# <br>
+
+# > **SUMMARY:** This *IPython Notebook* demonstrates the findings from our investigation of *risk* in the NYT, as well as the code used to generate these findings. If you have the necessary dependencies installed, you can also use this notebook to interrogate and visualise the corpus yourself. Run the cell below if you need installation and dependencies info.
+
+# <codecell>
+%load installation.ipy
+
+# <headingcell level=2>
+# Orientation
+
+# <markdowncell>
+# First, let's import the functions we'll be using to investigate the corpus. These functions are designed for this interrogation, but also have more general use in mind, so you can likely use them on your own corpora.
+
+# | **Function name** | Purpose                            | |
+# | ----------------- | ---------------------------------- | |
+# | *interrogator()*  | interrogate parsed corpora         | |
+# | *plotter()*       | visualise *interrogator()* results | |
+# | *quickview()*     | view *interrogator()* results      | |
+# | *tally()*       | get total frequencies for *interrogator()* results      | |
+# | *surgeon()*       | edit *interrogator()* results      | |
+# | *merger()*       | merge *interrogator()* results      | |
+# | *conc()*          | complex concordancing of subcopora | |
+
+# <codecell>
+import os # for joining paths
+import collections # for making named tuples
+import pprint # for displaying concordances
+# import functions to be used here:
+for func in [f for f in os.listdir('corpling_tools') if f.endswith(".ipy")]:
+    %run corpling_tools/$func
+! rm csv.txt concordances.txt # remove old csv output (temporary code)
+
+# <markdowncell>
+# We should set two variables that are used repeatedly during the investigation. If you were using this interface for your own corpora, you would change 'nyt' to the path to your data.
+
+# <codecell>
+path = 'nyt' # path to corpora
+main_path = 'nyt/years' # corpus of every article, with annual 
+# subcorpora folders
+
+# <headingcell level=3>
+# The data
+
+# <markdowncell>
+
+# Our main corpus is comprised of paragraphs from *New York Times* articles that contain a risk word, which we have defined by regular expression as '(?i)'.?\brisk.?\b'. This includes *low-risk*, or *risk/reward* as single tokens, but excludes *brisk* or *asterisk*.
+
+# The data comes from a number of sources.
+
+# * 1963 editions were downloaded from ProQuest Newsstand as PDFs. Optical character recognition and manual processing was used to create a set of 1200 risk sentences.
+# * The 1987--2006 editions were taken from the *NYT Annotated Corpus*.
+# * 2007--2014 editions were downloaded from *ProQuest Newsstand* as HTML.
+
+# In total, 149,504 documents were processed. The corpus from which the risk corpus was made is over 150 million words in length!
+
+# The texts have been parsed for part of speech and grammatical structure by [*Stanford CoreNLP*](http://nlp.stanford.edu/software/corenlp.shtml). In this Notebook, we are only working with the parsed versions of the texts. We rely on [*Tregex*](http://nlp.stanford.edu/~manning/courses/ling289/Tregex.html) to interrogate the corpora. Tregex allows very complex searching of parsed trees, in combination with [Java Regular Expressions](http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html). It's definitely worthwhile to learn the Tregex syntax, but in case you're time-poor, at the end of this notebook are a series of Tregex queries that you can copy and paste into *interrogator()* and *conc()* queries.
+
+# <headingcell level=3>
+# Interrogating the corpus
+
+# <markdowncell>
+# So, let's start by generating some general information about this corpus. First, let's define a query to find every word in the corpus. Run the cell below to define the *allwords_query* variable as the Tregex query to its right.
+
+# > *When writing Tregex queries or Regular Expressions, remember to always use **r'...'** quotes!*
+
+# <codecell>
+# any token containing letters or numbers (i.e. no punctuation):
+allwords_query = r'/[A-Za-z0-9]/ !< __' 
+
+# <markdowncell>
+# Next, we perform interrogations with *interrogator()*. Its most important arguments are:
+#
+# 1. **path to corpus**
+#
+# 2. Tregex **options**:
+#   * **'-t'**: return only words
+#   * **'-C'**: return a count of matches
+#   * **'-u'**: return only the tag
+#   * **'-o'**: return tag and word together
+#
+# 3. the **Tregex query**
+
+# We only need to count tokens, so we can use the **-C** option (it's often faster than getting lists of matching tokens). The cell below will run interrogator() over each annual subcorpus and count the number of matches for the query.
+
+# <codecell>
+allwords = interrogator(main_path, '-C', allwords_query) 
+
+# <markdowncell>
+# When the interrogation has finished, we can view our results:
+
+# <codecell>
+# from the allwords results, print the totals
+print allwords.totals
+
+# <markdowncell>
+# If you want to see the query and options that created the results, you can use:
+
+# <codecell>
+print allwords.query
+
+# <headingcell level=3>
+# Plotting results
+
+# <markdowncell>
+# Lists of years and totals are pretty dry. Luckily, we can use the *plotter()* function to visualise our results. At minimum, *plotter()* needs two arguments:
+
+# 1. a title (in quotation marks)
+# 2. a list of results to plot
+
+# There is also an argument for projecting the 1963 and 2014 results, which can either be set to true or false. By default, it is true, and in this Notebook from now on we'll leave it turned on. We'll try both options here:
+
+# <codecell>
+plotter('Word counts in each subcorpus', allwords.totals, projection = False)
+plotter('Word counts in each subcorpus (projected)', allwords.totals, projection = True)
+
+# <markdowncell>
+# Great! So, we can see that the number of words per year varies quite a lot. That's worth keeping in mind.
+
+# <headingcell level=3>
+# Frequency of risk words in the NYT
+
+# <markdowncell>
+# Next, let's count the total number of risk words. Notice that we are using the '-o' flag, instead of the **-C** flag.
+
+# <codecell>
+# our query:
+riskwords_query = r'__ < /(?i).?\brisk.?\b/' # any risk word and its word class/part of speech
+# get all risk words and their tags:
+riskwords = interrogator(main_path, '-o', riskwords_query)
+
+# <markdowncell>
+# Even when do not use the -C flag, we can access the total number of matches as before:
+
+# <codecell>
+plotter('Risk words', riskwords.totals)
+
+# <markdowncell>
+# At the moment, it's hard to tell whether or not these counts are simply because our annual NYT samples are different sizes. To account for this, we can calculate the percentage of parsed words that are risk words. This means combining the two interrogations we have already performed.
+
+# We can do this by passing a third argument to *plotter()*.
+
+# <codecell>
+plotter('Relative frequency of risk words', riskwords.totals, 
+    fract_of = allwords.totals)
+
+# <markdowncell>
+# That's more helpful. We can now see some interesting peaks and troughs in the proportion of risk words. We can also see that 1963 contains the highest proportion of risk words. This is because the manual corrector of 1963 OCR entries preserved only the sentence containing risk words, rather than the paragraph.
+
+# It's often helpful to not plot 1963 results for this reason. To do this, we can add an argument to the *plotter()* call:
+
+# <codecell>
+plotter('Relative frequency of risk words', riskwords.totals, 
+    fract_of = allwords.totals, skip63 = True)
+
+# <markdowncell>
+# Perhaps we're interested in not only the frequency of risk words, but the frequency of different *kinds* of risk words. We actually already collected this data during our last *interrogator()* query.
+
+# We can print just the first three entries of the results list, rather than the totals list:
+
+# <codecell>
+pprint.pprint(riskwords.results[:3])
+# uncomment below to print the totals:
+# print riskwords.totals
+
+# <markdowncell>
+# We now have enough data to do some serious plotting.
+
+# <codecell>
+plotter('Risk word / all risk words', riskwords.results, 
+    fract_of = riskwords.totals)
+plotter('Risk word / all words', riskwords.results, 
+    fract_of = allwords.totals)
+
+
+# <headingcell level=3>
+# Customising visualisations
+
+# <markdowncell>
+# By default, *plotter()* plots the seven most frequent results, including 1963 and projecting 1963 and 2014.
+
+#  We can use other *plotter()* arguments to customise what our chart shows. *plotter()*'s possible arguments are:
+
+#  | plotter() argument | Mandatory/default?       |  Use          | Type  |
+#  | :------|:------- |:-------------|:-----|
+#  | *title* | **mandatory**      | A title for your plot | string |
+#  | *results* | **mandatory**      | the results you want to plot | *interrogator()* total |
+#  | *fract_of* | None      | results for plotting relative frequencies/ratios etc. | list (interrogator(-C) form) |
+#  | *num_to_plot* | 7     | number of top results to display     |   integer |
+#  | *skip63* | False    | do not plot 1963     |    integer |
+#  | *proj63* | 4     | multiplier to project 1963 results and totals | integer |
+#  | *multiplier* | 100     | result * multiplier / total: use 1 for ratios | integer |
+#  | *x_label* | False    | custom label for the x-axis     |  string |
+#  | *y_label* | False    | custom label for the y-axis     |  string |
+#  | *projection* | True    | Project 1963 and 2014 editions     |  boolean |
+#  | *yearspan* | False    | plot a span of years |  a list of two int years |
+#  | *justyears* | False    | plot specific years |  a list of int years |
+#  | *csvmake* | False    | make csvmake the title of csv output file    |  string |
+
+# You can easily use these to get different kinds of output. Try changing some parameters below:
+
+# <codecell>
+plotter('Relative frequencies of risk words', riskwords.results, fract_of = allwords.totals,
+    y_label = 'Percentage of all risk words', num_to_plot = 5, 
+    skip63 = False, projection = True, proj63 = 5, csvmake = 'csv.txt')
+
+# <markdowncell>
+# If you just generated a csv file, you can quickly get the results with:
+
+# Use *yearspan* or *justyears* to specify years of interest:
+
+# <codecell>
+plotter('Relative frequencies of risk words', riskwords.results, fract_of = allwords.totals,
+    y_label = 'Percentage of all risk words', num_to_plot = 5, skip63 = False, 
+    yearspan = [1963,1998])
+plotter('Relative frequencies of risk words', riskwords.results, fract_of = allwords.totals,
+    y_label = 'Percentage of all risk words', num_to_plot = 5, skip63 = False, 
+    justyears = [1998, 1999, 2000, 2001, 2005, 5006, 2007])
+
+# <markdowncell>
+# Note that dotted lines are used wherever years are not processed.
+
+# <codecell>
+!cat 'csv.txt'  | head -n 7
+# and to delete it:
+#!rm 'csv.txt'
+
+# <markdowncell>
+# Another way to change *plotter()* visualisations is by not passing certain results to *plotter()*.
+
+# Each entry in the list of results is indexed: the top result is item 0, the second result is item 1, and so on.
+
+# So, you can skip the first 2 results by using [2:] after the results list:
+
+# <codecell>
+plotter('Relative frequencies of risk words', riskwords.results[2:], fract_of = allwords.totals,
+    y_label = 'Percentage of all risk words', num_to_plot = 5, skip63 = False, projection = True, proj63 = 5)
+
+# <markdowncell>
+# If you are after a specific set of indexed items, it's probably better to use *surgeon()* (described below). For completeness, though, here's another way:
+
+# <codecell>
+indices_we_want = [32,30,40]
+plotter('Relative frequencies of risk words', [ riskwords.results[i] for i in indices_we_want], 
+        num_to_plot = 5, skip63 = True, projection = True, proj63 = 5)
+
+
+# <headingcell level=3>
+# Editing results
+
+# <markdowncell>
+# Aside from *interrogator()* and *plotter()*, there are also a few simple functions for viewing and editing results.
+
+# <headingcell level=4>
+# quickview()
+
+# <markdowncell>
+# *quickview()* is a function that quickly shows the n most frequent items in a list. Its arguments are:
+
+# 1. an *interrogator()* result
+# 2. number of results to show (default = 50)
+
+# <codecell>
+quickview(riskwords.results, n = 25)
+
+# <markdowncell>
+# The number shown next to the item is its index. You can use this number to refer to an entry when editing results.
+
+# <headingcell level=4>
+# tally()
+
+# <markdowncell>
+# *tally()* displays the total occurrences of results. Its first argument is the list you want tallies from. For its second argument, you can use:
+
+# * a list of indices for results you want to tally
+# * a single integer, which will be interpreted as the index of the item you want
+# * a regular expression to search for
+# * a string, 'all', which will tally every result. This could be very many results, so it may be worth limiting the number of items you pass to it with [:n], as in the second example below:
+
+# <codecell>
+tally(riskwords.results, [0, 5, 10])
+tally(riskwords.results[:10], 'all')
+
+# <markdowncell>
+# The Regular Expression option is useful for merging results (see below).
+
+# <headingcell level=4>
+# surgeon()
+
+# <markdowncell>
+# Results lists can be edited quickly with *surgeon()*. *surgeon()*'s arguments are:
+
+# 1. an *interrogator()* results list
+# 2. *criteria*: either a [Regular Expression](http://www.cheatography.com/davechild/cheat-sheets/regular-expressions/) or a list of indices.
+# 3. *remove = True/False*
+
+# By default, *surgeon()* removes anything matching the regex/indices criteria, but this can be inverted with a *remove = False* argument. Because you are duplicating the original list, you don't have to worry about deleting *interrogator()* results.
+
+# <codecell>
+# low and high risks, using indices 
+lowhighrisks = surgeon(riskwords.results, [4, 9, 17], remove = False) # keep 4, 9 and 17
+plotter('Low-, high- and higher- risk', lowhighrisks, num_to_plot = 3, skip63 = True)
+
+# only hyphenate words:
+hyphenates = surgeon(riskwords.results, r'\b.*-.*\b', remove = False) # remove tokens with hyphens
+quickview(hyphenates)
+plotter('Non-hypenate risk words', hyphenates, fract_of = riskwords.totals, 
+    y_label = 'Percentage of all risk words', num_to_plot = 7, skip63 = True)
+
+# only verbal risk words
+verbalrisks = surgeon(riskwords.results, r'^\(v.*', remove = False) #keep any token with tag starting with 'v'
+plotter('Verbal risk words', verbalrisks, fract_of = allwords.totals, 
+    y_label = 'Percentage of all words', num_to_plot = 6, skip63 = True)
+
+# <markdowncell>
+# Note that you do not access surgeon lists with *allwords.nohyphens* syntax, but simply with *nohyphens*.
+
+# <headingcell level=4>
+# merger()
+
+# <markdowncell>
+# *merger()* is for merging items in a list. Like *surgeon()*, it duplicates the old list. Its arguments are:
+
+# 1. the list you want to modify
+# 2. the indices of results you want to merge, or a regex to match
+# 3. newname = *str/int/False*: 
+#   * if string, the string becomes the merged item name.
+#   * if integer, the merged entry takes the name of the item indexed with the integer.
+#   * if not specified/False, the most most frequent item in the list becomes the name.
+
+# <codecell>
+low_high_combined = merger(lowhighrisks, [0, 2],  newname = 'high/higher risk')
+plotter('Low and high risks', low_high_combined)
+
+# <markdowncell>
+# Note that *merger()* puts the merged entry where the first merged item was, even if the merged result's total frequency is higher than that of the items above it. Also note that *merger()* will make new indices, so if you have a number of merges to make, do each individually, and quickview the results after each merge to get the next lot of indices.
+
+# <headingcell level=4>
+# conc()
+
+# <markdowncell>
+# The final function is *conc()*, which produces concordances of a subcorpus based on a Tregex query. Its main arguments are:
+
+# 1. A subcorpus to search *(remember to put it in quotation marks!)*
+# 2. A Tregex query
+
+# <codecell>
+# here, we use a subcorpus of politics articles,
+# rather than the total annual editions.
+conc('nyt/politics/1999', r'/JJ.?/ << /(?i).?\brisk.?\b/') # adj containing a risk word
+
+# <markdowncell>
+# You can set *conc()* to print *n* random concordances with the *random = n* parameter. You can also store the output to a variable for further searching.
+
+# <codecell>
+randoms = conc('nyt/years/2007', r'/VB.?/ < /(?i).?\brisk.?\b/', random = 25)
+pprint.pprint(randoms)
+
+# <markdowncell>
+# *conc()* takes another argument, window, which alters the amount of co-text appearing either side of the match.
+
+# <codecell>
+conc('nyt/health/2013', r'/VB.?/ << /(?i).?\brisk.?\b/', random = 25, window = 50)
+
+# <markdowncell>
+# *conc()* also allows you to view parse trees. By default, it's false:
+
+# <codecell>
+conc('nyt/years/2013', r'/VB.?/ < /(?i)\btrad.?/',  window = 50, trees = True)
+
+# <markdowncell>
+# The final *conc()* argument is a *csv = 'filename'*, which will produce a tab-separated spreadsheet with the results of your query. You can copy and paste this data into Excel.
+
+# <codecell>
+conc('nyt/years/2005', r'/JJ.?/ < /(?i).?\brisk.?/ > (NP <<# /(?i)invest.?/)',
+    window = 30, trees = False, csvmake = 'concordances.txt')
+
+# <codecell>
+!cat 'concordances.txt'
+# and to delete it:
+# !rm 'concordances.txt'
+
+# <markdowncell>
+# Now you're familiar with the corpus and functions. Time to explore!
+
+# <headingcell level=2>
+# Functional roles of *risk* in the NYT
+
+# <markdowncell>
+# > *A discourse analysis that is not based on grammar is not an analysis at all, but simply a running commentary on a text.* - [M.A.K. Halliday, 1994]()
+# 
+# Our analysis proceeded according to the description of the transitivity system in *systemic functional grammar* ([SFG: see Halliday & Matthiessen, 2004](#ref:hallmat)).
+
+# The main elements of the transitivity system are *participants* (the arguments of main verbs) and *processes* (the verbal group). Broadly speaking, processes can be modified by circumstances (adverbs and prepositional phrases, and participants can be modified through epithets, classifiers (determiners, adjectives, etc).
+
+# > This is an oversimplification, of course. Grab a copy of the [*Introduction to Functional Grammar*](http://www.tandfebooks.com/isbn/9780203783771) to find out more.
+
+# Risk words can potentially be participants, processes or modifiers.
+
+# *Risk-as-participant*: any nominal argument of a process that is headed by a risk word. *Examples*:
+#
+# * *the big risk*
+# * *considerable risk*
+# * *the risk of cancer*
+# * *risk-management*
+
+# *Risk-as-process*: risk word as the rightmost component of a VP. **Examples**:
+#
+# * *he risked his life*
+# * *the company could potentially risk it*
+
+# *Risk-as-modifier*: any risk word that modifies a participant or process. This includes many adjectival risk words and many risk words appearing within prepositional or adverbial phrases. **Examples**:
+#
+# * *the chance of risk*
+# * *risky business*
+# * *they riskily arranged to meet*
+
+# To find the distributions of these, we define three (very long and complicated) Tregex queries as *part_process_mod*. We then loop through each entry in the list and perform an interrogation.
+
+# We then run *interrogator()* for each query and plot the results:
+
+# <codecell>
+query = (['Participant', r'/(?i).?\brisk.?/ > (/NN.?/ >># (NP !> PP !> (VP <<# (/VB.?/ < '
+        '/(?i)\b(take|takes|taking|took|taken|run|runs|running|ran|pose|poses|posed|posing)\b/)))) | >># (ADJP > VP)'], 
+    ['Process', r'VP !> VP << (/VB.?/ < /(?i).?\brisk.?/) | > VP <+(VP) (/VB.?/ < '
+        '/(?i)(take|taking|takes|taken|took|run|running|runs|ran|put|putting|puts|pose|poses|posed|posing)/'
+        '>># (VP < (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'], 
+    ['Modifier', r'/(?i).?\brisk.?/ !> (/NN.?/ >># (NP !> PP !> (VP <<# (/VB.?/ < '
+        '/(?i)\b(take|takes|taking|took|taken|run|runs|running|ran|pose|poses|posed|posing)\b/)))) & !>># '
+        '(ADJP > VP) & !> (/VB.?/ >># VP) & !> (/NN.?/ >># (NP > (VP <<# (/VB.?/ < /(?i)\b('
+            'take|takes|taking|took|taken|run|runs|running|ran|pose|poses|posed|posing)\b/))))'])
+results = []
+for entry in query:
+    result = interrogator(main_path, '-C', entry[1])
+    result.totals[0] = entry[0] # rename count
+    results.append(result.totals)
+outputnames = collections.namedtuple('functional_role', ['query', 'results'])
+functional_role = outputnames(query, results)
+
+# <codecell>
+plotter('Risk as participant, process and modifier', functional_role.results)
+
+# uncomment the line below to project 1963 by 5, rather than 4.
+#plotter('Risk as participant, process and modifier', functional_role.results, proj63 = 5)
+
+# <markdowncell>
+# Here we can see that modifier forms are become more frequent over time, and have overtaken risk processes. Later, we determine which modifier forms in particular are becoming more common.
+
+# <codecell>
+# Perhaps you want to see the result without 1963?
+plotter('Risk as participant, process and modifier', functional_role.results, skip63 = True)
+
+# <headingcell level=3>
+# Risk as participant
+
+# <markdowncell>
+#
+# > *You shall know a word by the company it keeps.* - [J.R. Firth, 1957](#ref:firth)
+#
+# Functionally, *risk* is most commonly a participant in the NYT. This gives us a lot of potential areas of interest. We'll go through a few here, but there are plenty of other things that we have to leave out for reasons of space.
+
+# <headingcell level=4>
+# Adjectives modifying risk
+
+# <markdowncell>
+# First, we can look at adjectives that modify a participant risk.
+
+# <codecell>
+query = r'/JJ.?/ > (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
+adj_modifiers = interrogator(main_path, '-t', query)
+
+# <codecell>
+# Adjectives modifying nominal risk (lemmatised)
+plotter('Adjectives modifying nominal risk (lemmatised)', adj_modifiers.results, 
+    fract_of = adj_modifiers.totals, num_to_plot = 7)
+
+# <markdowncell>
+# Yuck! That doesn't tell us much. Let's try visualising the data in a few different ways. First, let's see what the top results look like...
+
+# <codecell>
+quickview(adj_modifiers.results)
+
+# <markdowncell>
+# OK, here are some ideas:
+
+# <codecell>
+# remove words with five or more letters
+small_adjs = surgeon(adj_modifiers.results, r'.{5,}', remove = True)
+plotter('Adjectives modifying nominal risk (lemmatised)', small_adjs, 
+    fract_of = adj_modifiers.totals, num_to_plot = 6, skip63 = True)
+
+#get results with seven or more letters
+big_adjs = surgeon(adj_modifiers.results, r'.{10,}', remove = False)
+plotter('Adjectives modifying nominal risk (lemmatised)', big_adjs, 
+    fract_of = adj_modifiers.totals, num_to_plot = 4, skip63 = True)
+
+#get a few interesting points
+select_adjs = surgeon(adj_modifiers.results, r'\b(more|potential|calculated|high)\b', remove = False)
+plotter('Adjectives modifying nominal risk (lemmatised)', select_adjs, 
+    num_to_plot = 4)
+
+# <markdowncell>
+# Wow! What's happening with *calculated risk* in 1963? Let's modify the original Tregex query a little and use *conc()* to find out.
+
+# <codecell>
+### old query: r'/JJ.?/ > (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
+calculated_risk = r'/JJ.?/ < /(?i)calculated/> (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
+# remove '( > VP | $ VP)' from the line above to get more instances
+conc('nyt/years/1963', calculated_risk)
+
+# <headingcell level=4>
+# Risk of ... ?
+
+# <markdowncell>
+# Next, we'll look at risk of (noun) constructions, as in:
+
+# <codecell>
+lines = conc('nyt/years/1988', r'/NN.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))')
+pprint.pprint(lines[:20])
+
+# <markdowncell>
+# Notice that singular and plural forms may be in the results: both *substance* and *substances* are returned, and would be counted as unique items.
+
+# If we want to ignore the difference between singular and plural (or different inflections of a verb), we need to use a *lemmatiser*. Luckily, *interrogator()* has one built in.
+
+# When lemmatisation is necessary, we can pass a *lemmatise = True* parameter to *interrogator()*.
+
+# Lemmatisation requires knowing the part of speech of the input. *interrogator()* determines this by looking at the first part of the Tregex query: if it's */JJ.?/*, the lemmatiser will be told that the word is an adjective. If the part of speech cannot be located, noun is used as a default. You can also manually pass a tag to the lemmatiser with a *lemmatag = 'n/v/r/a'* option.
+
+# <codecell>
+# Risk of (noun)
+query = r'/NN.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'
+risk_of = interrogator(main_path, '-t', query, lemmatise = True)
+
+# <codecell>
+plotter('Risk of (noun)', risk_of.results, fract_of = risk_of.totals)
+plotter('Risk of (noun)', risk_of.results, fract_of = risk_of.totals, yearspan = [1999,2013])
+
+# <headingcell level=5>
+# A cautionary tale ...
+
+# <markdowncell>
+# At one point in our investigation, we looked specifically for military risks. From these results, we saw that *risk of attack* and *risk of war* were common. So, we plotted them:
+
+# <codecell>
+quickview(risk_of.results, n = 10)
+
+# <codecell>
+military = surgeon(risk_of.results, [2, 7], remove = False)
+plotter('Risk of (noun)', military, fract_of = risk_of.totals) 
+
+# <markdowncell>
+#  We thought it was interesting how *risk of attack* rose in frequency shortly after 9/11. So, we decided to look more closely at *risk of attack*:
+
+# <codecell>
+attackrisk = r'/NN.?/ < /(?i)attack.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'
+conc('nyt/years/2004', attackrisk, random = 30, window = 30) 
+
+# <markdowncell>
+# Whoops. We were wrong. Almost all occurrences actually referred to *heart attack*!
+
+# <codecell>
+query = (['Risk of heart attack', r'/NN.?/ < /(?i)attack.?/ $ '
+          r'(/NN.?/ < /(?i)heart\b/) >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'], 
+              ['Risk of terror* attack', r'/NN.?/ < /(?i)attack.?/ $ (/NN.?/ < /(?i)terror.?/) >># (NP > (PP '
+          r'<<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'])
+results = []
+for entry in query:
+    result = interrogator(main_path, '-C', entry[1])
+    result.totals[0] = entry[0] # rename count
+    results.append(result.totals)
+outputnames = collections.namedtuple('heart_terror', ['query', 'results'])
+heart_terror = outputnames(query, results)
+
+# <codecell>
+tally(heart_terror.results, [0, 1])
+plotter('Risk of heart and terror* attack', heart_terror.results, skip63 = True)
+
+# <markdowncell>
+# So, we were a long way off-base. This is an ever-present danger in corpus linguistics. The decontextualisation needed to investigate the lexicogrammar of texts makes it easy to misunderstand (or worse, misrepresent) the data. Though concordancing is one of the oldest tasks in the corpus linguistic playbook, it remains a fundamental one, especially in discourse-analytic investigations.
+
+# > ... *why did heart attacks become a big deal in 2004, you ask? Stay tuned ...*
+
+# <headingcell level=4>
+# Processes in which risk is subject/object
+
+# <markdowncell>
+# Here, we look at the kinds of predicators that occur when risk subject or object. Note that we remove *run/take/pose risk*, as these are actually verbal risks (see below).
+
+# <markdowncell>
+# By navigating parse trees in more complex ways, we can learn the kinds of processes risk as a participant is involved in.
+
+# <codecell>
+query = (r'/VB.?/ !< /(?i)(take|taking|takes|taken|took|run|running|runs|ran|put|putting|puts|pose|poses|posing|posed)/'
+              r' > (VP ( < (NP <<# (/NN.?/ < /(?i).?\brisk.?/))) | >+(VP) (VP $ (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))')
+predicators = interrogator(main_path, '-t', query,
+    lemmatise = True)
+# subjectonly = r'./VB.?/ >># (VP >+(VP) (VP !> VP $ (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'
+# objectonly  =  (r'/VB.?/ >># (VP !< (/VB.?/ < /(?i)(take|taking|takes|taken|took|run|running'
+# '|runs|ran|put|putting|puts|pose|posed|posing|poses)/) $ NP < (NP <<# (/NN.?/ < /(?i).?\brisk.?/)))')
+
+# including take/run/pose/put at:
+# query = /VB.?/ >># (VP  < (NP <<# (/NN.?/ < /(?i).?\brisk.?/)))'
+
+# <codecell>
+# Processes in which risk is subject/object
+plotter('Processes in which risk is subject or object)', predicators.results, 
+fract_of = predicators.totals, num_to_plot = 7)
+# skip be
+plotter('Processes in which risk is subject or object)', predicators.results[1:], 
+fract_of = predicators.totals, num_to_plot = 5, skip63 = False)
+
+
+# <markdowncell>
+# Interesting! 
+
+# <headingcell level=3>
+# Risk as process
+
+# <markdowncell>
+# When *risk* is the main verb in a clause (e.g. *don't risk it*), it is the process. There are other kinds of risk processes, however: when risk occurs as the first object argument of certain nouns, it may be classified as a *process-range configuration* (an SFL term). Searching the data reveals four other main kinds of risk process:
+
+# 1. *to take risk*
+# 2. *to run risk*
+# 3. *to put at risk*
+# 4. *to pose a risk*
+
+# In these cases, the expression is more or less idiomatic, and the main verb carries little semantic weight ([Eggins, 2004](#ref:eggins)). 
+
+# We tracked the relative frequency of each construction over time.
+
+# <codecell>
+query = ([u'risk', r'VP <<# (/VB.?/ < /(?i).?\brisk.?\b/)'], 
+    [u'take risk', r'VP <<# (/VB.?/ < /(?i)\b(take|takes|taking|took|taken)+\b/) < (NP <<# /(?i).?\brisk.?\b/)'], 
+    [u'run risk', r'VP <<# (/VB.?/ < /(?i)\b(run|runs|running|ran)+\b/) < (NP <<# /(?i).?\brisk.?\b/)'], 
+    [u'put at risk', r'VP <<# /(?i)(put|puts|putting)\b/ << (PP <<# /(?i)at/ < (NP <<# /(?i).?\brisk.?/))'], 
+    [u'pose risk', r'VP <<# (/VB.?/ < /(?i)\b(pose|poses|posed|posing)+\b/) < (NP <<# /(?i).?\brisk.?\b/)'])
+totalquery = (r'VP (<<# (/VB.?/ < /(?i).?\brisk.?\b/) | <<# (/VB.?/ < /(?i)\b(take|takes|taking|took|taken|run|'
+    'runs|running|ran)+\b/) < (NP <<# /(?i).?\brisk.?\b/) | <<# /(?i)(put|puts|putting)\b/ << (PP <<# /(?i)at/'
+    ' < (NP <<# /(?i).?\brisk.?/)) | <<# (/VB.?/ < /(?i)\b(pose|poses|posed|posing)+\b/) < (NP <<# /(?i).?\brisk.?\b/))')
+results = []
+for entry in query:
+    result = interrogator(main_path, '-C', entry[1])
+    result.totals[0] = entry[0] # rename count
+    results.append(result.totals)
+outputnames = collections.namedtuple('processes', ['query', 'results'])
+processes = outputnames(query, results)
+
+# <codecell>
+plotter('Risk processes', processes.results)
+
+# <markdowncell>
+# Subordinate processes are often embedded within clauses containing a risk predicator, as in *Obama risks alienating voters*.
+
+# <codecell>
+# to risk losing/being/having etc
+
+query = r'VBG >># (VP > (S > (VP <<# (/VB.?/ < /(?i).?\brisk.?/))))'
+risk_verbing = interrogator(main_path, '-t', query)
+
+# <codecell>
+plotter('Process as risked thing', risk_verbing.results, 
+    fract_of = risk_verbing.totals, y_label = 'Percentage of all occurrences', 
+    num_to_plot = 7, skip63 = False)
+
+# <markdowncell>
+# We can locate the most common objects of risk predicators.
+
+# <codecell>
+# Objects of risk processes
+query = r'/NN.?/ >># (NP > (VP <<# (/VB.?/ < /(?i).?\brisk.?/)))'
+risk_objects = interrogator(main_path, '-t', query, 
+    lemmatise = True, titlefilter = False)
+
+# <codecell>
+plotter('Objects of risk processes', risk_objects.results, 
+    fract_of = risk_objects.totals, y_label = 'Percentage of all occurrences', skip63 = False)
+
+# <markdowncell>
+# Notice that both the *potential harm* and *risked things* can fit in this position. We can view the most common results and create new lists for risked things/potential harms with *surgeon()*.
+
+# <codecell>
+quickview(risk_objects.results, n = 100)
+
+# <codecell>
+riskobject_regex = (r'(?i)^\b(life|everything|money|career|health|reputation|capital|future|'
+    r'job|safety|possibility|anything|return|neck|nothing|lot|)$\b')
+riskedthings = surgeon(risk_objects.results, riskobject_regex, remove = True)
+potentialharm = surgeon(risk_objects.results, riskobject_regex, remove = False)
+plotter('Risked things', potentialharm, num_to_plot = 7, skip63 = False)
+plotter('Risked things (minus life)', potentialharm[1:], num_to_plot = 3, skip63 = False)
+plotter('Potential harm', riskedthings, num_to_plot = 7, skip63 = False)
+
+# <markdowncell>
+# It's interesting how powerful people risk losing and alienating electorates, fanbases or contracts, while less powerful people risk their jobs and safety, or their life or neck.
+
+# <headingcell level=3>
+# Risk as modifier
+
+# <markdowncell>
+# Risk words can serve as modifiers in a number of ways. We divided risk as modifier into five main types.
+
+# <markdowncell>
+# | Modifier type | Example  |
+# |---|---|
+# | Adjectival modifiers of participants  |  *the riskiest decision* | 
+# | Pre-head nominal modifiers of participants  |  *risk management* | 
+# |  Post-head nominal modifiers of participants |  *the money to risk* | 
+# | Adverbial modifiers of processes  |  *it riskily moved* | 
+# | As head of NP that is head of a cirumstance  | *she was at risk*  | 
+
+# <codecell>
+query = ([u'Adjectival modifier', r'/NN.?/ >># (NP < (/JJ.?/ < /(?i).?\brisk.?/))'],
+    [u'Pre-head nominal modifier', r'/NN.?/ < /(?i).?\brisk.?/ $ (/NN.?/ >># NP !> CC)'], 
+    [u'Post-head modifier', r'/NN.?/ >># (NP < (PP < (NP <<# /(?i).?\brisk.?/)))'], 
+    [u'Adverbial modifier', r'RB < /(?i).?\brisk.?/'],
+    [u'Circumstance head', r'/NN.?/ < /(?i).?\brisk.?/ >># (NP > (PP > (VP > /\b(S|SBAR|ROOT)\b/)))'])
+results = []
+for entry in query:
+    result = interrogator(main_path, '-C', entry[1])
+    result.totals[0] = entry[0] # rename count
+    results.append(result.totals)
+outputnames = collections.namedtuple('modifiers', ['query', 'results'])
+modifiers = outputnames(query, results)
+
+# <codecell>
+plotter('Types of risk modifiers', modifiers.results)
+
+# <markdowncell>
+# We pulled out the most common nouns modified by adjectival risk:
+
+# <codecell>
+# Participants modified by risk word
+query = r'/NN.?/ >># (NP < (/JJ.?/ < /(?i).?\brisk.?/) ( > VP | $ VP))'
+mod_by_adj_risk = interrogator(main_path, '-t', query, 
+    lemmatise = True, titlefilter = False)
+
+# <codecell>
+plotter('Participants modified by risk', mod_by_adj_risk.results, 
+    num_to_plot = 7, skip63 = False)
+
+# <markdowncell>
+# We looked at the most common adjectival risks:
+
+# <codecell>
+query = r'/JJ.?/ < /(?i).?\brisk.?/'
+adjrisks = interrogator(main_path, '-t', query, 
+    lemmatise = False)
+
+# <codecell>
+# remember that we can still plot using all words/all risk words as the fract_of...
+plotter('Most common adjectival risks', adjrisks.results, fract_of = allwords.totals, 
+    y_label = 'Percentage of all words', num_to_plot = 5, skip63 = False)
+
+# <markdowncell>
+# Given the increasing frequency of at-risk constructions, we then looked at what it is that this modifier typically modifies.
+
+# <codecell>
+# At-risk thing
+query = r'/NN.?/ >># (NP < (/JJ.?/ < /(?i).?\bat-risk/) ( > VP | $ VP))'
+at_risk_things = interrogator(main_path, '-t', query, 
+    lemmatise = True)
+
+# <codecell>
+plotter('At-risk things', at_risk_things.results, 
+    fract_of = at_risk_things.totals, num_to_plot = 7, skip63 = False)
+
+# <markdowncell>
+# The chart below counts both *thing at risk* and *at-risk thing*.
+
+# <codecell>
+# at-risk person / person at risk combined
+query = r'/NN.?/ ( >># (NP < (PP <<# /(?i)at/ << (NP <<# /(?i)\brisk.?/))) | ( >># (NP < (/JJ.?/ < /(?i)at-risk.?/))))'
+n_atrisk_n = interrogator(main_path, '-t', query, 
+    lemmatise = False, titlefilter = False)
+
+# <codecell>
+plotter('At-risk thing or thing at risk', n_atrisk_n.results, num_to_plot = 7, skip63 = False )
+
+# <markdowncell>
+# Vulnerable human populations are the main theme of this category: indeed, it's difficult to imagine *at-risk corporations* or *at-risk leaders*.
+
+# <headingcell level=3>
+# Arguability of risk
+
+# <markdowncell>
+# > **Sorry, tool unavailable at present**
+
+# <headingcell level=3>
+# Proper nouns and risk sentences
+
+# <markdowncell>
+# We searched to find the most common proper noun strings.
+
+# *interrogator()*'s *titlefilter* option removes common titles, first names and determiners to make for more accurate counts. It is useful when the results being returned are groups/phrases, rather than single words.
+
+# <codecell>
+# Most common proper noun phrases
+query = r'NP <# NNP >> (ROOT << /(?i).?\brisk.?\b/)'
+propernouns = interrogator(main_path, '-t', query, 
+    titlefilter = True)
+
+# <codecell>
+plotter('Most common proper noun phrases', propernouns.results, fract_of = propernouns.totals)
+# <codecell>
+quickview(propernouns.results, n = 200)
+
+# <markdowncell>
+# Notice that there are a few entries here that refer to the same group. (f.d.a and food and drug administration, for example). We can use *merger()* to fix these.
+
+# <codecell>
+# indices change after merger, remember, so
+# make sure you quickview results after every merge.
+merged_propernouns = merger(propernouns.results, [13, 20])
+quickview(merged_propernouns, n = 200)
+
+# <markdowncell>
+# Now that we've merged some common results, we can use *surgeon()* to build some basic thematic categories.
+
+# <codecell>
+# make some new thematic lists
+people = surgeon(merged_propernouns, r'(?i)^\b(bush|clinton|obama|greenspan|gore|johnson|mccain|romney'
+    r'|kennedy|giuliani|reagan)$\b',\
+    remove = False)
+nations = surgeon(merged_propernouns, r'(?i)^\b(iraq|china|america|israel|russia|japan|frace|germany|iran\
+|britain|u\.s\.|afghanistan|australia|canada|spain|mexico|pakistan|soviet union|india)$\b',\
+remove = False)
+geopol = surgeon(merged_propernouns, r'(?i)^\b(middle east|asia|europe|america|soviet union|european union)$\b',\
+remove = False)
+#usplaces = surgeon(merged_propernouns, r'(?i)^\b(new york|washington|wall street|california|manhattan\
+#|new york city|new jersey|north korea|italy|greece|bosniaboston|los angeles|broadway|texas)$\b',\
+#remove = False)
+companies = surgeon(merged_propernouns, r'(?i)^\b(merck|avandia\
+|citigroup|pfizer|bayer|enron|apple|microsoft|empire)$\b',\
+remove = False)
+organisations = surgeon(merged_propernouns, r'(?i)^\b((white house|congress|federal reserve|nasa|pentagon)\b|'
+    r'f\.d\.a\.|c\.i\.a\.|f\.b\.i\.|e\.p\.a\.)$', remove = False)
+medical = surgeon(merged_propernouns, r'(?i)^\b(vioxx|aids|celebrex)$\b',\
+remove = False)
+
+# <codecell>
+# plot some results
+plotter('People', people, fract_of = propernouns.totals, 
+        y_label = 'Percentage of all proper noun groups', skip63 = True)
+
+plotter('Nations', nations, fract_of = propernouns.totals, 
+        y_label = 'Percentage of all proper noun groups', skip63 = True)
+
+plotter('Geopolitical entities', geopol, fract_of = propernouns.totals,  
+        y_label = 'Percentage of all proper noun groups', skip63 = False)
+
+plotter('Companies', companies, fract_of = propernouns.totals, 
+        y_label = 'Percentage of all proper noun groups', skip63 = True)
+
+plotter('Organisations', organisations, fract_of = propernouns.totals, 
+        y_label = 'Percentage of all proper noun groups', skip63 = True)
+
+plotter('Medical', medical, fract_of = propernouns.totals, 
+        y_label = 'Percentage of all proper noun groups', skip63 = True)
+# <markdowncell>
+# These charts reveal some interesting patterns.
+
+# * We can clearly see presidencies and rival candidates come and go
+# * Similarly, the wars in Iraq and Afghanistan are easy to spot
+# * Naturally, the Soviet Union is a very frequent topic in 1963. It rises in frequency until its collapse. More recently, Russia can be seen as more frequently co-occurring with risk words.
+# * The Eurozone crisis is visible
+# * From the Organisations and Things, we can see the appearance of Merck and Vioxx in 2004, as well as Empire...
+
+# <codecell>
+vioxx = surgeon(propernouns.results, r'(?i)^\b(vioxx|merck)\b$', remove = False)
+plotter('Merck and Vioxx', vioxx, fract_of = propernouns.totals, skip63 = True)
+plotter('Merck and Vioxx', vioxx, fract_of = propernouns.totals, yearspan = [1998,2012])
+
+
+# <markdowncell>
+# Vioxx was removed from shelves following the discovery that it increased the risk of heart attack. It's interesting how even though terrorism and war may come to mind when thinking of *risk* in the past 15 years, this health topic is easily more prominent in the data.
+
+# <headingcell level=2>
+# Risk in economics, health and politics articles
+
+# <markdowncell>
+# We used article metadata features in the NYT annotated corpus to build corpora of economics, health and politics articles.
+
+# > No metadata was available for 1963 editions, and thus they are not plotted in this section.
+
+# <markdowncell>
+# Before interrogating topic subcorpora, we built *topix_search()* and *topix_plot()*. These are short functions to interrogate and plot each subcorpus in turn. They have been automatically loaded in with interrogators.ipy in the first cell.
+
+# <codecell>
+# get a list of the economics, health and politics subcorpora
+path = 'nyt'
+topic_subcorpora = [d for d in os.listdir(path)
+          if os.path.isdir(os.path.join(path,d))
+          and d != 'years']
+
+def topix_search(topic_subcorpora, options, query, **kwargs):
+    """Interrogates each topic subcorpus."""
+    results = [] # make empty list of results and totals
+    totals = []
+    for topic in topic_subcorpora: # for topic name
+        print "Doing " + topic + " ..."
+        topic_subcorpora_path = os.path.join(path,topic) # get topic path
+        # interrogate with any arguments passed in:
+        result = interrogator(topic_subcorpora_path, options, query, **kwargs)
+        results.append(result.results) # add to results
+        totals.append(result.totals)
+    # now we should have 3x results and 3x totals, and a query
+    outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
+    query_options = [query, options] 
+    output = outputnames(query_options, results, totals)
+    return results
+
+def topix_plot(title, results, fract_of = False, **kwargs):
+    """Plots results from subcorpus interrogation."""
+    for topic in topic_subcorpora:
+        newtitle = title + ' in ' + str(topic) + ' articles' # semi-automatic titles (!)
+        if not fract_of: # if counting ratios/percentages, 
+            plotter(newtitle, results[topic_subcorpora.index(topic)], **kwargs)
+        else:
+            plotter(newtitle, results[topic_subcorpora.index(topic)], 
+                    fract_of = fract_of[topic_subcorpora.index(topic)], **kwargs)
+
+# <markdowncell>
+# It's also useful to keep in mind that conc() can loop through subcorpora. Two kinds of loops are presented below.
+
+# <codecell>
+import pprint # nice looking results
+year_of_interest = '2002'
+for topic in topic_subcorpora:
+    lines = conc(os.path.join(path,topic,year_of_interest), 
+        r'PP < (NP <# (/NN.?/ < /(?i).?\brisk.?\b/))', random = 20)
+    pprint.pprint(lines)
+
+# <codecell>
+topic = 'economics'
+# note that years here are strings (in quotation marks), rather than integers.
+years = ['1989', '1990', '1991']
+for year in years:
+    lines = conc(os.path.join(path,topic,year), r'/(?i)risky/', random = 20, window = 50)
+    pprint.pprint(lines)
+
+
+# <headingcell level=3>
+# Proper noun phrases
+
+# <codecell>
+query = r'NP <# NNP >> (ROOT << /(?i).?\brisk.?\b/)'
+topics_propernouns = topix_search(topic_subcorpora, '-t', query, titlefilter = True)
+
+# <markdowncell>
+# When working with topic subcorpora, you can add an extra argument to *quickview()* to see the first results from each subcorpus:
+
+# <codecell>
+quickview(topics_propernouns, n = 20, topics = True)
+
+# <codecell>
+topix_plot('Proper noun phrases', topics_propernouns)
+
+# <codecell>
+# people in politics articles
+# note, we just use *interrogator()* and *plotter()*, because we're only interested in a single topic subcorpus.
+query = r'NP <# NNP >> (ROOT << /(?i).?\brisk.?\b/)'
+propnounphrases = interrogator('nyt/politics', '-t', query, titlefilter = True)
+
+# <codecell>
+polpeople = surgeon(propnounphrases.results, 
+    r'(?i)\b(obama|bush|clinton|dole|romney|reagan|carter|ford|mccain|johnson|kennedy|gore)\b', 
+    remove = False)
+#topix_plot('Proper noun phrases', results)
+plotter('Politicians in sentences containing a risk word', polpeople)
+
+# <headingcell level=3>
+# Adjectives modifying participant risk
+
+# <codecell>
+query = r'/JJ.?/ > (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
+topics_adjmod = topix_search(topic_subcorpora, '-t', query)
+    
+# <codecell>    
+topix_plot('Adjectives modifying participant risk', topics_adjmod)
+
+# <headingcell level=3>
+# Risk of (noun)
+
+# <codecell>
+query = r'/NN.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'
+topics_riskof = topix_search(topic_subcorpora, '-t', query)
+
+# <codecell>
+topix_plot('Risk of (noun)', topics_riskof)
+
+# <headingcell level=3>
+# Arguability in topic subcorpora
+
+# <markdowncell>
+# > **Sorry, tool unavailable at present**
+
+# <headingcell level=2>
+# General queries
+
+# <markdowncell>
+# We also performed some basic querying of all parsed data. Though not discussed in our report, these findings may be interesting in their own right.
+
+# In the examples below, we use *multiplier = 1*. This is for making ratios.
+
+# <codecell>
+openwords = r'/\b(JJ|NN|VB|RB)+.?\b/'
+clauses = r'S < __'
+opencount = interrogator(main_path, '-C', openwords)
+clausecount = interrogator(main_path, '-C', clauses)
+
+# <codecell>
+# ratio of open to closed word classes
+# already done this one:
+
+# openwords = r'/\b(JJ|NN|VB|RB)+.?\b/'
+# opencount = interrogator(main_path, '-C', openwords)
+
+closedwords = r'/\b(DT|IN|CC|EX|W|MD|TO|PRP)+.?\b/'
+closedcount = interrogator(main_path, '-C', closedwords)
+
+# <codecell>
+# ratio of nouns/verbs
+nounquery = r'/NN.?/ < __'
+verbquery = r'/VB.?/ < __'
+nouncount = interrogator(main_path, '-C', nounquery)
+verbcount = interrogator(main_path, '-C', verbquery)
+
+# <markdowncell>
+# ... and finally, plot the results!
+
+# <codecell>
+#plot results
+plotter('Lexical density', opencount.totals, 
+        fract_of = clausecount.totals, y_label = 'Lexical Density Score', multiplier = 1, skip63 = True)
+
+plotter('Open/closed word classes', opencount.totals, 
+        fract_of = closedcount.totals, y_label = 'Open/closed ratio', multiplier = 1, skip63 = True)
+
+plotter('Noun/verb ratio', nouncount.totals, 
+        fract_of = verbcount.totals, y_label = 'Noun/verb ratio', multiplier = 1, skip63 = True)
+
+# <markdowncell>
+# Neat! Anybody care to explain why this is the case?
+
+# <headingcell level=2>
+# interrogator()
+
+# <markdowncell>
+# *interrogator()* is our main method for interrogating the annotated corpus. It takes any corpus with numerically named subcorpora as input. Tregex is used to query the corpus, and NLTK's WordNet Lemmatiser can optionally be called.
+
+# <codecell>
+%load interrogator.ipy
+
+# <headingcell level=2>
+# plotter()
+
+# <markdowncell>
+# *plotter()* visualises results using *matplotlib*. It is designed to work with results generated by *interrogator()*. *IPython Magic* allows the inline display of generated images.
+
+# <codecell>
+%load plotter.ipy
+
+# <headingcell level=2>
+# Other functions
+
+# <markdowncell>
+# Here you can see the code that comprises the other functions used in this Notebook.
+
+# <codecell>
+%load additional_tools.ipy
+
+# <headingcell level=2>
+# Copy-and-paste Tregex queries
+
+# <markdowncell>
+# | Query | Gloss | Example  |
+# |---|---|---|
+# | a  |   |   |
+# | b  |   |   |
+# |  c |   |   |
+# | d  |   |   |
+# | e  |   |   |
+# |  f |   |   |
+# |  g |   |   |
+# | h  |   |   |
+# | i  |   |   |
+# | j  |   |   |
+# | k  |   |   |
+# | l |  |   |
+
+# <headingcell level=2>
+# References
+
+# <markdowncell>
+# <a id="eggins"></a>
+# Eggins, S. (2004). Introduction to systemic functional linguistics. Continuum International Publishing Group.
+#
+# <a id="firth"></a>
+# Firth, J. (1957).  *A Synopsis of Linguistic Theory 1930-1955*. In: Studies in Linguistic Analysis, Philological Society, Oxford; reprinted in Palmer, F. (ed.) 1968 Selected Papers of J. R. Firth, Longman, Harlow.
+#
+# <a id="hallmat"></a>
+# Halliday, M., & Matthiessen, C. (2004). An Introduction to Functional Grammar. Routledge.
+#
+
+# <headingcell level=2>
+# To do:
+
+# <markdowncell>
+# * dependency parsing with nltk
+# * corpus building and parsing guide
+# * keywording, collocation, etc.
+# * more NLTK ...
+
+# <markdowncell>
+# 
+
+
+

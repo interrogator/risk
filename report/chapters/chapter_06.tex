@@ -1,0 +1,525 @@
+%!TEX root = ../risk_book.tex
+
+
+\chapter{Findings} 
+
+\noindent Findings are organised according to the formulation of areas of interest as questions. These questions progress from general frequency counting (Q1), through experiential meanings (Qs 2--7), to risk as modifier (Qs 8 \& 9) and finally to arguability (Q10). Discussion of the general significance of individual findings is also presented in this section, as the Discussion section synergises all findings to explain the discourse-semantics of risk.
+
+An \emph{IPython Notebook}  interface for navigating the corpus \cite<see>{mckinney_python_2012}, as well as the code used to interrogate it and the findings we produced, is available online: \url{https://github.com/interrogator/sfl_corpling}. A non-interactive version is available at \url{http://nbviewer.ipython.org/github/interrogator/sfl_corpling/blob/master/risk.ipynb}
+
+\section{How frequently do risk words appear?} 
+\FloatBarrier
+
+	%We successfully located a number of lexicogrammatical sites of change within clauses containing a risk word. 
+
+	The first point of interest was the overall frequency of risk words in the NYT and the distribution of risk words by word class (nominal, verbal, adjectival/adverbial), absent any consideration of surrounding grammar (see Figure \ref{fig:wordclasses}). We found a trend toward nominal forms, with the other categories remaining more or less stable. %Using our reference corpus, we checked to see whether nominals were becoming more frequent within the NYT more generally.
+
+			\begin{figure}[htb!]
+			\centering
+			\includegraphics[width=1.0\textwidth]{../images/wordclasses.png}
+			\caption{Occurrences of risk words by word class (absolute and relative frequencies)}
+			\label{fig:wordclasses}
+			\end{figure}
+
+			%\begin{figure}[htb!]
+			%\centering
+			%\includegraphics[width=0.75\textwidth]{../images/relwordclass.png}
+			%\caption{Risk words by word class as percentage of all parsed words}
+			%\label{fig:relwordclass}
+			%\end{figure}
+
+			%FUNCTIONAL CATEGORISATION?
+
+	We compared this against the relative frequencies of nominal, verbal and adjectival/adverbial lexical items in the corpus as a whole, in order to account for any trends toward nominalisation in the NYT more generally (Figure \ref{fig:wordclasses}). This showed that even when compared to potential trends toward nominalisation generally, nominal risks are still on an inbound trajectory. Verbal and adjectival\slash adverbial risks are both less frequent overall and more static in their trajectory.
+
+	These initial findings guided the rest of the investigation: particular attention was paid to nominal risks, as these were the site of the most longitudinal change. That said, these categories provide merely a categorisation of the formal features of risk words. Functionally, things are substantially more complicated: \emph{running a risk}, for example, while featuring a nominal risk, is in reality a risk process; similarly, though risk is nominal in \emph{risk management}, risk is nominal, it functions as a modifier, rather than a participant.
+
+	%\section{Experiential meaning: risk as Participant and Process}
+
+	\section{Which experiential roles do risk words occupy?} 
+	\FloatBarrier
+
+	Within the Transitivity system, a risk word may take the form of a participant, process or a modifier. Using Stanford CoreNLP's dependency parsing, we counted the frequency of risk words within these four functional roles (Figure \ref{fig:funcrole}). Somewhat unexpectedly, the results were very similar to the word-class based results.
+
+			\begin{figure}[htb!]
+			\centering
+			\includegraphics[width=0.75\textwidth]{../images/funcrole.png}
+			\caption{Functional roles of risk words}
+			\label{fig:funcrole}
+			\end{figure}
+
+	~\ \todo[inline,color=green!40]{\noindent More discussion here, perhaps, as well as the above chart as relative frequencies. I may also have to account for risk within prepositional phrases here.}
+		
+	%only when the risk word forms the head of these groups, rather than a dependent/modifier (e.g. \emph{a risky decision}).
+
+		\section{Is risk more commonly in the position of experiential subject or experiential object?} 
+		\FloatBarrier
+
+		Risk as a participant may take the form of an experiential subject or an experiential object. Our first area of interest was the proportion of each, with respect to general trends in the NYT. As shown in Figure \ref{fig:bestexpsubjobj}, risk is more commonly an object than a subject. It is also apparent that risk as experiential subject is on an static trajectory, while risk as experiential object is inbound. The significance of this is discussed in more depth in Section \ref{sect:arguability}.
+
+			\begin{figure}[htb!]
+			\centering
+			\includegraphics[width=0.75\textwidth]{../images/bestexpsubjobj.png}
+			\caption{Risk as experiential subject and object as percentage of all risk roles}
+			\label{fig:bestexpsubjobj}
+			\end{figure}
+			%
+
+	\section{What processes are involved when risk is a participant?}
+	\FloatBarrier
+
+		We then wanted to determine the most common processes in which risk as a participant is involved. Tables \ref{tab:subj} and \ref{tab:obj} show the top twenty processes for risk as experiential subject and object, taking passivisation into account.\endnote{\emph{Take} and \emph{run} are removed from the object column here, as \emph{take risk} and \emph{run risk} are considered risk processes.}~
+
+			% this below doesn't count agent as an experiential subject, and it should! also copula
+
+					\begin{table}[htb!]
+					\centering
+										\addvbuffer[12pt 8pt]{\begin{minipage}{.35\textwidth}
+										\small
+										\begin{tabularx}{1.0\textwidth}{|>{\raggedright}X|l|}
+										\hline
+										\textbf{Processes when risk is experiential subject} & \textbf{Total} \\ \hline
+										be                                      & 8954  \\ \hline
+										increase                                & 460   \\ \hline
+										outweigh                                & 278   \\ \hline
+										rise                                    & 269   \\ \hline
+										say                                     & 222   \\ \hline
+										come                                    & 201   \\ \hline
+										remain                                  & 192   \\ \hline
+										go                                      & 190   \\ \hline
+										have                                    & 179   \\ \hline
+										make                                    & 148   \\ \hline
+										seem                                    & 148   \\ \hline
+										involve                                 & 145   \\ \hline
+										grow                                    & 133   \\ \hline
+										exist                                   & 127   \\ \hline
+										take                                    & 121   \\ \hline
+										become                                  & 120   \\ \hline
+										lose                                    & 120   \\ \hline
+										include                                 & 113   \\ \hline
+										appear                                  & 111   \\ \hline
+										pay                                  & 100   \\ \hline
+										\end{tabularx}
+										\caption{Processes when risk is \mbox{experiential} subject}
+										\label{tab:subj}
+										\end{minipage}} \hspace{1cm} % This must go next to `\end{minipage}`
+										\addvbuffer[12pt 8pt]{\begin{minipage}{.35\textwidth}
+										\small
+										\begin{tabularx}{1.0\textwidth}{|>{\raggedright}X|l|}
+										\hline
+										\textbf{Processes when risk is experiential object} & \textbf{Total} \\ \hline
+										%take                                             & 11459 \\ \hline
+										reduce                                           & 5609  \\ \hline
+										pose                                             & 4179  \\ \hline
+										increase                                         & 4063  \\ \hline
+										%run                                              & 3506  \\ \hline
+										have                                             & 2879  \\ \hline
+										carry                                            & 2115  \\ \hline
+										face                                             & 1477  \\ \hline
+										raise                                            & 1115  \\ \hline
+										minimize                                         & 1009  \\ \hline
+										assess                                           & 841   \\ \hline
+										create                                           & 731   \\ \hline
+										outweigh                                         & 704   \\ \hline
+										avoid                                            & 683   \\ \hline
+										present                                          & 619   \\ \hline
+										assume                                           & 593   \\ \hline
+										consider                                         & 588   \\ \hline
+										see                                              & 563   \\ \hline
+										understand                                       & 493   \\ \hline
+										accept                                           & 492   \\ \hline
+										weigh & 473   \\ \hline
+										eliminate & 450   \\ \hline
+			
+										\end{tabularx}
+										\caption{Processes when risk is experiential object}
+										\label{tab:obj}
+										\end{minipage}}
+										\end{table}
+
+
+	\section{How are participant risks modified?}
+	\FloatBarrier
+
+				Most commonly, risk as a participant is modified through adjectival pre-head modification or post-head modification with a subordinate clause or prepositional phrase. Ignoring the distinction between subject and object risk, and collapsing pre-head and post-head kinds of modification, Tables \ref{tab:prehead} and \ref{tab:posthead} show the most common pre- and post-head modifiers of risk as a participant.
+
+					\begin{table}[htb!]
+					\centering
+					\addvbuffer[12pt 8pt]{\begin{minipage}{0.35\textwidth}
+					\raggedleft
+					\small
+					\begin{tabular}{|l|l|}
+					\hline
+					\textbf{Pre-head modifier}     & \textbf{Total} \\ \hline
+					high         & 4753  \\ \hline
+					great        & 3444  \\ \hline
+					big          & 1672  \\ \hline
+					political    & 1520  \\ \hline
+					potential    & 1340  \\ \hline
+					financial    & 1164  \\ \hline
+					low          & 1056  \\ \hline
+					more         & 1051  \\ \hline
+					significant  & 1003  \\ \hline
+					serious      & 935   \\ \hline
+					real         & 869   \\ \hline
+					little       & 761   \\ \hline
+					own          & 713   \\ \hline
+					substantial  & 547   \\ \hline
+					less         & 541   \\ \hline
+					such         & 514   \\ \hline
+					calculated   & 469   \\ \hline
+					considerable & 463   \\ \hline
+					possible     & 458   \\ \hline
+					other        & 423   \\ \hline
+					\end{tabular}
+					\caption{Pre-head modification of participant risk}
+					\label{tab:prehead}
+					\end{minipage}} \hspace{1cm}% This must go next to `\end{minipage}`
+					\addvbuffer[12pt 8pt]{\begin{minipage}{0.35\textwidth}
+						\raggedright
+					\small
+					\begin{tabular}{|l|l|}
+					\hline
+					\textbf{Post-head modifier} & \textbf{Total} \\ \hline
+					cancer             & 2344  \\ \hline
+					disease            & 1777  \\ \hline
+					attack             & 1597  \\ \hline
+					death              & 1025  \\ \hline
+					injury             & 823   \\ \hline
+					infection          & 811   \\ \hline
+					loss               & 408   \\ \hline
+					war                & 391   \\ \hline
+					failure            & 383   \\ \hline
+					inflation          & 368   \\ \hline
+					problem            & 346   \\ \hline
+					default            & 336   \\ \hline
+					stroke             & 325   \\ \hline
+					complication       & 288   \\ \hline
+					damage             & 251   \\ \hline
+					transmission       & 248   \\ \hline
+					harm               & 244   \\ \hline
+					aid                & 227   \\ \hline
+					recession          & 217   \\ \hline
+					accident           & 208   \\ \hline
+					\end{tabular}
+					\caption{Pre-head modification of participant risk}
+					\label{tab:posthead}
+					\end{minipage}}
+					\end{table}
+
+				Some of these modifiers are undergoing longitudinal trajectory change. As can be seen in Figure \ref{fig:reladjrisk}, \emph{calculated risk} has an outbound trajectory, decreasing steadily. The large number of occurrences projected for 1963, however, is largely the result of the 1962 Broadway play by the same name. Of course, the choice of name for the production may also serve as evidence for the salience of the construction in the earlier samples.  \emph{Potential risk}, on the other hand, is on an inbound trajectory. Also interesting is the spike in the \emph{high risk} construction between 2002--2004. %REDO PROJECTION FOR 1963...
+
+
+				\begin{figure}[htb!]
+				\centering
+				\includegraphics[width=0.75\textwidth]{../images/reladjrisk.png}
+				\caption{Selected modifiers of participant risk as percentage of all risk modifiers}
+				\label{fig:reladjrisk}
+				\end{figure}
+
+				~\ \todo[inline,color=green!40]{\noindent Significance of this?}
+				
+
+		\section{What kinds of risk processes are there, and what are their relative frequencies?}
+		\FloatBarrier
+
+		Our second area of interest within the transitivity system is risk as a process. Within the corpus, we located four distinct risk processes. First, risk alone may be a process (\emph{I won't risk it}). Second and third are \emph{running risk} and \emph{taking risk}---process--range configurations, where the verbal component is largely shorn of meaning, and with meaning conveyed primarily in the nominal in object position \cite{halliday_introduction_2004}. The final process, \emph{putting somebody/something at risk} involves an obligatory nominal object argument and a prepositional-phrase complement.
+
+			\begin{figure}[htb!]
+			\centering
+			\includegraphics[width=0.75\textwidth]{../images/riskprocesses.png}
+			\caption{Risk processes as percentage of all parsed processes}
+			\label{fig:riskprocesses}
+			\end{figure}
+			%
+			Our first interest is the overall frequency of these four risk processes, when compared with the number of processes in the entire corpus. From Figure \ref{fig:riskprocesses}, we concluded that risk processes generally are on an static/slightly outbound trajectory, with a notable decrease in frequency between the 1963--1987 samples. Figure \ref{fig:verbalrisks} charts the trajectory of the four identified risk processes. Most interesting here is that \emph{putting at risk} has overtaken \emph{running risk} in frequency. 
+
+			\begin{figure}[htb!]
+			\centering
+			\includegraphics[width=0.75\textwidth]{../images/verbalrisks.png}
+			\caption{Four types of verbal risk as percentage of all verbal risks}
+			\label{fig:verbalrisks}
+			\end{figure}
+
+			~\ \todo[inline,color=green!40]{\noindent Significance of this?}
+		
+		\section{When risk is a process, what participants are involved?}
+		\FloatBarrier
+		
+		Clauses containing risk processes are a rich site for analysis, as the semantic roles of participants are determined by their placement with respect to the process. Experiential subjects of risk processes can be mapped to \emph{riskers}. Experiential objects are either \emph{risked things} or \emph{potential harm} (\emph{they risked their lives/death}). Table \ref{tab:riskersx} lists the most common subject and object participants of risk processes. Also of interest are clauses embedded within risk processes (e.g. \emph{she risks hurting herself/losing her life}). Table \ref{alienating} lists the (lemmatised) top twenty subordinated processes in the corpus.
+
+			\begin{table}[htb!]
+			\centering
+			\addvbuffer[12pt 8pt]{\begin{minipage}{.35\textwidth}
+			\centering
+			\small
+			\begin{tabularx}{1.0\textwidth}{|>{\raggedright}l|X|}
+			\hline
+			\textbf{Risker}           & \textbf{Risked thing\slash potential harm} \\ \hline
+			person & life \\ \hline
+			company & injury \\ \hline
+			state & loss \\ \hline
+			woman & everything \\ \hline
+			man & death \\ \hline
+			investor & money \\ \hline
+			bush & wound \\ \hline
+			player & war \\ \hline
+			government & career \\ \hline
+			worker & arrest \\ \hline
+			republican & health \\ \hline
+			clinton & damage \\ \hline
+			bank & reputation \\ \hline
+			democrat & fine \\ \hline
+			anyone & capital \\ \hline
+			obama & future \\ \hline
+			child & confrontation \\ \hline
+			move & job \\ \hline
+			firm & backlash \\ \hline
+			administration & failure \\ \hline
+			\end{tabularx}
+			\caption{Riskers and risked things and\slash or potential harms}
+			\label{tab:riskersx}
+
+			\end{minipage}} \hspace{1cm} % This must go next to `\end{minipage}`
+			\addvbuffer[12pt 8pt]{\begin{minipage}{.35\textwidth}
+
+			\centering
+			\small
+			\begin{tabularx}{0.9\textwidth}{|l|X|}
+			\hline
+			\textbf{Embedded process}      & \textbf{Total ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~} \\ \hline
+			lose      & 1260  \\ \hline
+			be        & 1095  \\ \hline
+			alienate  & 379   \\ \hline
+			have      & 347   \\ \hline
+			become    & 285   \\ \hline
+			get       & 184   \\ \hline
+			make      & 166   \\ \hline
+			turn      & 119   \\ \hline
+			go        & 113   \\ \hline
+			offend    & 110   \\ \hline
+			take      & 86    \\ \hline
+			look      & 85    \\ \hline
+			undermine & 82    \\ \hline
+			anger     & 79    \\ \hline
+			fall      & 78    \\ \hline
+			create    & 76    \\ \hline
+			put       & 74    \\ \hline
+			miss      & 73    \\ \hline
+			give      & 73    \\ \hline
+			damage    & 62    \\ \hline
+			\end{tabularx}
+			\caption{Most common embedded processes in risk processes}
+			\label{alienating}
+	
+			\end{minipage}}
+			\end{table}
+
+			Riskers are most typically powerful institutions or individuals. Risked things and potential harms are generally serious and grave. A mismatch occurs here: \emph{Bush} and \emph{Obama} do not likely risk \emph{wounds}, \emph{arrest} or \emph{death}. In terms of subordinated processes, notable is the appearance of processes that are fairly uncommon: \emph{alienating}, \emph{offending}, \emph{undermining} and \emph{angering} and are three key examples, ranking amongst expected processes like \emph{being}, \emph{having}, \emph{getting}, \emph{making} and \emph{going}. Without considering longitudinal change, we can see from this that the embedded processes are often related to more powerful social actors: states, political parties and politicians risk alienating electorates; diplomats risk offending one another.
+
+			~\ \todo[inline,color=green!40]{\noindent Longitudinal trajectories of a couple of constructions here?}
+			
+			%DEPENDING ON HOW MUCH TIME THERE IS, I COULD SEARCH FOR ALL OF THE RISKERS INDIVIDUALLY...
+
+			%Though these objects may be grammatically ambiguous, the function of the object can be disambiguated by inserting \emph{losing}.
+
+			%\begin{enumerate}	\setlength\itemsep{0em}
+				%\item He risked his life
+				%\item He risked losing his life
+				%\item He risked death
+				%\item * He risked losing death
+			%\end{enumerate}
+
+			%Note here an emerging methodological issue: the various  \emph{potential harms} can also be located by querying nominal risks (e.g. \emph{the risk of death}). Some methodological adaptability is thus required.
+
+		\section{When risk is a modifier, what are the most common forms?}
+		\FloatBarrier
+
+			Modifier risks are unique for their variety and diversity: through compounding, comprehensible new risk words and phrases can easily be created. The entire corpus contained 327 unique adjectival risk words, including \emph{non-risk}, \emph{de-risk}, \emph{once-risky}, \emph{take-no-risks}, \emph{risk-swapping}, \emph{risk-abhorrent}, \emph{price-for-risk}, \emph{post-risky}, \emph{pooled-risk}, \emph{personal-risk}, \emph{optimum-risk}, \emph{one-risk-factor}, \emph{one-pitch-can-end-his-career-risk} and \emph{low-risk-to-society}. That said, most of these occur no more than a handful of times. By far the most common were \emph{risky\slash riskier\slash riskiest} (15588 occurrences), \emph{high-risk} (5533), \emph{low-risk} (1086), \emph{at-risk} (902), \emph{risk-free} (883) and \emph{risk-taking} (789). Of these, four exhibited trajectory shifts (see Figure \ref{fig:adjtraj}). The basic adjectival forms (\emph{risky}, \emph{riskier}, \emph{riskiest}) are dominant in the 1963 sample, then decrease, and re-emerge in 2000. \emph{High-risk} though very rare (two instances) in 1963, has become more common, and stabilised in trajectory. \emph{Low-risk} and \emph{at-risk} are on a consistent inbound trajectory.
+
+			\begin{figure}[htb!]
+			\centering
+			\includegraphics[width=0.75\textwidth]{../images/adjtraj.png}
+			\caption{Common adjectival risk words as percentage of all adjectival risks}
+			\label{fig:adjtraj}
+			\end{figure}
+
+			The prevalence of high-risk in the 1980s is largely due to the AIDS epidemic: concordancing reveals that certain populations (gays, African Americans, Haitians) are at high-risk of being inflected by HIV. \emph{At-risk} is rare in earlier editions, but increases in prevalence steadily.
+
+			This shift in risk is modifier is an important one. Low, moderate and high risk comprises a gradient, or scale, while at-risk is a binary. As with the shift toward \emph{potential risk}, this indicates both an increasing pervasiveness and a decreasing calcuability of risk. %remember that low-risk is actually increasing.
+			
+			%Of the graduated risks, low-risk is the only one on an inbound trajectory. What's the significance of this?
+
+
+
+				%For people at moderate risk who also have two of the other risk factors , the treatment should be the same as for those in the high-risk group .
+				%But ecologists , doctors and other specialists here warn that the entire population , not just high-risk groups , is vulnerable .
+				%In the weeks since the law took effect , couples seeking marriage licenses have besieged hospitals , clinics and other doctors , anxious to get the test and the required counseling in time for wedding dates and quickly outnumbering those in high-risk groups most in need of attention .
+				%Health experts say scarce funds for AIDS prevention would be better spent on high-risk groups .
+				%Very few Americans know that Haitians have long since been removed from the list of high-risk groups because it was discovered that the H
+
+
+			\section{When risk is a modifier, what is being modified?}
+			\FloatBarrier
+
+			Risk as a modifier can be placed either before or after the noun it modifies (\emph{an at-risk person\slash a person at risk}). These two constructions are collapsed in Tables \ref{tab:riskmodified} and \ref{tab:atrisk}, which respectively list the participants most frequently modified by any risk modifier, and the participants most frequently modified by \emph{at-risk\slash at risk}. Note that while risk-modified participants generally are financial and economic in nature (\emph{investment, business, loan, asset}), the at-risk subset is comprised of vulnerable populations of people (\emph{women}, \emph{children}, \emph{students}).
+
+			\begin{table}[htb!]
+			\centering
+			\addvbuffer[12pt 8pt]{\begin{minipage}{.37\textwidth}
+			\centering
+			\small
+			\begin{tabularx}{1.0\textwidth}{|X|l|}
+			\hline
+			\textbf{Risk-modified \mbox{participant}}        & \textbf{Total} \\ \hline
+			investment  & 696   \\ \hline
+			business    & 515   \\ \hline
+			behavior    & 508   \\ \hline
+			group       & 466   \\ \hline
+			loan        & 421   \\ \hline
+			asset       & 388   \\ \hline
+			strategy    & 377   \\ \hline
+			bond        & 346   \\ \hline
+			area        & 307   \\ \hline
+			venture     & 301   \\ \hline
+			security    & 287   \\ \hline
+			patient     & 265   \\ \hline
+			pool        & 239   \\ \hline
+			bet         & 214   \\ \hline
+			move        & 204   \\ \hline
+			activity    & 201   \\ \hline
+			proposition & 199   \\ \hline
+			child       & 170   \\ \hline
+			woman       & 161   \\ \hline
+			student     & 158   \\ \hline
+			\end{tabularx}
+			\caption{Most common risk-modified participants in the corpus}
+			\label{tab:riskmodified}
+			\end{minipage}} \hspace{1cm}
+			\addvbuffer[12pt 8pt]{\begin{minipage}{.37\textwidth}
+			\small
+			\begin{tabularx}{1.0\textwidth}{|X|l|}
+			\hline
+			\textbf{At-risk \mbox{participant}}       & \textbf{Total} \\ \hline
+			person     & 439   \\ \hline
+			child      & 368   \\ \hline
+			woman      & 209   \\ \hline
+			student    & 179   \\ \hline
+			nation     & 135   \\ \hline
+			patient    & 110   \\ \hline
+			youngster  & 93    \\ \hline
+			group      & 91    \\ \hline
+			population & 64    \\ \hline
+			family     & 58    \\ \hline
+			kid        & 50    \\ \hline
+			youth      & 48    \\ \hline
+			money      & 48    \\ \hline
+			worker     & 45    \\ \hline
+			life       & 41    \\ \hline
+			job        & 41    \\ \hline
+			man        & 40    \\ \hline
+			area       & 35    \\ \hline
+			teenager   & 32    \\ \hline
+			other & 32 \\ \hline
+			\end{tabularx}
+			\caption{Most common at-risk participants in the corpus}
+			\label{tab:atrisk}
+			\end{minipage}}% This must go next to `\end{minipage}`
+			\end{table}
+
+	\section{How arguable is risk?} \label{sect:arguability}
+	\FloatBarrier
+
+		As noted earlier, our central concern with the Mood system is the degree of arguability associated with the concept of risk. Risk in Subject, Finite and Predicator positions is the most arguable. Risk words within Complements and Adjuncts are less arguable.
+
+		%A dependency grammar attempts to locate a lexical root for each clause, and attach dependents to it recursively until no lexical items are unattached. Each word is ordered by its dependency to the root of a clause. The nature of the dependency relationship can also be provided. Such grammars are particularly useful for free word order language, but have been applied to English successfully as well.
+
+		Based on the kinds of parsing provided by Stanford CoreNLP, it was possible to measure arguability in two ways. First, we can map dependency relationships to the systemic-functional notion of arguability. A dependency grammar locates the predicator of a clause and assigns it a position of zero. A `1' is then assigned to its most immediate dependent (other components in the verbal group, if present, or the head of the Subject, if not). This process continues until no lexical items are unattached, or `ungoverned'. In effect, the higher the number attached to a word, the further it is semantically from being an important component in the meaning, and thus, in systemic functional terms, the less arguable the word.
+
+			\begin{figure}[htb!]
+			\centering
+			\addvbuffer[12pt 8pt]{\includegraphics[width=0.75\textwidth]{../images/depnum.png}}
+			\caption{Risk words by dependency position in clause}
+			\label{fig:depnum}
+			\end{figure}
+			%
+			Highlighting three sampling periods as in Figure \ref{fig:depnum} shows that risk is less and less often the predicator, or an argument of the predicator. That is, risk is less and less often in more arguable positions. In 1963, risk appears much more commonly as the main verb, or as one of its more immediate dependants. By 2014, risk words are more commonly occupying roles within grammatical objects and adjuncts, and thus have greater numbers of governors.%\endnote{Dependency place 2 and 3 removed from visualisation, as these roles are typically for finites and modal auxiliaries---positions that a risk word cannot grammatically fill.}
+
+			\begin{figure}[htb!]
+			\centering
+			\addvbuffer[12pt 8pt]{\includegraphics[width=0.75\textwidth]{../images/interpersonalarg.png}}
+			\caption{Trajectories of risk within each Mood component}
+			\label{fig:interpersonalarg}
+			\end{figure}
+
+			\begin{figure}[htb!]
+			\centering
+			\addvbuffer[12pt 8pt]{\includegraphics[width=0.75\textwidth]{../images/reladj.png}}
+			\caption{Frequency of risk words for each Mood component as percentage of all parsed data}
+			\label{fig:reladj}
+			\end{figure}
+
+			The second thing we can use dependency output for is identifying the functional roles of risk words. This is more accurate than using the dependency ranking, but creates a very long list of functional roles. Of key interest, however, are risk words at the head of each major component of the Mood system---Subject, Predicator, Complement and Adjunct (risk cannot grammatically occur as a Finite, so it is excluded here). From Figure \ref{fig:interpersonalarg}, we can see that risk is shifting from Subject and Predicator to Complement and Adjunct roles. By providing each role with a relative weight, we can plot arguability as a single decreasing trend line, showing the increased implicitness of risk within the language of the NYT.
+
+			%Using the full list of risk dependencies, we can also locate more specific constructions undergoing trajectory shift. Figure \ref{fig:salienttrajectories} shows that risk is increasingly instantiated within prepositional phrases (which are by their nature dependent on Participants and Processes), and decreasingly as a predicator. From this view too, risk words are increasingly implicit within news language.
+
+	\section{Risk words and proper nouns}
+
+                We searched for proper noun groups in parse trees containing a risk word. This is a departure from many of our earlier queries, as here we are looking only at which entities co-occur with risk language, rather than determining how risk words and non-risk words relate to other another lexicogrammatically.
+
+                The result of this query was n different proper noun groups. We took the 200 most common results, and merged any that denoted the same entity: \emph{F.D.A.\slash Food and Drug Administration}, or \emph{Federal Reserve and Fed}.
+
+                We then grouped results into thematic categories:
+
+                \begin{enumerate}
+                    \item People
+                    \item US locations
+                    \item Nations
+                    \item Geopolitical entities
+                    \item Companies
+                    \item Organisations
+                    \item Things
+                \end{enumerate}
+
+                The results were then plotted.
+
+                A number of historical events were easily recognisable within the peaks and troughs of these charts.
+
+                Presidents and their rivals come and go
+
+                Though Bushes and Clintons are conflated, we can still reasonably infer which was being spoken about at which. Doubt can be eliminated by concordancing.
+
+                
+
+
+
+
+
+
+
+
+
+		%\begin{figure}
+			%\centering
+			%\includegraphics[width=0.75\textwidth]{../images/behaveother.png}
+			%\caption{Be, have and other predicators of risk as a direct object}
+			%\label{fig:bahaveother}
+			%\end{figure}
+
+
+		%risk as nominal modifier: '__ < (/NN.?/ < /(?i).?\brisk.?/ > (NP !> PP !<<# /(?i).?\brisk.?/))'
+		%risk as nominal head: '/NN.?/ < /(?i).?\brisk.?/ >># (NP !> PP)
+		%risk as nominal modifier: '__ < (/NN.?/ < /(?i).?\brisk.?/ > (NP > PP !<<# /(?i).?\brisk.?/))'
+		%risk as nominal head: '/NN.?/ < /(?i).?\brisk.?/ >># (NP > PP)
+		
+
+
+%\bibliography{../references/libwin}
+
+
+
+
+
+
+% We were also interested in the distribution of proper noun groups (e.g. \emph{Mr Bush}, \emph{White House}, \emph{RSPCA}) that occurred in clauses containg a risk word.
+

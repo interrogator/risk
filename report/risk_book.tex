@@ -1,0 +1,284 @@
+\documentclass{report}
+	\usepackage{blindtext}
+	%\addtokomafont{disposition}{\rmfamily}
+	\usepackage[T1]{fontenc}
+	\usepackage[a4paper]{geometry}
+	\usepackage{comment}
+	\usepackage{fullpage}
+	\usepackage[doublespacing]{setspace}
+	\usepackage{enotez}
+	%\usepackage[singlelinecheck=off]{caption}
+	\usepackage{url}
+	\usepackage{verbatimbox}
+	\usepackage{listings}
+	\usepackage{todonotes}
+	\usepackage[raggedright]{titlesec}
+	\titlelabel{\thetitle.\quad} % dot after section number
+	\usepackage{array,multirow,graphicx}
+	\usepackage{multicol}
+	\usepackage[hidelinks]{hyperref}
+	\usepackage{tocloft} 
+	\usepackage{titlesec}
+	\usepackage[english]{babel}
+	\usepackage{graphicx}
+	\usepackage{enumitem}
+	\usepackage[section]{placeins}
+	\makeatletter
+	\AtBeginDocument{%
+	\expandafter\renewcommand\expandafter\section\expandafter{%
+	\expandafter\@fb@secFB\section
+	}%
+	}
+	\makeatother
+	\usepackage[notocbib]{apacite}
+	\setcounter{tocdepth}{4}
+	\usepackage{tabularx}
+	\renewcommand\thesection{\arabic{section}}
+	\raggedbottom
+	\newcolumntype{L}[1]{>{\hsize=#1\hsize\raggedright\arraybackslash}X}%
+	\newcolumntype{R}[1]{>{\hsize=#1\hsize\raggedleft\arraybackslash}X}%
+	\newcolumntype{C}[2]{>{\hsize=#1\hsize\columncolor{#2}\centering\arraybackslash}X}%
+	\renewcommand{\APACrefatitle}[2]{#1}
+	\renewcommand{\APACrefbtitle}[2]{#1}
+	\renewcommand{\APACrefbtitle}[2]{\Bem{#1}}
+	\renewcommand{\APACrefaetitle}[2]{[#2]}
+	\renewcommand{\APACrefbetitle}[2]{[#2]}
+	\newcommand{\citepos}[1]{\citeauthor{#1}'s \citeyear{#1}}
+	 % this one is important for italics and stuff. 
+	%from memory another may be needed. you mess with a b and c, and the 1 and 2 ... it can be done
+	%\title{\emph{I am not my bipolar}: a corpus-driven discourse analysis of an online support group}
+	\title{Discourse-semantics of risk in the \emph{New York Times}, 1963--2014: \\ a corpus linguistic approach}
+	\author{
+	Jens Zinn\\
+	\texttt{jzinn@unimelb.edu.au}
+	\and
+	Daniel McDonald\\
+	\texttt{mcdonaldd@unimelb.edu.au}\\
+	%\multicolumn{1}{p{.7\textwidth}}{\centering\emph{University of Melbourne, Australia}}
+	}
+
+	\date{University of Melbourne, Australia\\
+	~\\
+	\today}
+	\begin{document}
+		
+	\hyphenation{under-lying language forums socia-bility dis-cur-sive pred-icator conc-ord-ancing Lee-uwen object-ivity lexico-grammar lexico-gramm-atical meta-function}
+
+	\renewcommand{\abstractname}{Summary}
+
+	\maketitle
+
+\begin{abstract}
+
+	\noindent   In this report, we detail an investigation of risk words in the New York Times between 1963 and mid-2014. The investigation involves the creation of an annotated corpus of over 150,000 risk tokens and their co-text. Purpose-built functions for manipulating this dataset and visualising results were created and used to investigate the corpus according to a systemic-functional conceptualisation of the transitivity system.
+
+             Following the corpus interrogation, we attempt to use functional linguistics and sociological risk theory in tandem to analyse the findings. First, SFL is used to link lexicogrammatical phenomena to discourse-semantic meaning of the texts. Longitudinal changes in risk language are then mapped to key events, as well as broader social movements.
+
+	\end{abstract}
+	\cleardoublepage
+	\pagenumbering{roman}
+	%\setlength{\cftbeforetoctitleskip}{-3em}
+	\singlespacing
+	\tableofcontents
+	\onehalfspacing
+	\cleardoublepage
+	\pagenumbering{arabic}
+
+% \include{chapters/chapter_01} % Introduction
+
+% \include{chapters/chapter_02} % Sociological conceptualisation of risk
+
+% \include{chapters/chapter_03} % Limitations in sociological literature
+
+\include{chapters/chapter_04} % Case study
+
+\include{chapters/chapter_05} % Methodology
+
+\include{chapters/chapter_06} % Findings: annual
+
+\include{chapters/chapter_07} % economics, health, politics
+
+\include{chapters/chapter_08} % discourse semantics in NYT
+
+\include{chapters/chapter_09} % Limitations
+
+% \include{chapters/chapter_10} % research agenda, conclusions
+
+%end matter
+
+	\cleardoublepage
+	\singlespacing
+	%\footnotesize
+	\printendnotes
+	\cleardoublepage
+	\singlespacing
+	\bibliographystyle{apacite}
+	\bibliography{../references/libwin.bib}
+	\cleardoublepage
+
+	\end{document}
+
+\chapter*{Appendix A: search queries} \doublespacing
+
+	Search queries take the form of modifed Tregex queries, which use Java 5 regular expressions. These queries are based on a phrase structure grammar,
+
+	They utilise the Penn Treebank tagset.
+
+	We were interested in either the different words matching a query, or simply the total count.
+
+	These search queries were created through experimentation and trial and error. 
+
+	In most cases, it woud be possible to refine or elaborate the search queries to include/filter out undesirable results. When searching for processes of clauses in which risk was the object argument, we excluded existential processes.
+	As explained in Section N, these search queries were 
+
+	Within double quotation marks are terms that relied on an additional list of process types. `MaterialProcess', for example, would include any material process in the list of n.
+
+	The approach is not perfect, due to metaphorical realisations of processes. A better approach would be to also take into account the kinds of arguments of each process in order to determine the process type, but this was beyond our scope. Lists were obtained from Mick O'Donnell.
+
+	\onehalfspacing
+
+\subsection*{Risk as participant}
+
+\begin{lstlisting}[breaklines]
+/(?i).?\brisk.?/ > (/NN.?/ >># (NP !> PP !> (VP <<# (/VB.?/ < /(?i)\b(take|takes|taking|took|taken|run|runs|running|ran)\b/)))) | >># (ADJP > VP)
+
+\end{lstlisting}
+
+\subsection*{Risk as process}
+
+\begin{lstlisting}[breaklines]
+VP <<# (/VB.?/ < /(?i)\b(take|takes|taking|took|taken|run|runs|running|ran)\b/) < (NP <<# (/NN.?/ < /(?i).?\brisk.?/)) | <<# (/VB.?/ < /(?i).?\brisk.?/)
+
+\end{lstlisting}
+
+\subsection*{Risk as modifier/circumstance}
+
+\begin{lstlisting}[breaklines]
+/(?i).?\brisk.?/ !> (/NN.?/ >># (NP !> PP !> (VP <<# (/VB.?/ < /(?i)\b(take|takes|taking|took|taken|run|runs|running|ran)\b/)))) & !>># (ADJP > VP) & !> (/VB.?/ >># VP) & !> (/NN.?/ >># (NP > (VP <<# (/VB.?/ < /(?i)\b(take|takes|taking|took|taken|run|runs|running|ran)\b/))))
+
+\end{lstlisting}
+
+
+		\subsection*{Participant risk: subject role}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+		\subsection*{Participant risk: object role}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+		\subsection*{What modifies participant risk?}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+		\subsection*{Participant risk: what processes is risk the subject of?}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+		\subsection*{Participant risk: what processes is risk the object of?}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+		\subsection*{Process risk: who risks, runs risks and takes risks?}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+		\subsection*{Process risk: what things are risked/potentially harmed?}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+		\subsection*{Process risk: running, taking and predicator risk}
+
+	\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+
+		\subsection*{Process risk: modalisation and modulation}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+		\subsection*{Modifier risk: lexical diversity}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+		\subsection*{Modifier risk: lexical diversity}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+		\subsection*{Modifier risk: `at risk' as prepositional phrase}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+		\subsection*{Modifier risk: `at-risk' as pre-head modifier}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}		
+
+
+
+	%put queries inside \url{ to line break them and allow their escape characters}
+
+		%risk as nominal modifier: '__ < (/NN.?/ < /(?i).?\brisk.?/ > (NP !> PP !<<# /(?i).?\brisk.?/))'
+		%risk as nominal head: '/NN.?/ < /(?i).?\brisk.?/ >># (NP !> PP)
+		%risk as nominal modifier: '__ < (/NN.?/ < /(?i).?\brisk.?/ > (NP > PP !<<# /(?i).?\brisk.?/))'
+		%risk as nominal head: '/NN.?/ < /(?i).?\brisk.?/ >># (NP > PP)
+
+
+	\subsection*{Economic, health and political risk}
+	\label{sect:app-echepo}
+
+		\begin{lstlisting}[breaklines]
+QUERY HERE
+
+\end{lstlisting}
+
+
+	\end{document}
+
+
+
+
+some risk notes:
+
+to do:
+
+	fix up mood to fudge predicator
+	fix up corpus stats to reflect new corpus
+	beef up arguments about sociological stuff
