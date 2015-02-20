@@ -12,3 +12,4 @@ Our *IPython Notebook* presents the code used in our analysis side-by-side with 
 * Parse tree visualisation
 * Code used to build corpora
 * Installation info
+* Dedicated cloud host for data and IPython notebook (so that you can play with the data without installing anything!)
