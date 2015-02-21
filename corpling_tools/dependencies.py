@@ -20,7 +20,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     Note: subcorpora directory names must be numbers only.
     """
     import os
-    from bs4 import BeautifulSoup
+    from bs4 import BeautifulSoup, SoupStrainer
     import collections
     import time
     from time import localtime, strftime
@@ -30,7 +30,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     import codecs
     from string import digits
     import operator
-    from IPython.display import display, clear_output
+    import glob
     # define option regexes
     if lemmatise:
         import nltk
@@ -111,12 +111,11 @@ def dependencies(path, options, query, lemmatise = False, test = False,
         def rship(soup):
             """"print functional role"""
             result = []
-            for bit in soup:
-                for dep in bit.find_all('dep'):
-                    for dependent in dep.find_all('dependent'):
-                        word = dependent.get_text()
-                        if re.match(regex, word):
-                           result.append(dep.attrs.get('type'))
+            for dep in soup.find_all('dep'):
+                for dependent in dep.find_all('dependent'):
+                    word = dependent.get_text()
+                    if re.match(regex, word):
+                        result.append(dep.attrs.get('type'))
             return result
 
         def depnum(soup):
@@ -129,29 +128,29 @@ def dependencies(path, options, query, lemmatise = False, test = False,
                         # get just the number
                         result.append(dependent.attrs.get('idx'))
             return result
-
+        coll_dep_regex = re.compile('collapsed-ccprocessed-dependencies')
         for d in sorted_dirs:
             yearfinder = re.findall(r'[0-9]+', d)
             time = strftime("%H:%M:%S", localtime())
             print time + ": Doing " + yearfinder[0] + " ... "
             files = os.listdir(os.path.join(path, d))
-            xml_to_search = []
-            for filename in files:
-                data = open(os.path.join(path, d, filename)).read()
-                soup = BeautifulSoup(data)
-                for dep_elem in soup.find_all('dependencies'):
-                    deptype = dep_elem.attrs.get('type')
-                # get just collapsed
-                    if deptype == 'collapsed-ccprocessed-dependencies':
-                        xml_to_search.append(dep_elem)
-                # we now have a huge list of xml items
-            if options == 'govrole':
-                result = govrole(xml_to_search)
-            if options == 'rship':
-                result = rship(xml_to_search)
-            if options == 'depnum':
-                result == depnum(xml_to_search)
-
+            time = strftime("%H:%M:%S", localtime())
+            print time + ': Concatenating ... '
+            read_files = glob.glob(os.path.join(path, d, "*.xml"))
+            result = []
+            for f in read_files:
+                with open(f, "rb") as text:
+                    data = text.read()
+                    just_good_deps = SoupStrainer('dependencies', type=coll_dep_regex) # was originally re.compile...
+                    soup = BeautifulSoup(data, parse_only=just_good_deps)
+                    if options == 'govrole':
+                        result_from_file = govrole(soup)
+                    if options == 'rship':
+                       result_from_file = rship(soup)
+                    if options == 'depnum':
+                      result_from_file = depnum(soup)
+                for entry in result_from_file:
+                    result.append(entry)
             # back to the old interrogator now:
             # get total:
             totalcount = [int(d), len(result)]
@@ -290,5 +289,4 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
     query_options = [query, options] 
     output = outputnames(query_options, final, annual_totals)
-    clear_output()
     return output

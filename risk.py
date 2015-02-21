@@ -48,6 +48,17 @@ main_path = 'nyt/years' # corpus of every article, with annual
 # subcorpora folders
 
 # <headingcell level=3>
+# The report
+
+# <markdowncell>
+# The focus of this notebook is our methodology and findings. These project is contextualised, and the findings are elaborated upon, in our written report of the project.
+
+# Depending on your browser's capabilities/settings, the following will download or display our report:
+
+# <codecell>
+report_display()
+
+# <headingcell level=3>
 # The data
 
 # <markdowncell>
@@ -389,7 +400,62 @@ conc('nyt/years/2005', r'/JJ.?/ < /(?i).?\brisk.?/ > (NP <<# /(?i)invest.?/)',
 # !rm 'concordances.txt'
 
 # <markdowncell>
-# Now you're familiar with the corpus and functions. Time to explore!
+# Now you're familiar with the corpus and functions. Before we start our corpus interrogation, we'll also present a *very* brief explanation of *Systemic Functional Linguistics*---the theory of language that underlies our analytical approach.
+
+
+# <headingcell level=3>
+# Functional linguistics
+
+# <markdowncell>
+# *Functional linguistics* is a research area concerned with how *realised language* (lexis and grammar) work to achieve meaningful social functions. One functional linguistic theory is *Systemic Functional Linguistics*, developed by Michael Halliday.
+
+# <codecell>
+from IPython.display import HTML
+HTML('<iframe src=http://en.mobile.wikipedia.org/wiki/Michael_Halliday?useformat=mobile width=700 height=350></iframe>')
+
+# Central to the theory is a division between **experiential meanings** and **interpersonal meanings**.
+
+# * Experiential meanings communicate what happened to whom, under what circumstances.
+# * Interpersonal meanings negotiate identities and role relationships between speakers 
+
+# Halliday argues that these two kinds of meaning are realised **simultaneously** through different parts of English grammar.
+
+# * Experiential meanings are made through **transitivity choices**.
+# * Interpersonal meanings are made through **mood choices**
+
+# Here's one visualisation of it. We're concerned with the two left-hand columns. Each level is an abstraction of the one below it.
+
+# <br>
+# <img style="float:left" src="https://raw.githubusercontent.com/interrogator/sfl_corpling/master/cmc-2014/images/egginsfixed.jpg" />
+# <br>
+
+# <markdowncell>
+# Transitivity choices include fitting together configurations of:
+
+# * Participants (*a man, green bikes*)
+# * Processes (*sleep, has always been, is considering*)
+# * Circumstances (*on the weekend*, *in Australia*)
+
+# Mood features of a language include:
+
+# * Mood types (*declarative, interrogative, imperative*)
+# * Modality (*would, can, might*)
+# * Lexical density---the number of words per clause, the number of content to non-content words, etc.
+
+# Lexical density is usually a good indicator of the general tone of texts. The language of academia, for example, often has a huge number of nouns to verbs. We can approximate an academic tone simply by making nominally dense clauses: 
+
+#       The consideration of interest is the potential for a participant of a certain demographic to be in Group A or Group B*.
+
+# Notice how not only are there many nouns (*consideration*, *interest*, *potential*, etc.), but that the verbs are very simple (*is*, *to be*).
+
+# In comparison, informal speech is characterised by smaller clauses, and thus more verbs.
+
+#       A: Did you feel like dropping by?
+#       B: I thought I did, but now I don't think I want to
+
+# Here, we have only a few, simple nouns (*you*, *I*), with more expressive verbs (*feel*, *dropping by*, *think*, *want*)
+
+# > **Note**: SFL argues that through *grammatical metaphor*, one linguistic feature can stand in for another. *Would you please shut the door?* is an interrogative, but it functions as a command. *invitation* is a nominalisation of a process, *invite*. We don't have time to deal with these kinds of realisations, unfortunately.
 
 # <headingcell level=2>
 # Functional roles of *risk* in the NYT

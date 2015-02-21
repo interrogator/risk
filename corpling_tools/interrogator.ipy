@@ -101,7 +101,6 @@ def interrogator(path, options, query, lemmatise = False, test = False,
             yearfinder = re.findall(r'[0-9]+', d)
             time = strftime("%H:%M:%S", localtime())
             print time + ": Doing " + yearfinder[0] + " ...\r",
-            print time + ": Doing " + yearfinder[0] + " ...\r",
             tregex_command = 'sh ./tregex.sh -o ' + options + ' \'' + query + '\' ' + os.path.join(path,d) + ' 2>/dev/null | grep -vP \'^\s*$\''
             # dependency parsing results go here
             result = !$tregex_command
@@ -110,8 +109,6 @@ def interrogator(path, options, query, lemmatise = False, test = False,
             annual_totals.append(totalcount)
             # process results
             lowercase_result = []
-            time = strftime("%H:%M:%S", localtime())
-            print time + ": Doing " + yearfinder[0] + " ..."
             for word in result:
                 try:
                     word = unicode(word, 'utf-8')
