@@ -6,10 +6,18 @@ Theoretically, our interest is in empirically examining sociological claims abou
 
 Our *IPython Notebook* presents the code used in our analysis side-by-side with our results. It can be viewed via *nbviewer* [here](http://nbviewer.ipython.org/github/interrogator/risk/blob/master/risk.ipynb). Our report, which contextualises and elaborates on these results, is available [as PDF](https://raw.githubusercontent.com/interrogator/risk/master/report/risk_report.pdf) and (bleeding-edge) [.tex source](https://github.com/interrogator/risk/blob/master/report/risk_report.tex). If you want to interrogate the corpus yourself, you are advised to clone the repository, which includes the parse trees, and use the provided functions within the IPython Notebook.
 
+## Installation:
+
+On OSX, *Anaconda* should contain all the necessary dependencies (*Python*, *IPython*, *matplotlib*, etc. For the dependency parsing, I was getting segfaults until upgrading lxml to version 3.4.2 with:
+
+      sudo pip install lxml --upgrade
+
+though you could probably try setting *Beautiful Soup* to use a different parser.
+
 ## Forthcoming:
 
-* Support for dependency parsing
+* Documentation for dependency parsing
 * Parse tree visualisation
 * Code used to build corpora
 * Installation info
-* Dedicated cloud host for data and IPython notebook (so that you can play with the data without installing anything!)
+* Dedicated cloud host for data and IPython Notebook (so that you can play with the data without installing anything!)

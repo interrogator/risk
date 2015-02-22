@@ -1,11 +1,11 @@
-#!/usr/local/bin/ipython
+#!/usr/bin/python
 
 #   Interrogating parsed corpora and plotting the results: dependencies
 #   for ResBaz NLTK stream
 #   Author: Daniel McDonald
 
 def dependencies(path, options, query, lemmatise = False, test = False, 
-    titlefilter = False, lemmatag = False, deps = False):
+    titlefilter = False, lemmatag = False):
     """Uses Tregex to make list of frequency counts in corpora.
     
     Interrogator investigates sets of Stanford dependencies for complex frequency information. 
@@ -31,6 +31,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     from string import digits
     import operator
     import glob
+    import gc
     # define option regexes
     if lemmatise:
         import nltk
@@ -84,7 +85,6 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     annual_totals = [u'Totals']
     # search the corpus    
 
-
     def dep_search():
         """Searching via dependencies"""
         regex = re.compile(query)
@@ -92,20 +92,62 @@ def dependencies(path, options, query, lemmatise = False, test = False,
         def govrole(soup):
             """print rship:gov"""
             result = []
-            for dep_elem in soup.find_all('dependencies'):
-                deptype = dep_elem.attrs.get('type')
-            # get just collapsed
-                if deptype == 'collapsed-ccprocessed-dependencies':
-                    for dep in dep_elem.find_all('dep'):
-                        for dependent in dep.find_all('dependent'):
-                            word = dependent.get_text()
-                            if re.match(regex, word):
-                                role = dep.attrs.get('type')
-                                # the below is a redundant loop
-                                for gov in dep.find_all('governor'):
-                                    govword = gov.get_text()
-                                colsep = role + ':' + govword
-                                result.append(colsep)
+            for dep in soup.find_all('dep'):
+                for dependent in dep.find_all('dependent'):
+                    word = dependent.get_text()
+                    if re.match(regex, word):
+                        role = dep.attrs.get('type')
+                        # the below is a redundant loop
+                        for gov in dep.find_all('governor'):
+                            govword = gov.get_text()
+                            if lemmatise is True:
+                                tag = False
+                                if role == 'amod':
+                                    tag = 'n'
+                                if role == 'nn':
+                                    tag = 'n'
+                                if role == 'rcmod':
+                                    tag = 'n'
+                                if role == 'dobj':
+                                    tag = 'v'
+                                if role == 'nsubj':
+                                    tag = 'v'
+                                if role == 'nsubjpass':
+                                    tag = 'v'
+                                if role == 'advmod':
+                                    tag = 'v'
+                                if role == 'iobj':
+                                    tag = 'v'
+                                if role == 'acomp':
+                                    tag = 'v'
+                                if role == 'cop':
+                                    tag = 'v'
+                                if role == 'advmod':
+                                    tag = 'v'
+                                if role == 'iobj':
+                                    tag = 'v'
+                                if role == 'xcomp':
+                                    tag = 'v'
+                                if role == 'ccomp':
+                                    tag = 'v'
+                                if 'prep_' in role:
+                                   tag = v
+                                if govword == u'\'s':
+                                    govword = u'is'
+                                if govword == u'\'re':
+                                   govword = u'are'
+                                if govword == u'\'m':
+                                   govword = u'am'
+                                        #if govword == u'\'d':
+                                            #govword = u'had or would?'
+                                        #if govword == u'\'ll':
+                                            #govword = u'will or shall?'
+                                if govword == u'n\'t':
+                                    govword = u'not'
+                                if tag:    
+                                    govword = lmtzr.lemmatize(govword, tag)
+                            colsep = role + ':' + govword
+                            result.append(colsep)
             return result
 
         def rship(soup):
@@ -128,18 +170,23 @@ def dependencies(path, options, query, lemmatise = False, test = False,
                         # get just the number
                         result.append(dependent.attrs.get('idx'))
             return result
-        coll_dep_regex = re.compile('collapsed-ccprocessed-dependencies')
+        coll_dep_regex = re.compile("basic-dependencies")
         for d in sorted_dirs:
             yearfinder = re.findall(r'[0-9]+', d)
             time = strftime("%H:%M:%S", localtime())
-            print time + ": Doing " + yearfinder[0] + " ... "
+            print time + ": Doing " + yearfinder[0] + " ...                                      "
             files = os.listdir(os.path.join(path, d))
-            time = strftime("%H:%M:%S", localtime())
-            print time + ': Concatenating ... '
-            read_files = glob.glob(os.path.join(path, d, "*.xml"))
+            #read_files = glob.glob(os.path.join(path, d, "*.xml"))
             result = []
-            for f in read_files:
-                with open(f, "rb") as text:
+            #for f in read_files:
+            for f in files:
+                num = files.index(f) + 1
+                length = len(files)
+                perc = num*100.0/length
+                toprint = "Doing file " + str(num) + ": " + str(perc)[:5] + " per cent complete ... \r"
+                sys.stdout.write(toprint)
+                sys.stdout.flush()
+                with open(os.path.join(path, d, f), "rb") as text:
                     data = text.read()
                     just_good_deps = SoupStrainer('dependencies', type=coll_dep_regex) # was originally re.compile...
                     soup = BeautifulSoup(data, parse_only=just_good_deps)
@@ -151,6 +198,10 @@ def dependencies(path, options, query, lemmatise = False, test = False,
                       result_from_file = depnum(soup)
                 for entry in result_from_file:
                     result.append(entry)
+                soup.decompose()
+                soup = None
+                data = None
+                gc.collect()
             # back to the old interrogator now:
             # get total:
             totalcount = [int(d), len(result)]
@@ -158,26 +209,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
             # process results
             lowercase_result = []
             for word in result: # will have to make lemmatiser work for govrole...
-                try:
-                    word = unicode(word, 'utf-8')
-                except TypeError:
-                    raise ValueError("Some kind of encoding problem.")
-                if lemmatise is True:
-                    # some post-hoc fixing of tokens for lemmatiser ...
-                    if word == u'\'s':
-                        word = u'is'
-                    if word == u'\'re':
-                        word = u'are'
-                    if word == u'\'m':
-                        word = u'am'
-                    #if word == u'\'d':
-                        #word = u'is'
-                    #if word == u'\'ll':
-                        #word = u'is'
-                    if word == u'n\'t':
-                        word = u'not'
-                    word = lmtzr.lemmatize(word, tag)
-                word = re.sub(r"^[^A-Za-z\(\']*", "", word) # this might be too strict
+                word = re.sub(r"^[^A-Za-z0-9\(\']*", "", word) # this might be too strict
                 lowered = word.lower()
                 if titlefilter is True:
                     lowered = re.sub(r"^(admiral|archbishop|alan|merrill|sarah|queen|king|sen|chancellor|prime minister|cardinal|bishop|father|hon|rev|reverend|pope|the|sir|doctor|professor|president|senator|congressman|congresswoman|mr|ms|mrs|miss|dr|bill|hillary|hillary rodham|saddam|osama|ayatollah|george|george w|mitt|malcolm|barack|ronald|john|john f|william|al|bob)\b\.* *", "", lowered)
@@ -290,3 +322,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     query_options = [query, options] 
     output = outputnames(query_options, final, annual_totals)
     return output
+
+# test:
+#deps = dependencies('data/basic-dep/years', 'rship', r'(?i).*?\brisk')
+#print deps.results

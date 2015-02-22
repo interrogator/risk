@@ -24,17 +24,17 @@ def get_dependencies(path, newpath):
                 for dep_elem in soup.find_all('dependencies'):
                     deptype = dep_elem.attrs.get('type')
                     # get just collapsed
-                    if deptype == 'collapsed-ccprocessed-dependencies':
+                    if deptype == 'basic-dependencies':
                         bits_to_keep.append(dep_elem)
-            with open(os.path.join(newpath, d, 'dependencies.xml'), "a") as newfile:
+            with open(os.path.join(newpath, d, f), "w") as newfile:
                 for bit in bits_to_keep:
                     newfile.write(str(bit))        
 
-print 'Doing politics ... '
-get_dependencies("../data/nyt/politics", "../data/only_dep/politics")
-print 'Doing health ... '
-get_dependencies("../data/nyt/health", "../data/only_dep/health")
 print 'Doing years ... '
-get_dependencies("../data/nyt/years", "../data/only_dep/years")
+get_dependencies("data/nyt/years", "data/basic-dep/years")
+print 'Doing politics ... '
+get_dependencies("data/nyt/politics", "data/basic-dep/politics")
+print 'Doing health ... '
+get_dependencies("data/nyt/health", "data/basic-dep/health")
 print 'Doing economics ... '
-get_dependencies("../data/nyt/economics", "../data/only_dep/economics")
+get_dependencies("data/nyt/economics", "data/basic-dep/economics")
