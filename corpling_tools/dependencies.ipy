@@ -1,21 +1,28 @@
-#!/usr/bin/ipython
+#!/usr/bin/python
 
 #   Interrogating parsed corpora and plotting the results: dependencies
 #   for ResBaz NLTK stream
 #   Author: Daniel McDonald
 
 def dependencies(path, options, query, lemmatise = False, test = False, 
-    titlefilter = False, lemmatag = False):
+    titlefilter = False, lemmatag = False, dep_type = 'basic-dependencies'):
     """Uses Tregex to make list of frequency counts in corpora.
     
     Interrogator investigates sets of Stanford dependencies for complex frequency information. 
 
     path: path to corpus as string
-    options:
-    query: regex to match
+    options: 
+        'rship': get functional label
+        'depnum': get index of item within the clause
+        'govrole': get role and governor, colon-separated
+        query: regex to match
     Lemmatise: lemmatise results
     test: for development, go through only three subcorpora
     titlefilter: strip 'mr, mrs, dr' etc from proper noun strings
+    dep_type: specify type of dependencies to search:
+                    'basic-dependencies' * best lemmatisation
+                    'collapsed-dependencies'
+                    'collapsed-ccprocessed-dependencies'
 
     Note: subcorpora directory names must be numbers only.
     """
@@ -32,6 +39,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     import operator
     import glob
     import gc
+    from IPython.display import display, clear_output
     # define option regexes
     if lemmatise:
         import nltk
@@ -170,7 +178,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
                         # get just the number
                         result.append(dependent.attrs.get('idx'))
             return result
-        coll_dep_regex = re.compile("basic-dependencies")
+        coll_dep_regex = re.compile(dep_type)
         for d in sorted_dirs:
             yearfinder = re.findall(r'[0-9]+', d)
             time = strftime("%H:%M:%S", localtime())
@@ -183,7 +191,6 @@ def dependencies(path, options, query, lemmatise = False, test = False,
                 num = files.index(f) + 1
                 length = len(files)
                 perc = num*100.0/length
-                # the printing info below probably won't work in IPython
                 #toprint = "Doing file " + str(num) + ": " + str(perc)[:5] + " per cent complete ... \r"
                 #sys.stdout.write(toprint)
                 #sys.stdout.flush()
@@ -322,5 +329,9 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
     query_options = [query, options] 
     output = outputnames(query_options, final, annual_totals)
+    clear_output()
     return output
-    
+
+# test:
+#deps = dependencies('data/basic-dep/years', 'rship', r'(?i).*?\brisk')
+#print deps.results

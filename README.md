@@ -14,6 +14,13 @@ On OSX, *Anaconda* should contain all the necessary dependencies (*Python*, *IPy
 
 though you could probably try setting *Beautiful Soup* to use a different parser.
 
+## IPython Notebook usability
+
+When running the Notebook locally, a couple of IPython extensions come in very handy:
+
+* First, you can use [this](https://github.com/minrk/ipython_extensions) to generate a floating table of contents that makes the Notebook much easier to navigate.
+* Second, given that some of the code can take a while to process, it can be handy to have [browser-based notifications](https://github.com/sjpfenninger/ipython-extensions) when the kernel is no longer busy.
+
 ## Forthcoming:
 
 * Documentation for dependency parsing

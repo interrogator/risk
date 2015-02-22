@@ -5,7 +5,7 @@
 #   Author: Daniel McDonald
 
 def dependencies(path, options, query, lemmatise = False, test = False, 
-    titlefilter = False, lemmatag = False):
+    titlefilter = False, lemmatag = False, dep_type = 'basic-dependencies'):
     """Uses Tregex to make list of frequency counts in corpora.
     
     Interrogator investigates sets of Stanford dependencies for complex frequency information. 
@@ -16,6 +16,10 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     Lemmatise: lemmatise results
     test: for development, go through only three subcorpora
     titlefilter: strip 'mr, mrs, dr' etc from proper noun strings
+    dep_type: specify type of dependencies to search:
+                    'basic-dependencies' * best lemmatisation
+                    'collapsed-dependencies'
+                    'collapsed-ccprocessed-dependencies'
 
     Note: subcorpora directory names must be numbers only.
     """
@@ -170,7 +174,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
                         # get just the number
                         result.append(dependent.attrs.get('idx'))
             return result
-        coll_dep_regex = re.compile("basic-dependencies")
+        coll_dep_regex = re.compile(dep_type)
         for d in sorted_dirs:
             yearfinder = re.findall(r'[0-9]+', d)
             time = strftime("%H:%M:%S", localtime())

@@ -1,11 +1,19 @@
 #!/usr/local/bin/python
 
-#   Building scripts: make corpus of just collapsed dependencies
-#   for ResBaz NLTK stream
+#   Building scripts: make corpus of just 
+#   basic dependencies from Stanford CoreNLP xml files
 #   Author: Daniel McDonald
 
-def get_dependencies(path, newpath):
-    """get just the collapsed dep xml from a corpus with annual subcorpora"""
+def get_dependencies(path, newpath, dep_type = 'basic-dependencies'):
+    """Get just one kind of dependencies from a corpus with annual subcorpora
+
+    path: path to subcopora as string
+    newpath: path for new corpus
+    dep_type: specify type of dependencies:
+                    'basic-dependencies'
+                    'collapsed-dependencies'
+                    'collapsed-ccprocessed-dependencies'
+                    '"""
     import os
     from bs4 import BeautifulSoup
     sorted_dirs = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path,d))]
@@ -23,18 +31,19 @@ def get_dependencies(path, newpath):
                 soup = BeautifulSoup(data)
                 for dep_elem in soup.find_all('dependencies'):
                     deptype = dep_elem.attrs.get('type')
-                    # get just collapsed
-                    if deptype == 'basic-dependencies':
+                    # get just parts matching dep_type
+                    if deptype == dep_type:
                         bits_to_keep.append(dep_elem)
             with open(os.path.join(newpath, d, f), "w") as newfile:
                 for bit in bits_to_keep:
                     newfile.write(str(bit))        
 
-print 'Doing years ... '
-get_dependencies("data/nyt/years", "data/basic-dep/years")
-print 'Doing politics ... '
-get_dependencies("data/nyt/politics", "data/basic-dep/politics")
-print 'Doing health ... '
-get_dependencies("data/nyt/health", "data/basic-dep/health")
-print 'Doing economics ... '
-get_dependencies("data/nyt/economics", "data/basic-dep/economics")
+# running it:
+#print 'Doing years ... '
+#get_dependencies("data/nyt/years", "data/basic-dep/years")
+#print 'Doing politics ... '
+#get_dependencies("data/nyt/politics", "data/basic-dep/politics")
+#print 'Doing health ... '
+#get_dependencies("data/nyt/health", "data/basic-dep/health")
+#print 'Doing economics ... '
+#get_dependencies("data/nyt/economics", "data/basic-dep/economics")
