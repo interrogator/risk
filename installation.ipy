@@ -22,16 +22,19 @@
 # dit4c people without java:
 # ! sudo yum install java
 
-# Tregex
-!curl -O http://nlp.stanford.edu/software/stanford-tregex-2014-01-04.zip
-!unzip -f stanford-tregex-2014-01-04.zip stanford-tregex-2014-01-04/stanford-tregex.jar stanford-tregex-2014-01-04/tregex.sh
+# Tregex (needed parts included in repo)
+# !curl -O http://nlp.stanford.edu/software/stanford-tregex-2014-01-04.zip
+# !unzip -f stanford-tregex-2014-01-04.zip stanford-tregex-2014-01-04/stanford-tregex.jar stanford-tregex-2014-01-04/tregex.sh
 
 # nltk, numpy, matplotlib
-! sudo pip install ipython nltk numpy matplotlib
+! sudo pip install nltk numpy matplotlib
 
-# nyt data:
-! curl -O  https://github.com/interrogator/sfl_corpling/blob/master/data/nyt.tar.gz
-! tar -zxvf nyt.tar.gz
+# nyt tree data (included in repo):
+# mkdir data
+# ! curl -o data/nyt.tar.gz https://github.com/interrogator/sfl_corpling/blob/master/data/nyt.tar.gz
+! tar -zxvf data/nyt.tar.gz
+
+# note that dependency parses are not yet available
 
 # cleanup
-! rm get-pip.py stanford-tregex-2014-01-04.zip nyt.tar.gz
+! rm get-pip.py stanford-tregex-2014-01-04.zip data/nyt.tar.gz

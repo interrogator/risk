@@ -11,8 +11,11 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     Interrogator investigates sets of Stanford dependencies for complex frequency information. 
 
     path: path to corpus as string
-    options:
-    query: regex to match
+    options: 
+        'rship': get functional label
+        'depnum': get index of item within the clause
+        'govrole': get role and governor, colon-separated
+        query: regex to match
     Lemmatise: lemmatise results
     test: for development, go through only three subcorpora
     titlefilter: strip 'mr, mrs, dr' etc from proper noun strings

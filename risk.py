@@ -23,6 +23,7 @@
 # | **Function name** | Purpose                            | |
 # | ----------------- | ---------------------------------- | |
 # | *interrogator()*  | interrogate parsed corpora         | |
+# | *dependencies()*  | interrogate parsed corpora for dependency info (presented later)         | |
 # | *plotter()*       | visualise *interrogator()* results | |
 # | *quickview()*     | view *interrogator()* results      | |
 # | *tally()*       | get total frequencies for *interrogator()* results      | |
@@ -43,8 +44,7 @@ for func in [f for f in os.listdir('corpling_tools') if f.endswith(".ipy")]:
 # We should set two variables that are used repeatedly during the investigation. If you were using this interface for your own corpora, you would change 'nyt' to the path to your data.
 
 # <codecell>
-path = 'nyt' # path to corpora
-main_path = 'nyt/years' # corpus of every article, with annual 
+annual_trees = 'data/nyt/trees/years' # corpus of every article, with annual 
 # subcorpora folders
 
 # <headingcell level=3>
@@ -103,7 +103,7 @@ allwords_query = r'/[A-Za-z0-9]/ !< __'
 # We only need to count tokens, so we can use the **-C** option (it's often faster than getting lists of matching tokens). The cell below will run interrogator() over each annual subcorpus and count the number of matches for the query.
 
 # <codecell>
-allwords = interrogator(main_path, '-C', allwords_query) 
+allwords = interrogator(annual_trees, '-C', allwords_query) 
 
 # <markdowncell>
 # When the interrogation has finished, we can view our results:
@@ -146,7 +146,7 @@ plotter('Word counts in each subcorpus (projected)', allwords.totals, projection
 # our query:
 riskwords_query = r'__ < /(?i).?\brisk.?\b/' # any risk word and its word class/part of speech
 # get all risk words and their tags:
-riskwords = interrogator(main_path, '-o', riskwords_query)
+riskwords = interrogator(annual_trees, '-o', riskwords_query)
 
 # <markdowncell>
 # Even when do not use the -C flag, we can access the total number of matches as before:
@@ -505,7 +505,7 @@ query = (['Participant', r'/(?i).?\brisk.?/ > (/NN.?/ >># (NP !> PP !> (VP <<# (
             'take|takes|taking|took|taken|run|runs|running|ran|pose|poses|posed|posing)\b/))))'])
 results = []
 for entry in query:
-    result = interrogator(main_path, '-C', entry[1])
+    result = interrogator(annual_trees, '-C', entry[1])
     result.totals[0] = entry[0] # rename count
     results.append(result.totals)
 outputnames = collections.namedtuple('functional_role', ['query', 'results'])
@@ -541,7 +541,7 @@ plotter('Risk as participant, process and modifier', functional_role.results, sk
 
 # <codecell>
 query = r'/JJ.?/ > (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
-adj_modifiers = interrogator(main_path, '-t', query)
+adj_modifiers = interrogator(annual_trees, '-t', query)
 
 # <codecell>
 # Adjectives modifying nominal risk (lemmatised)
@@ -604,7 +604,7 @@ pprint.pprint(lines[:20])
 # <codecell>
 # Risk of (noun)
 query = r'/NN.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'
-risk_of = interrogator(main_path, '-t', query, lemmatise = True)
+risk_of = interrogator(annual_trees, '-t', query, lemmatise = True)
 
 # <codecell>
 plotter('Risk of (noun)', risk_of.results, fract_of = risk_of.totals)
@@ -640,7 +640,7 @@ query = (['Risk of heart attack', r'/NN.?/ < /(?i)attack.?/ $ '
           r'<<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'])
 results = []
 for entry in query:
-    result = interrogator(main_path, '-C', entry[1])
+    result = interrogator(annual_trees, '-C', entry[1])
     result.totals[0] = entry[0] # rename count
     results.append(result.totals)
 outputnames = collections.namedtuple('heart_terror', ['query', 'results'])
@@ -667,7 +667,7 @@ plotter('Risk of heart and terror* attack', heart_terror.results, skip63 = True)
 # <codecell>
 query = (r'/VB.?/ !< /(?i)(take|taking|takes|taken|took|run|running|runs|ran|put|putting|puts|pose|poses|posing|posed)/'
               r' > (VP ( < (NP <<# (/NN.?/ < /(?i).?\brisk.?/))) | >+(VP) (VP $ (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))')
-predicators = interrogator(main_path, '-t', query,
+predicators = interrogator(annual_trees, '-t', query,
     lemmatise = True)
 # subjectonly = r'./VB.?/ >># (VP >+(VP) (VP !> VP $ (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'
 # objectonly  =  (r'/VB.?/ >># (VP !< (/VB.?/ < /(?i)(take|taking|takes|taken|took|run|running'
@@ -714,7 +714,7 @@ totalquery = (r'VP (<<# (/VB.?/ < /(?i).?\brisk.?\b/) | <<# (/VB.?/ < /(?i)\b(ta
     ' < (NP <<# /(?i).?\brisk.?/)) | <<# (/VB.?/ < /(?i)\b(pose|poses|posed|posing)+\b/) < (NP <<# /(?i).?\brisk.?\b/))')
 results = []
 for entry in query:
-    result = interrogator(main_path, '-C', entry[1])
+    result = interrogator(annual_trees, '-C', entry[1])
     result.totals[0] = entry[0] # rename count
     results.append(result.totals)
 outputnames = collections.namedtuple('processes', ['query', 'results'])
@@ -730,7 +730,7 @@ plotter('Risk processes', processes.results)
 # to risk losing/being/having etc
 
 query = r'VBG >># (VP > (S > (VP <<# (/VB.?/ < /(?i).?\brisk.?/))))'
-risk_verbing = interrogator(main_path, '-t', query)
+risk_verbing = interrogator(annual_trees, '-t', query)
 
 # <codecell>
 plotter('Process as risked thing', risk_verbing.results, 
@@ -743,7 +743,7 @@ plotter('Process as risked thing', risk_verbing.results,
 # <codecell>
 # Objects of risk processes
 query = r'/NN.?/ >># (NP > (VP <<# (/VB.?/ < /(?i).?\brisk.?/)))'
-risk_objects = interrogator(main_path, '-t', query, 
+risk_objects = interrogator(annual_trees, '-t', query, 
     lemmatise = True, titlefilter = False)
 
 # <codecell>
@@ -791,7 +791,7 @@ query = ([u'Adjectival modifier', r'/NN.?/ >># (NP < (/JJ.?/ < /(?i).?\brisk.?/)
     [u'Circumstance head', r'/NN.?/ < /(?i).?\brisk.?/ >># (NP > (PP > (VP > /\b(S|SBAR|ROOT)\b/)))'])
 results = []
 for entry in query:
-    result = interrogator(main_path, '-C', entry[1])
+    result = interrogator(annual_trees, '-C', entry[1])
     result.totals[0] = entry[0] # rename count
     results.append(result.totals)
 outputnames = collections.namedtuple('modifiers', ['query', 'results'])
@@ -806,7 +806,7 @@ plotter('Types of risk modifiers', modifiers.results)
 # <codecell>
 # Participants modified by risk word
 query = r'/NN.?/ >># (NP < (/JJ.?/ < /(?i).?\brisk.?/) ( > VP | $ VP))'
-mod_by_adj_risk = interrogator(main_path, '-t', query, 
+mod_by_adj_risk = interrogator(annual_trees, '-t', query, 
     lemmatise = True, titlefilter = False)
 
 # <codecell>
@@ -818,7 +818,7 @@ plotter('Participants modified by risk', mod_by_adj_risk.results,
 
 # <codecell>
 query = r'/JJ.?/ < /(?i).?\brisk.?/'
-adjrisks = interrogator(main_path, '-t', query, 
+adjrisks = interrogator(annual_trees, '-t', query, 
     lemmatise = False)
 
 # <codecell>
@@ -832,7 +832,7 @@ plotter('Most common adjectival risks', adjrisks.results, fract_of = allwords.to
 # <codecell>
 # At-risk thing
 query = r'/NN.?/ >># (NP < (/JJ.?/ < /(?i).?\bat-risk/) ( > VP | $ VP))'
-at_risk_things = interrogator(main_path, '-t', query, 
+at_risk_things = interrogator(annual_trees, '-t', query, 
     lemmatise = True)
 
 # <codecell>
@@ -845,7 +845,7 @@ plotter('At-risk things', at_risk_things.results,
 # <codecell>
 # at-risk person / person at risk combined
 query = r'/NN.?/ ( >># (NP < (PP <<# /(?i)at/ << (NP <<# /(?i)\brisk.?/))) | ( >># (NP < (/JJ.?/ < /(?i)at-risk.?/))))'
-n_atrisk_n = interrogator(main_path, '-t', query, 
+n_atrisk_n = interrogator(annual_trees, '-t', query, 
     lemmatise = False, titlefilter = False)
 
 # <codecell>
@@ -853,12 +853,6 @@ plotter('At-risk thing or thing at risk', n_atrisk_n.results, num_to_plot = 7, s
 
 # <markdowncell>
 # Vulnerable human populations are the main theme of this category: indeed, it's difficult to imagine *at-risk corporations* or *at-risk leaders*.
-
-# <headingcell level=3>
-# Arguability of risk
-
-# <markdowncell>
-# > **Sorry, tool unavailable at present**
 
 # <headingcell level=3>
 # Proper nouns and risk sentences
@@ -871,7 +865,7 @@ plotter('At-risk thing or thing at risk', n_atrisk_n.results, num_to_plot = 7, s
 # <codecell>
 # Most common proper noun phrases
 query = r'NP <# NNP >> (ROOT << /(?i).?\brisk.?\b/)'
-propernouns = interrogator(main_path, '-t', query, 
+propernouns = interrogator(annual_trees, '-t', query, 
     titlefilter = True)
 
 # <codecell>
@@ -949,6 +943,133 @@ plotter('Merck and Vioxx', vioxx, fract_of = propernouns.totals, yearspan = [199
 # <markdowncell>
 # Vioxx was removed from shelves following the discovery that it increased the risk of heart attack. It's interesting how even though terrorism and war may come to mind when thinking of *risk* in the past 15 years, this health topic is easily more prominent in the data.
 
+
+# <headingcell level=3>
+# Arguability
+
+# <markdowncell>
+# In terms of interpersonal meanings, we were interested in the *arguability* of risk: that is, the extent to which risk words are a core or peripheral part of the meaning being negotiated by writer and reader.
+
+# In SFL, arguability is related to the mood system. Certain roles within the mood of a clause are more arguable than others. In a hypothetical exchange, we can see that certain parts of the proposition can be easily questioned:
+
+#      A: I think Kim was heading over to the little pub on the corner.
+#      B1: Was he?
+
+# The two grammatical roles being restated here are the Subject (*he*) and the Finite (*was*). These are the two most arguable roles in which a risk word could appear.
+
+# If the speaker wanted to argue about the size of the pub, simple replies seem almost like *non sequiturs*:
+
+#      A: I think Kim was heading over to the little pub on the corner.
+#      B: It's not that little!
+
+# Note how even in this stylistically marked example, B turns the pub and its nature into the Subject and Finite, in order to make it the main area of contention within the conversation.
+
+# Using SFL's description of the mood system as a guide, we constructed a basic (i.e. simplified) scale of arguability.
+
+# | Role in the mood system | Arguability |
+# | ----------------------- | ----------- |
+# | Subject                 | Very high   |
+# | Finite                  | High        |
+# | Predicator                  | Medium        |
+# | Complement              | Low      |
+# | Adjunct                 | Very low         |
+
+# <headingcell level=4>
+# Arguability of risk
+
+# <markdowncell>
+# We were interested in whether there are any longitudinal changes in the proportion of risk words in each mood role. 
+
+# For this, rather than interrogating phrase-structure parses, we needed to interrogate dependency parses, which provide basic information about the functional role of a word in a clause.
+
+# By default, the parser we used (Stanford CoreNLP) outputs three different dependency grammars. We were interest
+
+# *dependencies()* is a function that parses the dependency output provided by CoreNLP.
+
+# It takes five arguments:
+
+# 1. a path to the corpus
+# 2. A search option: 'rship', 'depnum' or 'govrole'
+# 3. a regular expression to, match a token (in our case, to match a risk word)
+# 4. the kind of dependencies parses we want to search
+# 5. lemmatise = True/False
+
+# Though the collapsed-cc-dependencies are perhaps the most commonly used, we opt to use basic dependencies here, as this assisted the lemmatisation process (see our report for more information).
+
+# The three search options give different kinds of information about the matched tokens:
+
+# * 'rship' gets the functional role only
+# 'govrole' gets the function and the governor (which can be lemmatised)
+# 'depnum' gets the index of the word within the dependency parse
+
+# We were interested in each of these three kinds of dependency information.
+
+# <headingcell level=5>
+# Functional role of risk in dependency parses
+
+# <codecell>
+# set path to dependency parses
+annual_deps = 'data/nyt/basic-dependencies/years'
+
+# <codecell>
+risk_functions = dependencies(annual_deps, 'rship', r'(?i)\brisk', dep_type = 'basic-dependencies')
+
+# <codecell>
+plotter()
+
+# <markdowncell>
+# We could then merge results into the categories of Subject, Finite/Predicator, Complement and Adjunct:
+
+# <codecell>
+quickview(risk_functions.results, n = 60)
+
+# <codecell>
+merged_role = merger(risk_functions.results, [], newname = 'Subject')
+merged_role = merger(merged_role, [], newname = 'Finite/Predicator')
+merged_role = merger(merged_role, [], newname = 'Complement')
+merged_role = merger(merged_role, [], newname = 'Adjunct')
+# remove all other items
+merged_role = surgeon(merged_role, [], remove = False)
+
+plotter('Functional role using dependency parses', merged_role, fract_of = risk_functions.totals)
+
+# <headingcell level=5>
+# Role and governor of risk
+
+# <codecell>
+role_and_gov = dependencies(annual_deps, 'govrole', r'(?i)\brisk', dep_type = 'basic-dependencies', lemmatise = True)
+
+# <codecell>
+
+# <headingcell level=5>
+# Dependency index
+
+# In a dependency parse, smaller indices will be given to words close to the root of the dependency string. These correspond (roughly) with more arguable roles in SFL. Large indices are more dependent, and are generally less arguable.
+
+# Thus, we also thought we could roughly approximate arguability by looking for the index of each risk word within each dependency parse.
+
+# <codecell>
+risk_indices = dependencies(annual_deps, 'depnum', r'(?i)\brisk', dep_type = 'basic-dependencies')
+
+# <markdowncell>
+# Our existing way of plotting results needed to be modified in order to show the information provided by the *depnum* search.
+
+# <codecell>
+from operator import itemgetter # for more complex sorting
+# make a new list to reorder
+to_reorder = list(risk_indices.results)
+dep_num = sorted(to_reorder, key=itemgetter(0), reverse = True)
+
+
+# alter list here
+
+# <codecell>
+plotter()
+
+
+
+
+
 # <headingcell level=2>
 # Risk in economics, health and politics articles
 
@@ -962,20 +1083,20 @@ plotter('Merck and Vioxx', vioxx, fract_of = propernouns.totals, yearspan = [199
 
 # <codecell>
 # get a list of the economics, health and politics subcorpora
-path = 'nyt'
-topic_subcorpora = [d for d in os.listdir(path)
+trees = 'data/nyt/trees'
+topic_trees = [d for d in os.listdir(trees)
           if os.path.isdir(os.path.join(path,d))
           and d != 'years']
 
-def topix_search(topic_subcorpora, options, query, **kwargs):
+def topix_search(topic_trees, options, query, **kwargs):
     """Interrogates each topic subcorpus."""
     results = [] # make empty list of results and totals
     totals = []
-    for topic in topic_subcorpora: # for topic name
+    for topic in topic_trees: # for topic name
         print "Doing " + topic + " ..."
-        topic_subcorpora_path = os.path.join(path,topic) # get topic path
+        topic_trees_path = os.path.join(trees,topic) # get topic path
         # interrogate with any arguments passed in:
-        result = interrogator(topic_subcorpora_path, options, query, **kwargs)
+        result = interrogator(topic_trees_path, options, query, **kwargs)
         results.append(result.results) # add to results
         totals.append(result.totals)
     # now we should have 3x results and 3x totals, and a query
@@ -986,13 +1107,13 @@ def topix_search(topic_subcorpora, options, query, **kwargs):
 
 def topix_plot(title, results, fract_of = False, **kwargs):
     """Plots results from subcorpus interrogation."""
-    for topic in topic_subcorpora:
+    for topic in topic_trees:
         newtitle = title + ' in ' + str(topic) + ' articles' # semi-automatic titles (!)
         if not fract_of: # if counting ratios/percentages, 
-            plotter(newtitle, results[topic_subcorpora.index(topic)], **kwargs)
+            plotter(newtitle, results[topic_trees.index(topic)], **kwargs)
         else:
-            plotter(newtitle, results[topic_subcorpora.index(topic)], 
-                    fract_of = fract_of[topic_subcorpora.index(topic)], **kwargs)
+            plotter(newtitle, results[topic_trees.index(topic)], 
+                    fract_of = fract_of[topic_trees.index(topic)], **kwargs)
 
 # <markdowncell>
 # It's also useful to keep in mind that conc() can loop through subcorpora. Two kinds of loops are presented below.
@@ -1000,8 +1121,8 @@ def topix_plot(title, results, fract_of = False, **kwargs):
 # <codecell>
 import pprint # nice looking results
 year_of_interest = '2002'
-for topic in topic_subcorpora:
-    lines = conc(os.path.join(path,topic,year_of_interest), 
+for topic in topic_trees:
+    lines = conc(os.path.join(trees,topic,year_of_interest), 
         r'PP < (NP <# (/NN.?/ < /(?i).?\brisk.?\b/))', random = 20)
     pprint.pprint(lines)
 
@@ -1010,7 +1131,7 @@ topic = 'economics'
 # note that years here are strings (in quotation marks), rather than integers.
 years = ['1989', '1990', '1991']
 for year in years:
-    lines = conc(os.path.join(path,topic,year), r'/(?i)risky/', random = 20, window = 50)
+    lines = conc(os.path.join(trees,topic,year), r'/(?i)risky/', random = 20, window = 50)
     pprint.pprint(lines)
 
 
@@ -1019,7 +1140,7 @@ for year in years:
 
 # <codecell>
 query = r'NP <# NNP >> (ROOT << /(?i).?\brisk.?\b/)'
-topics_propernouns = topix_search(topic_subcorpora, '-t', query, titlefilter = True)
+topics_propernouns = topix_search(topic_trees, '-t', query, titlefilter = True)
 
 # <markdowncell>
 # When working with topic subcorpora, you can add an extra argument to *quickview()* to see the first results from each subcorpus:
@@ -1048,7 +1169,7 @@ plotter('Politicians in sentences containing a risk word', polpeople)
 
 # <codecell>
 query = r'/JJ.?/ > (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
-topics_adjmod = topix_search(topic_subcorpora, '-t', query)
+topics_adjmod = topix_search(topic_trees, '-t', query)
     
 # <codecell>    
 topix_plot('Adjectives modifying participant risk', topics_adjmod)
@@ -1058,7 +1179,7 @@ topix_plot('Adjectives modifying participant risk', topics_adjmod)
 
 # <codecell>
 query = r'/NN.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'
-topics_riskof = topix_search(topic_subcorpora, '-t', query)
+topics_riskof = topix_search(topic_trees, '-t', query)
 
 # <codecell>
 topix_plot('Risk of (noun)', topics_riskof)
@@ -1080,25 +1201,25 @@ topix_plot('Risk of (noun)', topics_riskof)
 # <codecell>
 openwords = r'/\b(JJ|NN|VB|RB)+.?\b/'
 clauses = r'S < __'
-opencount = interrogator(main_path, '-C', openwords)
-clausecount = interrogator(main_path, '-C', clauses)
+opencount = interrogator(annual_trees, '-C', openwords)
+clausecount = interrogator(annual_trees, '-C', clauses)
 
 # <codecell>
 # ratio of open to closed word classes
 # already done this one:
 
 # openwords = r'/\b(JJ|NN|VB|RB)+.?\b/'
-# opencount = interrogator(main_path, '-C', openwords)
+# opencount = interrogator(annual_trees, '-C', openwords)
 
 closedwords = r'/\b(DT|IN|CC|EX|W|MD|TO|PRP)+.?\b/'
-closedcount = interrogator(main_path, '-C', closedwords)
+closedcount = interrogator(annual_trees, '-C', closedwords)
 
 # <codecell>
 # ratio of nouns/verbs
 nounquery = r'/NN.?/ < __'
 verbquery = r'/VB.?/ < __'
-nouncount = interrogator(main_path, '-C', nounquery)
-verbcount = interrogator(main_path, '-C', verbquery)
+nouncount = interrogator(annual_trees, '-C', nounquery)
+verbcount = interrogator(annual_trees, '-C', verbquery)
 
 # <markdowncell>
 # ... and finally, plot the results!
