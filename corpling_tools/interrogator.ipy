@@ -90,9 +90,21 @@ def interrogator(path, options, query, lemmatise = False, test = False,
     # make sure tregex can parse pattern, or return error
     tregex_command = 'sh ./tregex.sh \'' + query + '\' 2>&1'
     testpattern = !$tregex_command
-    errorregex = re.compile(r'^Error parsing expression')
-    if re.match(errorregex, testpattern[0]):
+    tregex_error = re.compile(r'^Error parsing expression')
+    regex_error = re.compile(r'^Exception in thread')
+    print testpattern[0]
+    if re.match(tregex_error, testpattern[0]):
         raise ValueError("Error parsing Tregex expression. Check for balanced parentheses and boundary delimiters.") 
+    if re.match(regex_error, testpattern[0]):
+        info = testpattern[0].split(':')
+        index_of_error = re.findall(r'index [0-9]+', info[1])
+        print index_of_error
+        justnum = index_of_error[0].split('dex ')
+        spaces = ' ' * int(justnum[1])
+        remove_start = query.split('/', 1)
+        remove_end = remove_start[1].split('/', -1)
+
+        raise ValueError("Error parsing regex inside Tregex query:" + str(info[1]) + '. Best guess: \n' + str(remove_end[0]) + '\n' + spaces + '^')    
     exclude = set(string.punctuation)
     annual_totals = [u'Totals']
     # search the corpus    
@@ -100,6 +112,7 @@ def interrogator(path, options, query, lemmatise = False, test = False,
         for d in sorted_dirs:
             yearfinder = re.findall(r'[0-9]+', d)
             time = strftime("%H:%M:%S", localtime())
+            print time + ": Doing " + yearfinder[0] + " ...\r",
             print time + ": Doing " + yearfinder[0] + " ...\r",
             tregex_command = 'sh ./tregex.sh -o ' + options + ' \'' + query + '\' ' + os.path.join(path,d) + ' 2>/dev/null | grep -vP \'^\s*$\''
             # dependency parsing results go here
@@ -109,6 +122,8 @@ def interrogator(path, options, query, lemmatise = False, test = False,
             annual_totals.append(totalcount)
             # process results
             lowercase_result = []
+            time = strftime("%H:%M:%S", localtime())
+            print time + ": Doing " + yearfinder[0] + " ..."
             for word in result:
                 try:
                     word = unicode(word, 'utf-8')
