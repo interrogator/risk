@@ -146,7 +146,6 @@ def conc(corpus, query, random = False, window = 30, trees = False, csvmake = Fa
         print time + ": " + csvmake + " written to currect directory."
                 
     def list_duplicates(seq):
-        from collections import defaultdict
         tally = defaultdict(list)
         for i,item in enumerate(seq):
             tally[item].append(i)
@@ -220,7 +219,17 @@ def conc(corpus, query, random = False, window = 30, trees = False, csvmake = Fa
     if csvmake:
         csvmaker(csvdata, sentences, csvmake)
     if not random:
-        return formatted_output
+        with_enum = []
+        for index, row in enumerate(formatted_output):
+            if len(str(index)) == 1:
+                string_index = '  ' + str(index)
+            if len(str(index)) == 2:
+                string_index = ' ' + str(index)
+            if len(str(index)) > 2:
+                string_index = str(index)
+            row = (string_index + ': ' + row)
+            with_enum.append(row)
+        return with_enum
     if random:
         outnum = len(formatted_output)
         if random > outnum:
@@ -231,7 +240,18 @@ def conc(corpus, query, random = False, window = 30, trees = False, csvmake = Fa
             possible = formatted_output[randomnum]
             if possible not in rand_out:
                 rand_out.append(possible)
-        return rand_out
+        with_enum = []
+        for index, row in enumerate(rand_out):
+            if len(str(index)) == 1:
+                string_index = '  ' + str(index)
+            if len(str(index)) == 2:
+                string_index = ' ' + str(index)
+            if len(str(index)) > 2:
+                string_index = str(index)
+            row = (string_index + ': ' + row)
+            with_enum.append(row)
+        return with_enum
+
 
 def tally(lst, indices):
     """Tally total occurrences of a result"""
@@ -377,14 +397,3 @@ def quicktree(sentence):
     return Image(filename='tree.png')
     ! rm tree.png
     
-def report_display():
-    """Displays/downloads the risk report, depending on your browser settings"""
-    class PDF(object):
-        def __init__(self, pdf, size=(200,200)):
-            self.pdf = pdf
-            self.size = size
-        def _repr_html_(self):
-            return '<iframe src={0} width={1[0]} height={1[1]}></iframe>'.format(self.pdf, self.size)
-        def _repr_latex_(self):
-            return r'\includegraphics[width=1.0\textwidth]{{{0}}}'.format(self.pdf)
-    return PDF('report/risk_report.pdf',size=(800,650))
