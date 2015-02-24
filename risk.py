@@ -489,7 +489,7 @@ HTML('<iframe src=http://en.mobile.wikipedia.org/wiki/Michael_Halliday?useformat
 # * *risky business*
 # * *they riskily arranged to meet*
 
-# To find the distributions of these, we define three (very long and complicated) Tregex queries as *part_process_mod*. We then loop through each entry in the list and perform an interrogation.
+# To find the distributions of these, we define three (very long and complicated) Tregex queries as sublists of titles and patterns under *query*. We then loop through each entry in *query* to perform an interrogation.
 
 # We then run *interrogator()* for each query and plot the results:
 
@@ -504,9 +504,9 @@ query = (['Participant', r'/(?i).?\brisk.?/ > (/NN.?/ >># (NP !> PP !> (VP <<# (
         '(ADJP > VP) & !> (/VB.?/ >># VP) & !> (/NN.?/ >># (NP > (VP <<# (/VB.?/ < /(?i)\b('
             'take|takes|taking|took|taken|run|runs|running|ran|pose|poses|posed|posing)\b/))))'])
 results = []
-for entry in query:
-    result = interrogator(annual_trees, '-C', entry[1])
-    result.totals[0] = entry[0] # rename count
+for name, pattern in query:
+    result = interrogator(annual_trees, '-C', pattern)
+    result.totals[0] = name # rename count
     results.append(result.totals)
 outputnames = collections.namedtuple('functional_role', ['query', 'results'])
 functional_role = outputnames(query, results)
@@ -639,9 +639,9 @@ query = (['Risk of heart attack', r'/NN.?/ < /(?i)attack.?/ $ '
               ['Risk of terror* attack', r'/NN.?/ < /(?i)attack.?/ $ (/NN.?/ < /(?i)terror.?/) >># (NP > (PP '
           r'<<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'])
 results = []
-for entry in query:
-    result = interrogator(annual_trees, '-C', entry[1])
-    result.totals[0] = entry[0] # rename count
+for name, pattern in query:
+    result = interrogator(annual_trees, '-C', pattern)
+    result.totals[0] = name # rename count
     results.append(result.totals)
 outputnames = collections.namedtuple('heart_terror', ['query', 'results'])
 heart_terror = outputnames(query, results)
@@ -713,9 +713,9 @@ totalquery = (r'VP (<<# (/VB.?/ < /(?i).?\brisk.?\b/) | <<# (/VB.?/ < /(?i)\b(ta
     'runs|running|ran)+\b/) < (NP <<# /(?i).?\brisk.?\b/) | <<# /(?i)(put|puts|putting)\b/ << (PP <<# /(?i)at/'
     ' < (NP <<# /(?i).?\brisk.?/)) | <<# (/VB.?/ < /(?i)\b(pose|poses|posed|posing)+\b/) < (NP <<# /(?i).?\brisk.?\b/))')
 results = []
-for entry in query:
-    result = interrogator(annual_trees, '-C', entry[1])
-    result.totals[0] = entry[0] # rename count
+for name, pattern in query:
+    result = interrogator(annual_trees, '-C', pattern)
+    result.totals[0] = name # rename count
     results.append(result.totals)
 outputnames = collections.namedtuple('processes', ['query', 'results'])
 processes = outputnames(query, results)
@@ -790,9 +790,9 @@ query = ([u'Adjectival modifier', r'/NN.?/ >># (NP < (/JJ.?/ < /(?i).?\brisk.?/)
     [u'Adverbial modifier', r'RB < /(?i).?\brisk.?/'],
     [u'Circumstance head', r'/NN.?/ < /(?i).?\brisk.?/ >># (NP > (PP > (VP > /\b(S|SBAR|ROOT)\b/)))'])
 results = []
-for entry in query:
-    result = interrogator(annual_trees, '-C', entry[1])
-    result.totals[0] = entry[0] # rename count
+for name, pattern in query:
+    result = interrogator(annual_trees, '-C', pattern)
+    result.totals[0] = name # rename count
     results.append(result.totals)
 outputnames = collections.namedtuple('modifiers', ['query', 'results'])
 modifiers = outputnames(query, results)
@@ -980,29 +980,29 @@ plotter('Merck and Vioxx', vioxx, fract_of = propernouns.totals, yearspan = [199
 # <markdowncell>
 # We were interested in whether there are any longitudinal changes in the proportion of risk words in each mood role. 
 
-# For this, rather than interrogating phrase-structure parses, we needed to interrogate dependency parses, which provide basic information about the functional role of a word in a clause.
-
-# By default, the parser we used (Stanford CoreNLP) outputs three different dependency grammars. We were interest
+# For this, rather than interrogating phrase-structure parses, we needed to interrogate dependency parses, which provide basic information about the functional role of a word in a clause. By default, the parser we used (Stanford CoreNLP) outputs three different dependency grammars. Any of the three can be selected for analysis.
 
 # *dependencies()* is a function that parses the dependency output provided by CoreNLP.
 
 # It takes five arguments:
 
 # 1. a path to the corpus
-# 2. A search option: 'rship', 'depnum' or 'govrole'
+# 2. A search option: *'rship'*, *'depnum'* or *'govrole'*
 # 3. a regular expression to, match a token (in our case, to match a risk word)
-# 4. the kind of dependencies parses we want to search
-# 5. lemmatise = True/False
+# 4. the kind of dependencies parses we want to search: *'basic-dependencies'*, '*collapsed-dependencies'*, or *'collapsed-ccprocessed-dependencies'*.
+# 5. lemmatise = *True/False*
 
-# Though the collapsed-cc-dependencies are perhaps the most commonly used, we opt to use basic dependencies here, as this assisted the lemmatisation process (see our report for more information).
-
-# The three search options give different kinds of information about the matched tokens:
+# With regard to (2): the three search options give different kinds of information about the matched tokens:
 
 # * 'rship' gets the functional role only
 # 'govrole' gets the function and the governor (which can be lemmatised)
 # 'depnum' gets the index of the word within the dependency parse
 
 # We were interested in each of these three kinds of dependency information.
+
+# With regard to (4): though the *collapsed-cc-dependencies* are perhaps the most commonly used, we use basic dependencies here, as this assisted the lemmatisation process (see the report for more information).
+
+
 
 # <headingcell level=5>
 # Functional role of risk in dependency parses
@@ -1015,22 +1015,32 @@ annual_deps = 'data/nyt/basic-dependencies/years'
 risk_functions = dependencies(annual_deps, 'rship', r'(?i)\brisk', dep_type = 'basic-dependencies')
 
 # <codecell>
-plotter()
+plotter('Top functions of risk words', risk_functions.results, fract_of = risk_functions.totals)
 
 # <markdowncell>
-# We could then merge results into the categories of Subject, Finite/Predicator, Complement and Adjunct:
+# We can then merge results into the categories of Subject, Finite/Predicator, Complement and Adjunct:
 
 # <codecell>
-quickview(risk_functions.results, n = 60)
+quickview(risk_functions.results, n = 30)
+# quickview(merged_role, n = 30)
 
 # <codecell>
-merged_role = merger(risk_functions.results, [], newname = 'Subject')
-merged_role = merger(merged_role, [], newname = 'Finite/Predicator')
-merged_role = merger(merged_role, [], newname = 'Complement')
-merged_role = merger(merged_role, [], newname = 'Adjunct')
+# run the first part, uncomment above, check, repeat ...
+merged_role = merger(risk_functions.results, [2, 11, 19, 25], newname = 'Subject') # add csubj
+#merged_role = merger(merged_role, [6, 23, 26], newname = 'Finite/Predicator')
+#merged_role = merger(merged_role, [0, 16, 20], newname = 'Complement')
+#merged_role = merger(merged_role, [1, 4, 5, 10, 13, 16, 18], newname = 'Adjunct')
+
 # remove all other items
-merged_role = surgeon(merged_role, [], remove = False)
+merged_role = surgeon(merged_role, [0, 1, 2, 4], remove = False)
 
+# <codecell>
+# resort this list:
+from operator import itemgetter # for more complex sorting
+to_reorder = list(merged_role)
+mr_sorted = sorted(list(merged_role), key=itemgetter(1), reverse = True)
+
+# <codecell>
 plotter('Functional role using dependency parses', merged_role, fract_of = risk_functions.totals)
 
 # <headingcell level=5>
@@ -1040,6 +1050,13 @@ plotter('Functional role using dependency parses', merged_role, fract_of = risk_
 role_and_gov = dependencies(annual_deps, 'govrole', r'(?i)\brisk', dep_type = 'basic-dependencies', lemmatise = True)
 
 # <codecell>
+plotter('Governors of risk and their roles', role_and_gov.results, fract_of = role_and_gov.totals)
+
+# <markdowncell>
+# We can post-process this list in a couple of interesting ways:
+
+# <codecell>
+
 
 # <headingcell level=5>
 # Dependency index
@@ -1188,7 +1205,7 @@ topix_plot('Risk of (noun)', topics_riskof)
 # Arguability in topic subcorpora
 
 # <markdowncell>
-# > **Sorry, tool unavailable at present**
+# We can also look for arguability information using dependency-parsed versions of our topic subcorpora.
 
 # <headingcell level=2>
 # General queries
@@ -1222,21 +1239,84 @@ nouncount = interrogator(annual_trees, '-C', nounquery)
 verbcount = interrogator(annual_trees, '-C', verbquery)
 
 # <markdowncell>
-# ... and finally, plot the results!
+# ... and finally, plot the results:
 
 # <codecell>
 #plot results
-plotter('Lexical density', opencount.totals, 
-        fract_of = clausecount.totals, y_label = 'Lexical Density Score', multiplier = 1, skip63 = True)
+plotter('Lexical density', opencount.totals, fract_of = clausecount.totals, 
+            y_label = 'Lexical Density Score', multiplier = 1, skip63 = True)
 
-plotter('Open/closed word classes', opencount.totals, 
-        fract_of = closedcount.totals, y_label = 'Open/closed ratio', multiplier = 1, skip63 = True)
+plotter('Open/closed word classes', opencount.totals, fract_of = closedcount.totals, 
+            y_label = 'Open/closed ratio', multiplier = 1, skip63 = True)
 
-plotter('Noun/verb ratio', nouncount.totals, 
-        fract_of = verbcount.totals, y_label = 'Noun/verb ratio', multiplier = 1, skip63 = True)
+plotter('Noun/verb ratio', nouncount.totals, fract_of = verbcount.totals, 
+            y_label = 'Noun/verb ratio', multiplier = 1, skip63 = True)
+
+# <headingcell level=3>
+# General dependency queries
 
 # <markdowncell>
-# Neat! Anybody care to explain why this is the case?
+# Our final area of investigation was general dependency. This is identical to our investigation of risk dependencies, excepyt that we change our token definition from any risk word to any word.
+
+# <codecell>
+all_functions = dependencies(annual_deps, 'rship', 
+    r'(?i)[a-z0-9]', dep_type = 'basic-dependencies')
+
+# <codecell>
+plotter('Most common functional roles in parsed data', 
+    all_functions.results, fract_of = all_functions.totals)
+
+# <markdowncell>
+# We could then merge results into the categories of Subject, Finite/Predicator, Complement and Adjunct:
+
+# <codecell>
+quickview(all_functions.results, n = 60)
+
+# <codecell>
+merged_role = merger(all_functions.results, [], newname = 'Subject')
+merged_role = merger(merged_role, [], newname = 'Finite/Predicator')
+merged_role = merger(merged_role, [], newname = 'Complement')
+merged_role = merger(merged_role, [], newname = 'Adjunct')
+# remove all other items
+merged_role = surgeon(merged_role, [], remove = False)
+
+plotter('Functional role using dependency parses', merged_role, fract_of = all_functions.totals)
+
+# <headingcell level=5>
+# Role and governor
+
+# <codecell>
+all_role_and_gov = dependencies(annual_deps, 'govrole', r'(?i)[a-z0-9]', 
+    dep_type = 'basic-dependencies', lemmatise = True)
+
+# <codecell>
+plotter('Most common dependencies for risk words', all_role_and_gov.results, 
+    fract_of = all_role_and_gov.totals)
+
+# <headingcell level=5>
+# Dependency index
+
+# We were interested in whether the changes in risk dependency indices were part of a more general trend.
+
+# <codecell>
+all_indices = dependencies(annual_deps, 'depnum', r'(?i)[a-z0-9]', dep_type = 'basic-dependencies')
+
+# <markdowncell>
+# Our existing way of plotting results needed to be modified in order to show the information provided by the *depnum* search.
+
+# <codecell>
+from operator import itemgetter # for more complex sorting
+# make a new list to reorder
+to_reorder = list(all_indices.results)
+dep_num = sorted(to_reorder, key=itemgetter(0), reverse = True)
+
+
+# alter list here
+
+# <codecell>
+plotter('Dependency indices for all words', sorted_indices, fract_of = all_indices.totals)
+
+# Due to limitations in available computational resources, our investigation did not involve parsing the full collection of NYT articles: we only used paragraphs containing a risk word. Longitudinal changes in the examples above are interesting in their own right. We hope in a further project to be able to expand the size of our corpus dramatically in order to determine the causes of these more general changes.
 
 # <headingcell level=2>
 # interrogator()
@@ -1245,7 +1325,7 @@ plotter('Noun/verb ratio', nouncount.totals,
 # *interrogator()* is our main method for interrogating the annotated corpus. It takes any corpus with numerically named subcorpora as input. Tregex is used to query the corpus, and NLTK's WordNet Lemmatiser can optionally be called.
 
 # <codecell>
-%load interrogator.ipy
+%load corpling_tools/interrogator.ipy
 
 # <headingcell level=2>
 # plotter()
@@ -1254,7 +1334,7 @@ plotter('Noun/verb ratio', nouncount.totals,
 # *plotter()* visualises results using *matplotlib*. It is designed to work with results generated by *interrogator()*. *IPython Magic* allows the inline display of generated images.
 
 # <codecell>
-%load plotter.ipy
+%load corpling_tools/plotter.ipy
 
 # <headingcell level=2>
 # Other functions
@@ -1263,7 +1343,7 @@ plotter('Noun/verb ratio', nouncount.totals,
 # Here you can see the code that comprises the other functions used in this Notebook.
 
 # <codecell>
-%load additional_tools.ipy
+%load corpling_tools/additional_tools.ipy
 
 # <headingcell level=2>
 # Copy-and-paste Tregex queries
