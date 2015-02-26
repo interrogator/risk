@@ -30,9 +30,10 @@
 # | *surgeon()*       | edit *interrogator()* results      | |
 # | *merger()*       | merge *interrogator()* results      | |
 # | *conc()*          | complex concordancing of subcorpora | |
+# | *keywords()*          | get keywords and ngrams from *conc()* output | |
+# | *collocates()*          | get collocates from *conc()* output| |
 # | *quicktree()*          | visually represent a parse tree | |
 # | *searchtree()*          | search a parse tree with a Tregex query | |
-
 
 # <codecell>
 import os # for joining paths
@@ -425,7 +426,7 @@ for coll in colls:
     print coll
 
 # <markdowncell>
-# With the *collocates()* function, you can specify the maximum distance at which two tokens will be considered collocats.
+# With the *collocates()* function, you can specify the maximum distance at which two tokens will be considered collocates.
 
 # <codecell>
 colls = collocates('concordances.csv', window_size = 2)
@@ -440,9 +441,10 @@ for coll in colls:
 
 # The easiest place to get a parse tree is from a CSV file generated using *conc()* with *trees* set to *True*. Alernatively, you can open files in the data directory directly.
 
-# *quicktree()* generates a visual representation of a parse tree:
+# *quicktree()* generates a visual representation of a parse tree. Here's one from 1989:
 
-tree = '(ROOT (S (NP (PRP I)) (VP (VBP have) (NP (NP (DT each)) (CC and) (NP (NP (DT every) (CD one)) (PP (IN of) (NP (PRP you))) (PP (IN in) (NP (PRP$ my) (NNS prayers)))))) (. .))) '
+# <codecell>
+tree = '(ROOT (S (NP (NN Pre-conviction) (NN attachment)) (VP (VBZ carries) (PP (IN with) (NP (PRP it))) (NP (NP (DT the) (JJ obvious) (NN risk)) (PP (IN of) (S (VP (VBG imposing) (NP (JJ drastic) (NN punishment)) (PP (IN before) (NP (NN conviction)))))))) (. .)))'
 quicktree(tree)
 
 # <markdowncell>
@@ -453,7 +455,7 @@ print searchtree(tree, r'/VB.?/ >># (VP $ NP)')
 print searchtree(tree, r'NP')
 
 # <markdowncell>
-# Now you're familiar with the corpus and functions. Before we start our corpus interrogation, we'll also present a *very* brief explanation of *Systemic Functional Linguistics*---the theory of language that underlies our analytical approach.
+# Now you're familiar with the corpus and functions. Before we start our corpus interrogation, we'll also present a *very* brief explanation of *Systemic Functional Linguistics*—the theory of language that underlies our analytical approach.
 
 
 # <headingcell level=2>
@@ -493,7 +495,7 @@ HTML('<iframe src=http://en.mobile.wikipedia.org/wiki/Michael_Halliday?useformat
 
 # * Mood types (*declarative, interrogative, imperative*)
 # * Modality (*would, can, might*)
-# * Lexical density---the number of words per clause, the number of content to non-content words, etc.
+# * Lexical density—the number of words per clause, the number of content to non-content words, etc.
 
 # Lexical density is usually a good indicator of the general tone of texts. The language of academia, for example, often has a huge number of nouns to verbs. We can approximate an academic tone simply by making nominally dense clauses: 
 
