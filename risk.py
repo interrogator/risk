@@ -38,11 +38,10 @@
 # <codecell>
 import os # for joining paths
 import collections # for making named tuples
-import pprint # for displaying concordances
 # import functions to be used here:
 for func in [f for f in os.listdir('corpling_tools') if f.endswith(".ipy")]:
     %run corpling_tools/$func
-! rm csv.txt concordances.txt # remove old csv output (temporary code)
+! rm'riskwords.csv concordances.csv # remove old csv output (temporary code)
 
 # <markdowncell>
 # We should set two variables that are used repeatedly during the investigation. If you were using this interface for your own corpora, you would change 'nyt' to the path to your data.
@@ -182,7 +181,8 @@ plotter('Relative frequency of risk words', riskwords.totals,
 # We can print just the first three entries of the results list, rather than the totals list:
 
 # <codecell>
-pprint.pprint(riskwords.results[:3])
+for word in riskwords.results[:3]:
+    print word
 # uncomment below to print the totals:
 # print riskwords.totals
 
@@ -225,7 +225,7 @@ plotter('Risk word / all words', riskwords.results,
 # <codecell>
 plotter('Relative frequencies of risk words', riskwords.results, fract_of = allwords.totals,
     y_label = 'Percentage of all risk words', num_to_plot = 5, 
-    skip63 = False, projection = True, proj63 = 5, csvmake = 'csv.txt')
+    skip63 = False, projection = True, proj63 = 5, csvmake = 'riskwords.csv')
 
 # <markdowncell>
 # If you just generated a csv file, you can quickly get the results with:
@@ -244,9 +244,9 @@ plotter('Relative frequencies of risk words', riskwords.results, fract_of = allw
 # Note that dotted lines are used wherever years are not processed.
 
 # <codecell>
-!cat 'csv.txt'  | head -n 7
+!cat 'riskwords.csv'  | head -n 7
 # and to delete it:
-#!rm 'csv.txt'
+#!rm 'riskwords.csv'
 
 # <markdowncell>
 # Another way to change *plotter()* visualisations is by not passing certain results to *plotter()*.
@@ -374,20 +374,21 @@ plotter('Low and high risks', low_high_combined)
 # <codecell>
 # here, we use a subcorpus of politics articles,
 # rather than the total annual editions.
-conc('nyt/politics/1999', r'/JJ.?/ << /(?i).?\brisk.?\b/') # adj containing a risk word
+conc('data/nyt/trees/politics/1999', r'/JJ.?/ << /(?i).?\brisk.?\b/') # adj containing a risk word
 
 # <markdowncell>
 # You can set *conc()* to print *n* random concordances with the *random = n* parameter. You can also store the output to a variable for further searching.
 
 # <codecell>
 randoms = conc('data/nyt/trees/years/2007', r'/VB.?/ < /(?i).?\brisk.?\b/', random = 25)
-pprint.pprint(randoms)
+for random in randons:
+    print random
 
 # <markdowncell>
 # *conc()* takes another argument, window, which alters the amount of co-text appearing either side of the match.
 
 # <codecell>
-conc('nyt/health/2013', r'/VB.?/ << /(?i).?\brisk.?\b/', random = 25, window = 50)
+conc('data/nyt/trees/health/2013', r'/VB.?/ << /(?i).?\brisk.?\b/', random = 25, window = 50)
 
 # <markdowncell>
 # *conc()* also allows you to view parse trees. By default, it's false:
@@ -439,7 +440,7 @@ for coll in colls:
 # <markdowncell>
 # The two functions are useful for visualising and searching individual syntax trees. They have proven useful as a way to practice your Tregex queries.
 
-# The easiest place to get a parse tree is from a CSV file generated using *conc()* with *trees* set to *True*. Alernatively, you can open files in the data directory directly.
+# The easiest place to get a parse tree is from a CSV file generated using *conc()* with *trees* set to *True*. Alternatively, you can open files in the data directory directly.
 
 # *quicktree()* generates a visual representation of a parse tree. Here's one from 1989:
 
@@ -455,7 +456,7 @@ print searchtree(tree, r'/VB.?/ >># (VP $ NP)')
 print searchtree(tree, r'NP')
 
 # <markdowncell>
-# Now you're familiar with the corpus and functions. Before we start our corpus interrogation, we'll also present a *very* brief explanation of *Systemic Functional Linguistics*—the theory of language that underlies our analytical approach.
+# Now you're familiar with the corpus and functions. Before we start our corpus interrogation, we'll also present a *very* brief explanation of *Systemic Functional Linguistics*&mdash;the theory of language that underlies our analytical approach.
 
 
 # <headingcell level=2>
@@ -468,6 +469,7 @@ print searchtree(tree, r'NP')
 from IPython.display import HTML
 HTML('<iframe src=http://en.mobile.wikipedia.org/wiki/Michael_Halliday?useformat=mobile width=700 height=350></iframe>')
 
+# <markdowncell>
 # Central to the theory is a division between **experiential meanings** and **interpersonal meanings**.
 
 # * Experiential meanings communicate what happened to whom, under what circumstances.
@@ -495,7 +497,7 @@ HTML('<iframe src=http://en.mobile.wikipedia.org/wiki/Michael_Halliday?useformat
 
 # * Mood types (*declarative, interrogative, imperative*)
 # * Modality (*would, can, might*)
-# * Lexical density—the number of words per clause, the number of content to non-content words, etc.
+# * Lexical density&mdash;the number of words per clause, the number of content to non-content words, etc.
 
 # Lexical density is usually a good indicator of the general tone of texts. The language of academia, for example, often has a huge number of nouns to verbs. We can approximate an academic tone simply by making nominally dense clauses: 
 
@@ -645,7 +647,8 @@ conc('data/nyt/trees/years/1963', calculated_risk)
 
 # <codecell>
 lines = conc('data/nyt/trees/years/1988', r'/NN.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))')
-pprint.pprint(lines[:20])
+for line in lines[:20]:
+    print line
 
 # <markdowncell>
 # Notice that singular and plural forms may be in the results: both *substance* and *substances* are returned, and would be counted as unique items.
@@ -1196,7 +1199,8 @@ year_of_interest = '2002'
 for topic in topic_trees:
     lines = conc(os.path.join(trees,topic,year_of_interest), 
         r'PP < (NP <# (/NN.?/ < /(?i).?\brisk.?\b/))', random = 20)
-    pprint.pprint(lines)
+    for line in lines:
+        print line
 
 # <codecell>
 topic = 'economics'
@@ -1204,7 +1208,8 @@ topic = 'economics'
 years = ['1989', '1990', '1991']
 for year in years:
     lines = conc(os.path.join(trees,topic,year), r'/(?i)risky/', random = 20, window = 50)
-    pprint.pprint(lines)
+    for line in lines:
+        from line
 
 
 # <headingcell level=3>
