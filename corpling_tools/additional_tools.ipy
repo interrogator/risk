@@ -104,6 +104,9 @@ def conc(corpus, query, random = False, window = 30, trees = False, csvmake = Fa
     from time import localtime, strftime
     import re
     from collections import defaultdict
+    if csvmake:
+        if os.path.isfile(csvmake):
+            raise ValueError("CSV error: " + csvmake + " already exists in current directory. Move it, delete it, or change the name of the new .csv file.")
 
     def csvmaker(csvdata, sentences, csvmake):
         """Puts conc() results into tab-separated spreadsheet form"""
@@ -134,8 +137,6 @@ def conc(corpus, query, random = False, window = 30, trees = False, csvmake = Fa
             csv.append(entry)
         csv = '\n'.join(csv)
         # write the csv file?
-        if os.path.isfile(csvmake):
-            raise ValueError("CSV error: " + csvmake + " already exists in current directory.")
         try:
             fo=open(csvmake,"w")
         except IOError:
@@ -439,17 +440,17 @@ def table(data_to_table, allresults = False, maxresults = 50):
     return tab
 
 
-def keywords(data, **kwargs):
+def keywords(data, dictionary = 'years.p', **kwargs):
     """Feed this a csv file generated with conc() and get its keywords"""
-    import sys
-    sys.path.insert(0, 'spindle-code-master/keywords')
-    from keywords import keywords_and_ngrams 
+    #import sys
+    #sys.path.insert(0, 'spindle-code-master/keywords')
+    % run corpling_tools/keywords.ipy
     import re
     # turn all sentences into long string
     f = open(data)
     raw = f.read()
     bad, good = re.compile(r'Entire sentences \(n=[0-9]+\):').split(raw)
-    keywords, ngrams = keywords_and_ngrams(good, **kwargs)
+    keywords, ngrams = keywords_and_ngrams(good, dictionary = dictionary, **kwargs)
     keywords_list_version = []
     for index, item in enumerate(keywords):
         aslist = [index, item[0], item[1]]
