@@ -379,7 +379,7 @@ conc('nyt/politics/1999', r'/JJ.?/ << /(?i).?\brisk.?\b/') # adj containing a ri
 # You can set *conc()* to print *n* random concordances with the *random = n* parameter. You can also store the output to a variable for further searching.
 
 # <codecell>
-randoms = conc('nyt/years/2007', r'/VB.?/ < /(?i).?\brisk.?\b/', random = 25)
+randoms = conc('data/nyt/trees/years/2007', r'/VB.?/ < /(?i).?\brisk.?\b/', random = 25)
 pprint.pprint(randoms)
 
 # <markdowncell>
@@ -392,13 +392,13 @@ conc('nyt/health/2013', r'/VB.?/ << /(?i).?\brisk.?\b/', random = 25, window = 5
 # *conc()* also allows you to view parse trees. By default, it's false:
 
 # <codecell>
-conc('nyt/years/2013', r'/VB.?/ < /(?i)\btrad.?/',  window = 50, trees = True)
+conc('data/nyt/trees/years/2013', r'/VB.?/ < /(?i)\btrad.?/',  window = 50, trees = True)
 
 # <markdowncell>
 # The final *conc()* argument is a *csv = 'filename'*, which will produce a tab-separated spreadsheet with the results of your query. You can copy and paste this data into Excel.
 
 # <codecell>
-conc('nyt/years/2005', r'/JJ.?/ < /(?i).?\brisk.?/ > (NP <<# /(?i)invest.?/)',
+conc('data/nyt/trees/years/2005', r'/JJ.?/ < /(?i).?\brisk.?/ > (NP <<# /(?i)invest.?/)',
     window = 30, trees = False, csvmake = 'concordances.csv')
 
 # <codecell>
@@ -633,7 +633,7 @@ plotter('Adjectives modifying nominal risk (lemmatised)', select_adjs,
 ### old query: r'/JJ.?/ > (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
 calculated_risk = r'/JJ.?/ < /(?i)calculated/> (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
 # remove '( > VP | $ VP)' from the line above to get more instances
-conc('nyt/years/1963', calculated_risk)
+conc('data/nyt/trees/years/1963', calculated_risk)
 
 # <headingcell level=4>
 # Risk of ... ?
@@ -642,7 +642,7 @@ conc('nyt/years/1963', calculated_risk)
 # Next, we'll look at risk of (noun) constructions, as in:
 
 # <codecell>
-lines = conc('nyt/years/1988', r'/NN.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))')
+lines = conc('data/nyt/trees/years/1988', r'/NN.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))')
 pprint.pprint(lines[:20])
 
 # <markdowncell>
@@ -681,7 +681,7 @@ plotter('Risk of (noun)', military, fract_of = risk_of.totals)
 
 # <codecell>
 attackrisk = r'/NN.?/ < /(?i)attack.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'
-conc('nyt/years/2004', attackrisk, random = 30, window = 30) 
+conc('data/nyt/trees/years/2004', attackrisk, random = 30, window = 30) 
 
 # <markdowncell>
 # Whoops. We were wrong. Almost all occurrences actually referred to *heart attack*!

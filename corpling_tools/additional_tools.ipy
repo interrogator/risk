@@ -439,7 +439,7 @@ def table(data_to_table, allresults = False, maxresults = 50):
     return tab
 
 
-def keywords(data, refcorp = 'bnc', csvmake = False, **kwargs):
+def keywords(data, **kwargs):
     """Feed this a csv file generated with conc() and get its keywords"""
     import sys
     sys.path.insert(0, 'spindle-code-master/keywords')
@@ -496,8 +496,8 @@ def collocates(data, nbest = 30, window_size = 5):
     finder.apply_freq_filter(2)
     results = sorted(finder.nbest(bigram_measures.raw_freq, nbest))
     listversion = []
-    for word_one, word_two in results:
-        aslist = [word_one, word_two]
+    for index, thecollocation in enumerate(results):
+        aslist = [index, thecollocation[0], thecollocation[1]]
         listversion.append(aslist)
     return listversion
 
