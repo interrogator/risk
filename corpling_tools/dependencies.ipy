@@ -39,7 +39,11 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     import operator
     import glob
     import gc
-    from IPython.display import display, clear_output
+    try:
+        from IPython.display import display, clear_output
+        have_ipython = True
+    except ImportError:
+        have_ipython = False
     # define option regexes
     if lemmatise:
         import nltk
@@ -87,6 +91,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     sorted_dirs.sort(key=int)
     if test is True: # allow shorter testing
         sorted_dirs = sorted_dirs[:5]
+    num_dirs = len(sorted_dirs)
     number_of_subcorpora = len(sorted_dirs) # move earlier
     results = []
     exclude = set(string.punctuation)
@@ -178,11 +183,15 @@ def dependencies(path, options, query, lemmatise = False, test = False,
                         # get just the number
                         result.append(dependent.attrs.get('idx'))
             return result
+        
+
+
         coll_dep_regex = re.compile(dep_type)
-        for d in sorted_dirs:
+        num_dirs = len(sorted_dirs)
+        p = ProgressBar(num_dirs)
+        for index, d in enumerate(sorted_dirs):
+            p.animate(index)
             yearfinder = re.findall(r'[0-9]+', d)
-            time = strftime("%H:%M:%S", localtime())
-            print time + ": Doing " + yearfinder[0] + " ...                                      "
             files = os.listdir(os.path.join(path, d))
             #read_files = glob.glob(os.path.join(path, d, "*.xml"))
             result = []
@@ -216,7 +225,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
             annual_totals.append(totalcount)
             # process results
             lowercase_result = []
-            for word in result: # will have to make lemmatiser work for govrole...
+            for word in result:
                 word = re.sub(r"^[^A-Za-z0-9\(\']*", "", word) # this might be too strict
                 lowered = word.lower()
                 if titlefilter is True:
@@ -227,10 +236,16 @@ def dependencies(path, options, query, lemmatise = False, test = False,
         return results
 
     def sort(results):
+        subcorp_count = []
+        for lst in results:
+            subcorp_count.append(len(lst))
+        total = '(n=' + str(sum([i for i in subcorp_count])) + ')'
         time = strftime("%H:%M:%S", localtime())
-        print time + ": Sorting results ..."
+        print '\n\n' + time + ": Sorting results " + total + " ... \n"
         unique_results = []
-        for subcorpus in results:
+        p = ProgressBar(len(results))
+        for index, subcorpus in enumerate(results):
+            p.animate(index)
             yearfinder = re.findall(r'[0-9]+', sorted_dirs[results.index(subcorpus)])
             year = yearfinder[0]
             uniques = set(sorted(results[results.index(subcorpus)]))
@@ -256,16 +271,13 @@ def dependencies(path, options, query, lemmatise = False, test = False,
         count = len(uniquewords)
         # print updates on tabling process because it's slow
         time = strftime("%H:%M:%S", localtime())
-        print time + ': Processing ' + str(count) + ' entries ... \r',
+        total = '(n=' + str(len(unique_results)) + ')'
+        print '\n\n' + time + ": Talling results " + total + " ... \n"
         c = 1
-        m = 1000
+        p = ProgressBar(count)
         for wordlist_entry in uniquewords:
+            p.animate(c)
             c += 1
-            if c == m:
-                perc = c * 100 / count
-                time = strftime("%H:%M:%S", localtime())
-                print time + ': ' + str(perc) + ' per cent done ... '
-                m += 1000
             lines = [line for line in unique_results if wordlist_entry == line[1]] # this is the slow part...
             counts = [wordlist_entry]
             for l in lines:
@@ -319,6 +331,46 @@ def dependencies(path, options, query, lemmatise = False, test = False,
         time = strftime("%H:%M:%S", localtime())
         print time + ': ' + path + ' interrogation done.'
         return final
+
+
+
+        # progress bar
+
+    class ProgressBar:
+        def __init__(self, iterations):
+            self.iterations = iterations
+            self.prog_bar = '[]'
+            self.fill_char = '*'
+            self.width = 40
+            self.__update_amount(0)
+            if have_ipython:
+                self.animate = self.animate_ipython
+            else:
+                self.animate = self.animate_noipython
+    
+        def animate_ipython(self, iter):
+            print '\r', self,
+            sys.stdout.flush()
+            self.update_iteration(iter + 1)
+    
+        def update_iteration(self, elapsed_iter):
+            self.__update_amount((elapsed_iter / float(self.iterations)) * 100.0)
+            self.prog_bar += time + ': Doing ' + yearfinder[0] + '. %d of %s complete' % (elapsed_iter, self.iterations)
+    
+        def __update_amount(self, new_amount):
+            percent_done = int(round((new_amount / 100.0) * 100.0))
+            all_full = self.width - 2
+            num_hashes = int(round((percent_done / 100.0) * all_full))
+            self.prog_bar = '[' + self.fill_char * num_hashes + ' ' * (all_full - num_hashes) + ']'
+            pct_place = (len(self.prog_bar) // 2) - len(str(percent_done))
+            pct_string = '%d%%' % percent_done
+            self.prog_bar = self.prog_bar[0:pct_place] + \
+                (pct_string + self.prog_bar[pct_place + len(pct_string):])
+    
+        def __str__(self):
+            return str(self.prog_bar)
+
+
 
 
 # actually do the functions

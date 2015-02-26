@@ -163,9 +163,9 @@ def plotter(title, results, fract_of = False, y_label = False,
             fo=open(csvmake,"w")
         except IOError:
             print "Error writing CSV file."
-        fo.write('Plotted results:\n\n'.encode("UTF-8"))
+        fo.write('Plotted results:\n'.encode("UTF-8"))
         fo.write(csv.encode("UTF-8"))
-        fo.write('\n\nAll results:\n\n'.encode("UTF-8"))
+        fo.write('\n\nAll results:\n'.encode("UTF-8"))
         fo.write(csvall.encode("UTF-8"))
         fo.close()
         time = strftime("%H:%M:%S", localtime())

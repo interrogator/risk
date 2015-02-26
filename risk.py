@@ -1,7 +1,6 @@
 # <markdowncell>
 # Discourse-semantics of *risk* in the *New York Times*, 1963-2014
 # ==========================================
-# <headingcell level=2>
 
 # <markdowncell>
 # **[Jens Zinn](mailto:jzinn@unimelb.edu.au?Subject=IPython%20NYT%20risk%20project), [Daniel McDonald](mailto:mcdonaldd@unimelb.edu.au?Subject=IPython%20NYT%20risk%20project)**
@@ -25,11 +24,15 @@
 # | *interrogator()*  | interrogate parsed corpora         | |
 # | *dependencies()*  | interrogate parsed corpora for dependency info (presented later)         | |
 # | *plotter()*       | visualise *interrogator()* results | |
+# | *table()*          | return plotter() results as table | |
 # | *quickview()*     | view *interrogator()* results      | |
 # | *tally()*       | get total frequencies for *interrogator()* results      | |
 # | *surgeon()*       | edit *interrogator()* results      | |
 # | *merger()*       | merge *interrogator()* results      | |
-# | *conc()*          | complex concordancing of subcopora | |
+# | *conc()*          | complex concordancing of subcorpora | |
+# | *quicktree()*          | visually represent a parse tree | |
+# | *searchtree()*          | search a parse tree with a Tregex query | |
+
 
 # <codecell>
 import os # for joining paths
@@ -263,14 +266,18 @@ indices_we_want = [32,30,40]
 plotter('Relative frequencies of risk words', [ riskwords.results[i] for i in indices_we_want], 
         num_to_plot = 5, skip63 = True, projection = True, proj63 = 5)
 
-
 # <headingcell level=3>
-# Editing results
+# table()
 
 # <markdowncell>
-# Aside from *interrogator()* and *plotter()*, there are also a few simple functions for viewing and editing results.
+# If you want to quickly table the results of a csv file, you can use *table()*. Its only main argument is the path to the csv file as string. There are two optional arguments. First, you can set *allresults* to *True* to table all results, rather than just the plotted results. When this option is set to true, you may get *way* too many results. To cope with this, there is a *maxresults* argument, whose value by default is 50. You can overwrite this default to table more or fewer results.
 
-# <headingcell level=4>
+# <codecell>
+
+table('medwords.csv')
+table('medwords.csv', allresults = True)
+
+# <headingcell level=3>
 # quickview()
 
 # <markdowncell>
@@ -285,7 +292,7 @@ quickview(riskwords.results, n = 25)
 # <markdowncell>
 # The number shown next to the item is its index. You can use this number to refer to an entry when editing results.
 
-# <headingcell level=4>
+# <headingcell level=3>
 # tally()
 
 # <markdowncell>
@@ -303,7 +310,7 @@ tally(riskwords.results[:10], 'all')
 # <markdowncell>
 # The Regular Expression option is useful for merging results (see below).
 
-# <headingcell level=4>
+# <headingcell level=3>
 # surgeon()
 
 # <markdowncell>
@@ -334,7 +341,7 @@ plotter('Verbal risk words', verbalrisks, fract_of = allwords.totals,
 # <markdowncell>
 # Note that you do not access surgeon lists with *allwords.nohyphens* syntax, but simply with *nohyphens*.
 
-# <headingcell level=4>
+# <headingcell level=3>
 # merger()
 
 # <markdowncell>
@@ -354,11 +361,11 @@ plotter('Low and high risks', low_high_combined)
 # <markdowncell>
 # Note that *merger()* puts the merged entry where the first merged item was, even if the merged result's total frequency is higher than that of the items above it. Also note that *merger()* will make new indices, so if you have a number of merges to make, do each individually, and quickview the results after each merge to get the next lot of indices.
 
-# <headingcell level=4>
+# <headingcell level=3>
 # conc()
 
 # <markdowncell>
-# The final function is *conc()*, which produces concordances of a subcorpus based on a Tregex query. Its main arguments are:
+# *conc()* produces concordances of a subcorpus based on a Tregex query. Its main arguments are:
 
 # 1. A subcorpus to search *(remember to put it in quotation marks!)*
 # 2. A Tregex query
@@ -392,18 +399,64 @@ conc('nyt/years/2013', r'/VB.?/ < /(?i)\btrad.?/',  window = 50, trees = True)
 
 # <codecell>
 conc('nyt/years/2005', r'/JJ.?/ < /(?i).?\brisk.?/ > (NP <<# /(?i)invest.?/)',
-    window = 30, trees = False, csvmake = 'concordances.txt')
+    window = 30, trees = False, csvmake = 'concordances.csv')
 
 # <codecell>
-!cat 'concordances.txt'
+!cat 'concordances.csv'
 # and to delete it:
 # !rm 'concordances.txt'
+
+# <headingcell level=3>
+# Keywords, ngrams and collocates
+
+# <markdowncell>
+# There are also functions for keywording, ngramming and collocation. Currently, these work with csv output from *conc()*. *keywords()* produces both keywords and ngrams. It relies on code from the [Spindle](http://openspires.oucs.ox.ac.uk/spindle/) project.
+
+# <codecell>
+keys, ngrams = keywords('concordances.csv')
+for key in keys[:10]:
+    print key
+for ngram in ngrams:
+    print ngram
+
+# <codecell>
+colls = collocates('concordances.csv')
+for coll in colls:
+    print coll
+
+# <markdowncell>
+# With the *collocates()* function, you can specify the maximum distance at which two tokens will be considered collocats.
+
+# <codecell>
+colls = collocates('concordances.csv', window_size = 2)
+for coll in colls:
+    print coll
+
+# <headingcell level=3>
+# quicktree() and searchtree()
+
+# <markdowncell>
+# The two functions are useful for visualising and searching individual syntax trees. They have proven useful as a way to practice your Tregex queries.
+
+# The easiest place to get a parse tree is from a CSV file generated using *conc()* with *trees* set to *True*. Alernatively, you can open files in the data directory directly.
+
+# *quicktree()* generates a visual representation of a parse tree:
+
+tree = '(ROOT (S (NP (PRP I)) (VP (VBP have) (NP (NP (DT each)) (CC and) (NP (NP (DT every) (CD one)) (PP (IN of) (NP (PRP you))) (PP (IN in) (NP (PRP$ my) (NNS prayers)))))) (. .))) '
+quicktree(tree)
+
+# <markdowncell>
+# *searchtree()* requires a tree and a Tregex query. It will return a list of query matches.
+
+# <codecell>
+print searchtree(tree, r'/VB.?/ >># (VP $ NP)')
+print searchtree(tree, r'NP')
 
 # <markdowncell>
 # Now you're familiar with the corpus and functions. Before we start our corpus interrogation, we'll also present a *very* brief explanation of *Systemic Functional Linguistics*---the theory of language that underlies our analytical approach.
 
 
-# <headingcell level=3>
+# <headingcell level=2>
 # Functional linguistics
 
 # <markdowncell>

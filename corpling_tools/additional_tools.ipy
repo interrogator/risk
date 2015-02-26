@@ -377,16 +377,14 @@ def searchtree(tree, query):
     ! rm "tmp.tree"
     return result
 
-def quicktree(sentence):
-    """Parse a sentence and return a visual representation in IPython"""
+def quicktree(tree):
+    """Return a visual representation of a parse tree in IPython"""
     from nltk import Tree
     from nltk.draw.util import CanvasFrame
     from nltk.draw import TreeWidget
-    from stat_parser import Parser
     from IPython.display import display
     from IPython.display import Image
-    parser = Parser()
-    parsed = parser.parse(sentence)
+    parsed = Tree.fromstring(tree)
     cf = CanvasFrame()
     tc = TreeWidget(cf.canvas(),parsed)
     cf.add_widget(tc,10,10) # (10,10) offsets
@@ -396,4 +394,112 @@ def quicktree(sentence):
     ! rm tree.ps
     return Image(filename='tree.png')
     ! rm tree.png
-    
+
+
+def table(data_to_table, allresults = False, maxresults = 50):
+    """Outputs a table from interrogator or CSV results.
+
+    if allresults, show all results table, rather than just plotted results"""
+    import pandas
+    from StringIO import StringIO
+    if type(data_to_table) == str:
+        f = open(data_to_table)
+        raw = f.read()
+        plotted_results, all_results = raw.split('All results:')
+        plotted_num_lines = plotted_results.strip().count('\n') + 4
+        all_num_lines = all_results.strip().count('\n') + 3
+        max_skipper = all_num_lines - maxresults - 4
+        if max_skipper < 0:
+            max_skipper = 0
+        if not allresults:
+            print '\n' + plotted_results.splitlines()[1]
+            tab = pandas.read_csv(data_to_table, skiprows = 2, skipfooter = all_num_lines, index_col = 0, engine='python')
+        else:
+            print all_results.splitlines()[1]
+            tab = pandas.read_csv(data_to_table, skiprows = plotted_num_lines, index_col = 0, skipfooter = max_skipper, engine='python')
+    elif type(data_to_table) == list:
+        csv = []
+        if type(data_to_table[0]) == str or type(data_to_table[0]) == unicode:
+            wrapped = [list(data_to_table)]
+        else:
+            wrapped = list(data_to_table)
+        years = [str(year) for year, count in wrapped[0][1:]]
+        topline = ',' + ','.join(years) + ',total'
+        csv.append(topline)
+        data = []
+        for entry in wrapped[:maxresults]:
+            word = entry[0]
+            total = sum([count for year, count in entry[1:]])
+            counts = [str(count) for year, count in entry[1:]]
+            dataline = str(word) + ',' + ','.join(counts) + ',' + str(total)
+            csv.append(dataline)
+        # table it with pandas
+        csv = '\n'.join(csv)
+        tab = pandas.read_csv(StringIO(csv), index_col = 0, engine='python')
+    return tab
+
+
+def keywords(data, refcorp = 'bnc', csvmake = False, **kwargs):
+    """Feed this a csv file generated with conc() and get its keywords"""
+    import sys
+    sys.path.insert(0, 'spindle-code-master/keywords')
+    from keywords import keywords_and_ngrams 
+    import re
+    # turn all sentences into long string
+    f = open(data)
+    raw = f.read()
+    bad, good = re.compile(r'Entire sentences \(n=[0-9]+\):').split(raw)
+    keywords, ngrams = keywords_and_ngrams(good, **kwargs)
+    keywords_list_version = []
+    for index, item in enumerate(keywords):
+        aslist = [index, item[0], item[1]]
+        keywords_list_version.append(aslist)
+    ngrams_list_version = []
+    for index, item in enumerate(ngrams):
+        joined_ngram = ' '.join(item[0])
+        aslist = [index, joined_ngram, item[1]]
+        ngrams_list_version.append(aslist)    
+    return keywords_list_version, ngrams_list_version
+
+# keywords, ngrams = keywords('test.csv', nBigrams = 4)
+# print ngrams
+
+def collocates(data, nbest = 30, window_size = 5):
+    """Feed this a csv file generated with conc() and get its collocations"""
+    import nltk
+    from nltk import collocations
+    from nltk.collocations import BigramCollocationFinder
+    import re
+    f = open(data)
+    raw = f.read()
+    bad, good = re.compile(r'Entire sentences \(n=[0-9]+\):').split(raw)
+    good = unicode(good.lower(), 'utf-8', errors = 'ignore')
+    sent_tokenizer=nltk.data.load('tokenizers/punkt/english.pickle')
+    sents = sent_tokenizer.tokenize(good)
+    tokenized_sents = [nltk.word_tokenize(i) for i in sents]
+    allwords = []
+    # for each sentence,
+    for sent in tokenized_sents:
+    # for each word,
+        for word in sent:
+        # make a list of all words
+            allwords.append(word)
+    bigram_measures = nltk.collocations.BigramAssocMeasures()
+    finder = BigramCollocationFinder.from_words(allwords, window_size=5)
+    ignored_words = nltk.corpus.stopwords.words('english')
+    # anything containing letter or number
+    regex = r'[A-Za-z0-9]'
+    # the n't token
+    nonot = r'n\'t'
+    # lots of conditions!
+    finder.apply_word_filter(lambda w: len(w) < 2 or w.lower() in ignored_words or not re.match(regex, w) or re.match(nonot, w))
+    finder.apply_freq_filter(2)
+    results = sorted(finder.nbest(bigram_measures.raw_freq, nbest))
+    listversion = []
+    for word_one, word_two in results:
+        aslist = [word_one, word_two]
+        listversion.append(aslist)
+    return listversion
+
+# colls = collocates('test.csv')
+# print colls

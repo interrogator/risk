@@ -29,7 +29,11 @@ def interrogator(path, options, query, lemmatise = False, test = False,
     import codecs
     from string import digits
     import operator
-    from IPython.display import display, clear_output
+    try:
+        from IPython.display import display, clear_output
+        have_ipython = True
+    except ImportError:
+        have_ipython = False
     # define option regexes
     c_option_regex = re.compile(r'-C') # find out if c option enabled
     u_option_regex = re.compile(r'-u') # find out if u option enabled
@@ -44,14 +48,14 @@ def interrogator(path, options, query, lemmatise = False, test = False,
     # welcome message based on kind of interrogation
     # this could probably be made simpler...
     if re.match(c_option_regex, options):
-        print time + ": Beginning corpus interrogation: " + path + "\n          Query: " + str(query) + ". \n          Counts only.\n"
+        print time + ": Begining corpus interrogation: " + path + "\n          Query: " + str(query) + ". \n          Counts only.\n          Interrogating corpus ... \n"
     elif re.match(u_option_regex, options):
-         print time + ": Beginning corpus interrogation: " + path + "\n          Query: " + str(query) + ". \n          Annotations only.\n"
+        print time + ": Begining corpus interrogation: " + path + "\n          Query: " + str(query) + ". \n          Tags only.\n          Interrogating corpus ... \n"
     elif re.match(t_option_regex, options):
-        print time + ": Beginning corpus interrogation: " + path + "\n          Query: " + str(query) + ". \n          Terminals only.\n"
+        print time + ": Begining corpus interrogation: " + path + "\n          Query: " + str(query) + ". \n          Terminals only.\n          Interrogating corpus ... \n"
     else:
         if not re.match(none_option_regex, options):
-            print time + ": Beginning corpus interrogation: " + path + "\n          Query: " + str(query) + ". \n          Tags and terminals.\n"
+            print time + ": Begining corpus interrogation: " + path + "\n          Query: " + str(query) + ". \n          Tags and terminals.\n          Interrogating corpus ... \n"
     
     # make this into a function
     # get POS from Tregex query
@@ -92,7 +96,6 @@ def interrogator(path, options, query, lemmatise = False, test = False,
     testpattern = !$tregex_command
     tregex_error = re.compile(r'^Error parsing expression')
     regex_error = re.compile(r'^Exception in thread')
-    print testpattern[0]
     if re.match(tregex_error, testpattern[0]):
         raise ValueError("Error parsing Tregex expression. Check for balanced parentheses and boundary delimiters.") 
     if re.match(regex_error, testpattern[0]):
@@ -108,22 +111,23 @@ def interrogator(path, options, query, lemmatise = False, test = False,
     exclude = set(string.punctuation)
     annual_totals = [u'Totals']
     # search the corpus    
+
     def search():
-        for d in sorted_dirs:
+        num_dirs = len(sorted_dirs)
+        p = ProgressBar(num_dirs)
+        for index, d in enumerate(sorted_dirs):
+            p.animate(index)
             yearfinder = re.findall(r'[0-9]+', d)
-            time = strftime("%H:%M:%S", localtime())
-            print time + ": Doing " + yearfinder[0] + " ...\r",
-            print time + ": Doing " + yearfinder[0] + " ...\r",
+            #time = strftime("%H:%M:%S", localtime())
+            #print time + ": Doing " + yearfinder[0] + " ...\r",
             tregex_command = 'sh ./tregex.sh -o ' + options + ' \'' + query + '\' ' + os.path.join(path,d) + ' 2>/dev/null | grep -vP \'^\s*$\''
-            # dependency parsing results go here
             result = !$tregex_command
-            # get total:
             totalcount = [int(d), len(result)]
             annual_totals.append(totalcount)
             # process results
             lowercase_result = []
-            time = strftime("%H:%M:%S", localtime())
-            print time + ": Doing " + yearfinder[0] + " ..."
+            #time = strftime("%H:%M:%S", localtime())
+            #print time + ": Doing " + yearfinder[0] + " ..."
             for word in result:
                 try:
                     word = unicode(word, 'utf-8')
@@ -151,29 +155,41 @@ def interrogator(path, options, query, lemmatise = False, test = False,
                 #lowered = lowered.translate(None, digits) # not a good way to go about it.
                 lowercase_result.append(lowered)
             results.append(lowercase_result)
+        p.animate(num_dirs)
+            
         return results
 
     def searchcoption():
         output = [u'Totals'] # for -C option
-        for d in sorted_dirs:
+        num_dirs = len(sorted_dirs)
+        p = ProgressBar(num_dirs)
+        for index, d in enumerate(sorted_dirs):
+            p.animate(index)
             yearfinder = re.findall(r'[0-9]+', d)
-            time = strftime("%H:%M:%S", localtime())
-    
-            print time + ": Doing " + yearfinder[0] + " ..."
+            #time = strftime("%H:%M:%S", localtime())
+            #print time + ": Doing " + yearfinder[0] + " ..."
             tregex_command = 'sh ./tregex.sh -o ' + options + ' \'' + query + '\' ' + os.path.join(path,d) + ' 2>/dev/null | grep -vP \'^\s*$\''
             result = !$tregex_command
             year_total = [int(yearfinder[0]), int(result[0])]
             output.append(year_total)
+        p.animate(num_dirs)
         time = strftime("%H:%M:%S", localtime())
-
-        print time + ': ' + path + ' interrogation done.'
+        #print time + ': ' + path + ' interrogation done.'
         return output
 
     def sort(results):
+        """sort the results"""
+        # this part just gets the total number of words
+        subcorp_count = []
+        for lst in results:
+            subcorp_count.append(len(lst))
+        total = '(n=' + str(sum([i for i in subcorp_count])) + ')'
         time = strftime("%H:%M:%S", localtime())
-        print time + ": Sorting results ..."
+        print '\n\n' + time + ": Sorting results " + total + " ... \n"
         unique_results = []
-        for subcorpus in results:
+        p = ProgressBar(len(results))
+        for index, subcorpus in enumerate(results):
+            p.animate(index)
             yearfinder = re.findall(r'[0-9]+', sorted_dirs[results.index(subcorpus)])
             year = yearfinder[0]
             uniques = set(sorted(results[results.index(subcorpus)]))
@@ -185,6 +201,7 @@ def interrogator(path, options, query, lemmatise = False, test = False,
                 #########print year_lemma_and_count
                     unique_results.append(year_lemma_and_count)
             #unique_results.append(unique_words)
+            p.animate(index + 1)
         # now we've got the year, word and count from every subcorpus.
         unique_results.sort(lambda x,y: cmp(x[1],y[1]))
         return unique_results
@@ -199,16 +216,14 @@ def interrogator(path, options, query, lemmatise = False, test = False,
         count = len(uniquewords)
         # print updates on tabling process because it's slow
         time = strftime("%H:%M:%S", localtime())
-        print time + ': Processing ' + str(count) + ' entries ... \r',
+        total = '(n=' + str(len(unique_results)) + ')'
+        print '\n\n' + time + ": Talling results " + total + " ... \n"
         c = 1
-        m = 1000
+        p = ProgressBar(count)
         for wordlist_entry in uniquewords:
+            p.animate(c)
             c += 1
-            if c == m:
-                perc = c * 100 / count
-                time = strftime("%H:%M:%S", localtime())
-                print time + ': ' + str(perc) + ' per cent done ... '
-                m += 1000
+            #print time + ': ' + str(perc) + ' per cent done ... '
             lines = [line for line in unique_results if wordlist_entry == line[1]] # this is the slow part...
             counts = [wordlist_entry]
             for l in lines:
@@ -263,6 +278,60 @@ def interrogator(path, options, query, lemmatise = False, test = False,
         print time + ': ' + path + ' interrogation done.'
         return final
 
+
+        # progress bar
+
+    class ProgressBar:
+        def __init__(self, iterations):
+            self.iterations = iterations
+            self.prog_bar = '[]'
+            self.fill_char = '*'
+            self.width = 60
+            self.__update_amount(0)
+            if have_ipython:
+                self.animate = self.animate_ipython
+            else:
+                self.animate = self.animate_noipython
+    
+        def animate_ipython(self, iter, dirname = None):
+            print '\r', self,
+            sys.stdout.flush()
+            if dirname:
+                self.update_iteration(iter + 1, dirname)
+            else:
+                self.update_iteration(iter + 1, dirname)
+    
+        def update_iteration(self, elapsed_iter, dirname = None):
+            self.__update_amount((elapsed_iter / float(self.iterations)) * 100.0, dirname)
+            self.prog_bar += ' ' # + ' %d of %s complete' % (elapsed_iter, self.iterations)
+    
+        def __update_amount(self, new_amount, dirname = None):
+            percent_done = int(round((new_amount / 100.0) * 100.0))
+            all_full = self.width - 2
+            num_hashes = int(round((percent_done / 100.0) * all_full))
+            time = strftime("%H:%M:%S", localtime())
+            self.prog_bar = time + ': [' + self.fill_char * num_hashes + ' ' * (all_full - num_hashes) + ']'
+            pct_place = (len(self.prog_bar) // 2) + (len(str(percent_done)) // 2)
+            if dirname:
+                pct_string = '%d%% ' % percent_done + '(' + dirname + ')'
+            else:
+                pct_string = '%d%%' % percent_done # could pass dirname here!
+            self.prog_bar = self.prog_bar[0:pct_place] + \
+               (pct_string + self.prog_bar[pct_place + len(pct_string):])
+    
+        def __str__(self):
+            return str(self.prog_bar)
+
+
+
+
+
+
+
+
+
+
+
     # decide whether we're getting -t or -c results 
     # from regex and do the correct workflow.
 
@@ -280,3 +349,5 @@ def interrogator(path, options, query, lemmatise = False, test = False,
         output = outputnames(query_options, final, annual_totals)
     clear_output()
     return output
+
+
