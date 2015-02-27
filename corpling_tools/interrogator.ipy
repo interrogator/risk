@@ -1,68 +1,56 @@
 #!/usr/local/bin/ipython
 
 #   Interrogating parsed corpora and plotting the results: interrogator
-#   Soon to be replaced with much shorter version.
-
+#   for ResBaz NLTK stream
 #   Author: Daniel McDonald
 
-def interrogator(path, options, query, lemmatise = False, test = False, 
-    titlefilter = False, lemmatag = False, deps = False):
-    """Uses Tregex to make list of frequency counts in corpora.
-    
-    Interrogator investigates sets of Stanford parsed subcorpora for complex frequency information. 
-
-    path: path to corpus as string
-    options: tregex options as string, eg. '-t'
-    query: tregex query
-    Lemmatise: lemmatise results
-    test: for development, go through only three subcorpora
-    titlefilter: strip 'mr, mrs, dr' etc from proper noun strings
-
-    Note: subcorpora directory names must be numbers only.
-    """
-    import os
+def interrogator(path, options, query, lemmatise = False, titlefilter = False, lemmatag = False):
     import collections
-    import time
-    from time import localtime, strftime
+    from collections import Counter
+    import os
     import re
-    import sys
-    import string
-    import codecs
-    from string import digits
     from corpling_tools.progressbar import ProgressBar
-    import operator
+    from time import localtime, strftime
+
+    # check if we are in ipython
     try:
         from IPython.display import display, clear_output
         have_ipython = True
     except ImportError:
         have_ipython = False
-    # define option regexes
-    c_option_regex = re.compile(r'-C') # find out if c option enabled
-    u_option_regex = re.compile(r'-u') # find out if u option enabled
-    t_option_regex = re.compile(r'-t') # find out if t option enabled   
-    none_option_regex = re.compile(r'[uCt]') # find out if any option enabled
-    if lemmatise:
-        import nltk
-        from nltk.stem.wordnet import WordNetLemmatizer
-        lmtzr=WordNetLemmatizer() # initialise lemmatiser only once, for speed
-    time = strftime("%H:%M:%S", localtime())
 
-    # welcome message based on kind of interrogation
-    # this could probably be made simpler...
-    if re.match(c_option_regex, options):
-        print time + ": Begining corpus interrogation: " + path + "\n          Query: " + str(query) + ". \n          Counts only.\n          Interrogating corpus ... \n"
-    elif re.match(u_option_regex, options):
-        print time + ": Begining corpus interrogation: " + path + "\n          Query: " + str(query) + ". \n          Tags only.\n          Interrogating corpus ... \n"
-    elif re.match(t_option_regex, options):
-        print time + ": Begining corpus interrogation: " + path + "\n          Query: " + str(query) + ". \n          Terminals only.\n          Interrogating corpus ... \n"
-    else:
-        if not re.match(none_option_regex, options):
-            print time + ": Begining corpus interrogation: " + path + "\n          Query: " + str(query) + ". \n          Tags and terminals.\n          Interrogating corpus ... \n"
-    
-    # make this into a function
-    # get POS from Tregex query
-    # TO DO: add a feature where if tag and terminal option is selected, lemmatiser gets the tag from the tag portion...
-    if lemmatise is True:
+    def query_test(query):
+        import re
+        # define error searches 
+        tregex_error = re.compile(r'^Error parsing expression')
+        regex_error = re.compile(r'^Exception in thread')
+
+        #define command and run it
+        tregex_command = 'sh ./tregex.sh \'%s\' 2>&1' % (query)
+        if have_ipython:
+            testpattern = !$tregex_command
+        else:
+            testpattern = os.system(tregex_command)
+
+        # if tregex error, give general error message
+        if re.match(tregex_error, testpattern[0]):
+            tregex_error_output = "Error parsing Tregex expression. Check for balanced parentheses and boundary delimiters."
+            raise ValueError(tregex_error_output) 
+
+        # if regex error, try to help
+        if re.match(regex_error, testpattern[0]):
+            info = testpattern[0].split(':')
+            index_of_error = re.findall(r'index [0-9]+', info[1])
+            justnum = index_of_error[0].split('dex ')
+            spaces = ' ' * int(justnum[1])
+            remove_start = query.split('/', 1)
+            remove_end = remove_start[1].split('/', -1)
+            regex_error_output = 'Error parsing regex inside Tregex query:%s '\
+            '. Best guess: \n%s\n%s^' % (str(info[1]), str(remove_end[0]), spaces)
+            raise ValueError(regex_error_output)    
+
+    def gettag(query):
+        import re
         if lemmatag is False:
             # attempt to find tag from tregex query
             # currently this will fail with a query like r'/\bthis/'
@@ -86,216 +74,155 @@ def interrogator(path, options, query, lemmatise = False, test = False,
             tagchecker = re.compile(r'^[avrn]$')
             if not re.match(tagchecker, lemmatag):
                 raise ValueError("WordNet POS tag not recognised. Must be 'a', 'v', 'r' or 'n'.")
-    # get subdirectories in corpus folder
-    sorted_dirs = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path,d))]
-    sorted_dirs.sort(key=int)
-    if test is True: # allow shorter testing
-        sorted_dirs = sorted_dirs[:5]
-    number_of_subcorpora = len(sorted_dirs) # move earlier
-    results = []
-    # make sure tregex can parse pattern, or return error
-    tregex_command = 'sh ./tregex.sh \'' + query + '\' 2>&1'
-    testpattern = !$tregex_command
-    tregex_error = re.compile(r'^Error parsing expression')
-    regex_error = re.compile(r'^Exception in thread')
-    if re.match(tregex_error, testpattern[0]):
-        raise ValueError("Error parsing Tregex expression. Check for balanced parentheses and boundary delimiters.") 
-    if re.match(regex_error, testpattern[0]):
-        info = testpattern[0].split(':')
-        index_of_error = re.findall(r'index [0-9]+', info[1])
-        print index_of_error
-        justnum = index_of_error[0].split('dex ')
-        spaces = ' ' * int(justnum[1])
-        remove_start = query.split('/', 1)
-        remove_end = remove_start[1].split('/', -1)
+        return tag
+    
+    def processwords(list_of_matches):
+        # encoding
+        matches = [unicode(match, 'utf-8', errors = 'ignore') for match in list_of_matches]
+        #lowercasing
+        matches = [w.lower() for w in matches]
+        if lemmatise:
+            tag = gettag(query)
+            matches = lemmatiser(matches, tag)
+        if titlefilter:
+            matches = titlefilter(matches)
+        return matches
 
-        raise ValueError("Error parsing regex inside Tregex query:" + str(info[1]) + '. Best guess: \n' + str(remove_end[0]) + '\n' + spaces + '^')    
-    exclude = set(string.punctuation)
-    annual_totals = [u'Totals']
-    # search the corpus    
+    def lemmatiser(list_of_words, tag):
+        """take a list of unicode words and a tag and return a lemmatised list."""
+        import nltk
+        tokenised_list = [nltk.word_tokenize(i) for i in list_of_words]
+        from nltk.stem.wordnet import WordNetLemmatizer
+        lmtzr=WordNetLemmatizer()
+        output = []
+        for entry in tokenised_list:
+            # just get the rightmost word
+            word = entry[-1]
+            entry.pop()
+            # should turn these into a list in a file ... 'transforms'
+            if word == u'\'s':
+               word = u'is'
+            if word == u'\'re':
+               word = u'are'
+            if word == u'\'m':
+               word = u'am'
+           #if word == u'\'d':
+              #word = u'is'
+           #if word == u'\'ll':
+              #word = u'is'
+            if word == u'n\'t':
+               word = u'not'
+            word = lmtzr.lemmatize(word, tag)
+            entry.append(word)
+            output.append(' '.join(entry))
+        return output
+        # if single words: return [lmtsr.lemmatize(word, tag) for word in list_of_matches]
 
-    def search():
-        num_dirs = len(sorted_dirs)
-        p = ProgressBar(num_dirs)
-        for index, d in enumerate(sorted_dirs):
-            p.animate(index)
-            yearfinder = re.findall(r'[0-9]+', d)
-            #time = strftime("%H:%M:%S", localtime())
-            #print time + ": Doing " + yearfinder[0] + " ...\r",
-            tregex_command = 'sh ./tregex.sh -o ' + options + ' \'' + query + '\' ' + os.path.join(path,d) + ' 2>/dev/null | grep -vP \'^\s*$\''
-            result = !$tregex_command
-            totalcount = [int(d), len(result)]
-            annual_totals.append(totalcount)
-            # process results
-            lowercase_result = []
-            #time = strftime("%H:%M:%S", localtime())
-            #print time + ": Doing " + yearfinder[0] + " ..."
-            for word in result:
-                try:
-                    word = unicode(word, 'utf-8')
-                except TypeError:
-                    raise ValueError("Some kind of encoding problem.")
-                if lemmatise is True:
-                    # some post-hoc fixing of tokens for lemmatiser ...
-                    if word == u'\'s':
-                        word = u'is'
-                    if word == u'\'re':
-                        word = u'are'
-                    if word == u'\'m':
-                        word = u'am'
-                    #if word == u'\'d':
-                        #word = u'is'
-                    #if word == u'\'ll':
-                        #word = u'is'
-                    if word == u'n\'t':
-                        word = u'not'
-                    word = lmtzr.lemmatize(word, tag)
-                word = re.sub(r"^[^A-Za-z\(\']*", "", word) # this might be too strict
-                lowered = word.lower()
-                if titlefilter is True:
-                    lowered = re.sub(r"^(admiral|archbishop|alan|merrill|sarah|queen|king|sen|chancellor|prime minister|cardinal|bishop|father|hon|rev|reverend|pope|the|sir|doctor|professor|president|senator|congressman|congresswoman|mr|ms|mrs|miss|dr|bill|hillary|hillary rodham|saddam|osama|ayatollah|george|george w|mitt|malcolm|barack|ronald|john|john f|william|al|bob)\b\.* *", "", lowered)
-                #lowered = lowered.translate(None, digits) # not a good way to go about it.
-                lowercase_result.append(lowered)
-            results.append(lowercase_result)
-        p.animate(num_dirs)
-            
-        return results
-
-    def searchcoption():
-        output = [u'Totals'] # for -C option
-        num_dirs = len(sorted_dirs)
-        p = ProgressBar(num_dirs)
-        for index, d in enumerate(sorted_dirs):
-            p.animate(index)
-            yearfinder = re.findall(r'[0-9]+', d)
-            #time = strftime("%H:%M:%S", localtime())
-            #print time + ": Doing " + yearfinder[0] + " ..."
-            tregex_command = 'sh ./tregex.sh -o ' + options + ' \'' + query + '\' ' + os.path.join(path,d) + ' 2>/dev/null | grep -vP \'^\s*$\''
-            result = !$tregex_command
-            year_total = [int(yearfinder[0]), int(result[0])]
-            output.append(year_total)
-        p.animate(num_dirs)
-        time = strftime("%H:%M:%S", localtime())
-        #print time + ': ' + path + ' interrogation done.'
+    def titlefilter(list_of_matches):
+        import re
+        import nltk
+        from data.dictionaries.titlewords import titlewords
+        tokenised_list = [nltk.word_tokenize(i) for i in list_of_matches]
+        output = []
+        for result in tokenised_list:
+            head = result[-1]
+            non_head = result.index(head) # ???
+            title_stripped = [token for token in result[:non_head] if token not in titlewords]
+            title_stripped.append(head)
+            str_result = ' '.join(title_stripped)
+            output.append(str_result)
         return output
 
-    def sort(results):
-        """sort the results"""
-        # this part just gets the total number of words
-        subcorp_count = []
-        for lst in results:
-            subcorp_count.append(len(lst))
-        total = '(n=' + str(sum([i for i in subcorp_count])) + ')'
-        time = strftime("%H:%M:%S", localtime())
-        print '\n\n' + time + ": Sorting results " + total + " ... \n"
-        unique_results = []
-        p = ProgressBar(len(results))
-        for index, subcorpus in enumerate(results):
-            p.animate(index)
-            yearfinder = re.findall(r'[0-9]+', sorted_dirs[results.index(subcorpus)])
-            year = yearfinder[0]
-            uniques = set(sorted(results[results.index(subcorpus)]))
-            unique_words = []
-            for word in uniques:
-                if word is not '':
-                    count = subcorpus.count(word)
-                    year_lemma_and_count = [year, word, count]
-                #########print year_lemma_and_count
-                    unique_results.append(year_lemma_and_count)
-            #unique_results.append(unique_words)
-            p.animate(index + 1)
-        # now we've got the year, word and count from every subcorpus.
-        unique_results.sort(lambda x,y: cmp(x[1],y[1]))
-        return unique_results
+    # welcome message based on kind of interrogation
 
-    def table(unique_results):
-        allwords = []
-        tally = []
-        # make a list of all words in corpus
-        for item in unique_results: 
-            allwords.append(item[1])
-        uniquewords = set(sorted(allwords))
-        count = len(uniquewords)
-        # print updates on tabling process because it's slow
-        time = strftime("%H:%M:%S", localtime())
-        total = '(n=' + str(len(unique_results)) + ')'
-        print '\n\n' + time + ": Talling results " + total + " ... \n"
-        c = 1
-        p = ProgressBar(count)
-        for wordlist_entry in uniquewords:
-            p.animate(c)
-            c += 1
-            #print time + ': ' + str(perc) + ' per cent done ... '
-            lines = [line for line in unique_results if wordlist_entry == line[1]] # this is the slow part...
-            counts = [wordlist_entry]
-            for l in lines:
-                unique_results.remove(l) # this speeds the tabling up by removing completed entries
-                year_and_count = [l[0], l[2]]
-                counts.append(year_and_count)
-            tally.append(counts)
-        sorting = []
-        final = []
-        tally = sorted(tally)
+    u_option_regex = re.compile(r'(?i)-u') # find out if u option enabled
+    t_option_regex = re.compile(r'(?i)-t') # find out if t option enabled   
+    o_option_regex = re.compile(r'(?i)-o') # find out if t option enabled   
+    c_option_regex = re.compile(r'(?i)-c') # find out if c option enabled   
+    only_count = False
 
-        # final formatting --- elaborate, but fast.
-
-        for entry in tally:
-            if entry[0] == u'': # catch and remove empty entries
-                tally.remove(entry)
-            #if type(entry[0]) != unicode:
-                #tally.remove(entry)
-            if type(entry[0]) == unicode:
-                word = unicode(entry[0])
-            else:
-                word = False
-            listofyears = []
-            toadd = []
-            data = []
-            for part in entry[1:]: # get year, word, and count
-                if type(part) == list:
-                    int_year = int(part[0])
-                    listofyears.append(part[0]) # get years with results
-                    toadd.append(part[1])
-                    int_year_and_count = [int_year, part[1]]
-                    data.append(int_year_and_count)
-                equals = sum(int(l) for l in toadd)
-            # adding zero counts for matplotlib
-            for d in sorted_dirs: # get year as string
-                yearfinder = re.findall(r'[0-9]+', d)
-                year = yearfinder[0] 
-                if year not in listofyears: 
-                    data.append([int(year), 0])
-                data = sorted(data)
-            if word is not False:
-                total_data = [equals] + [word] + data # total, word, year and count ...
-            #else:
-                #print 'A word was not found  ... '
-                sorting.append(total_data)
-        sorting = sorted(sorting, reverse = True) # could improve with generator expr
-        for entry in sorting:
-            if entry[1] != u'':
-                final.append(entry[1:]) # this and the line below are ways to remove total from final
-            #sorting.remove(entry[0])
-        time = strftime("%H:%M:%S", localtime())
-        print time + ': ' + path + ' interrogation done.'
-        return final
-
-    # decide whether we're getting -t or -c results 
-    # from regex and do the correct workflow.
-
+    if re.match(u_option_regex, options):
+        optiontext = 'Tags only.'
+    if re.match(t_option_regex, options):
+        optiontext = 'Terminals only.'
+    if re.match(o_option_regex, options):
+        optiontext = 'Tags and terminals.'
     if re.match(c_option_regex, options):
-        final = searchcoption()
+        only_count = True
+        options = options.upper()
+        optiontext = 'Counts only.'
+    time = strftime("%H:%M:%S", localtime())
+    print "%s: Begining corpus interrogation: %s\n          Query: '%s'\n          %s\n          Interrogating corpus ... \n" % (time, path, query, optiontext)
+    # check that query is ok
+    query_test(query)
+    sorted_dirs = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path,d))]
+    sorted_dirs.sort(key=int)
+    allwords_list = []
+    results_list = []
+    main_totals = [u'Totals']
+    p = ProgressBar(len(sorted_dirs))
+    # do interrogation with tregex
+    for index, d in enumerate(sorted_dirs):
+        p.animate(index)
+        tregex_command = 'sh ./tregex.sh -o %s \'%s\' %s 2>/dev/null | grep -vP \'^\s*$\'' %(options, query, os.path.join(path,d))
+        if have_ipython:
+            result = !$tregex_command
+        else:
+            result = os.system(tregex_command)
+        if only_count:
+            tup = [int(d), int(result[0])]
+            main_totals.append(tup)
+            continue
+        result.sort()
+        main_totals.append([int(d), len(result)])
+        processed_result = processwords(result)
+        allwords_list.append(processed_result)
+        results_list.append(processed_result)
+    p.animate(len(sorted_dirs))
+    if only_count:
+        total = sum([i[1] for i in main_totals[1:]])
+        main_totals.append([u'Total', total])
         outputnames = collections.namedtuple('interrogation', ['query', 'totals'])
-        query_options = [query, options]         
-        output = outputnames(query_options, final)
-    else:
-        results = search()
-        unique_results = sort(results)
-        final = table(unique_results)
-        outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
         query_options = [query, options] 
-        output = outputnames(query_options, final, annual_totals)
-    clear_output()
+        output = outputnames(query_options, main_totals)
+        if have_ipython:
+            clear_output()
+        return output
+
+    # flatten list
+    allwords = [item for sublist in allwords_list for item in sublist]
+    allwords.sort()
+    unique_words = set(allwords)
+    list_words = []
+    for word in unique_words:
+        list_words.append([word])
+
+
+    # make dictionary of every subcorpus
+    dicts = []
+    p = ProgressBar(len(results_list))
+    for index, subcorpus in enumerate(results_list):
+        p.animate(index)
+        subcorpus_name = sorted_dirs[index]
+        dictionary = Counter(subcorpus)
+        dicts.append(dictionary)
+        for word in list_words:
+            getval = dictionary[word[0]]
+            word.append([int(subcorpus_name), getval])
+    p.animate(len(results_list))
+    # do totals (and keep them), then sort list by total
+    for word in list_words:
+        total = sum([i[1] for i in word[1:]])
+        word.append([u'Total', total])
+    list_words = sorted(list_words, key=lambda x: x[-1], reverse = True)
+    
+    # add total to main_total
+    total = sum([i[1] for i in main_totals[1:]])
+    main_totals.append([u'Total', total])
+    #make results into named tuple
+    outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
+    query_options = [query, options] 
+    output = outputnames(query_options, list_words, main_totals)
+    if have_ipython:
+        clear_output()
     return output
-
-

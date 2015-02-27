@@ -255,35 +255,28 @@ def conc(corpus, query, random = False, window = 30, trees = False, csvmake = Fa
 
 
 def tally(lst, indices):
-    """Tally total occurrences of a result"""
+    """Display total occurrences of a result"""
+
+    # this tool doesn't do a whole lot, now that totals are found during interrogation.
     output = []
     if type(indices) == int:
         item_of_interest = lst[indices]
-        count = []
         word = item_of_interest[0]
-        for tup in item_of_interest[1:]:
-            count.append(tup[1])
-            total = sum(count)
-            string = str(indices) + ': ' + str(word) + ': ' + str(total) + ' total occurrences.'
+        total = item_of_interest[-1][-1]
+        string = str(indices) + ': ' + str(word) + ': ' + str(total) + ' total occurrences.'
         output.append(string)
     if type(indices) == list:
         for index in indices:
             item_of_interest = lst[index]
             word = item_of_interest[0]
-            count = []
-            for tup in item_of_interest[1:]:
-                count.append(tup[1])
-                total = sum(count)
+            total = item_of_interest[-1][-1]
             string = str(index) + ': ' + str(word) + ': ' + str(total) + ' total occurrences.'
             output.append(string)
     if type(indices) == str:
         if indices == 'all':
             for item in lst:
                 word = item[0]
-                count = []
-                for tup in item[1:]:
-                    count.append(tup[1])
-                    total = sum(count)
+                total = item_of_interest[-1][-1]
                 string = str(lst.index(item)) + ': ' + str(word) + ': ' + str(total) + ' total occurrences.'
                 output.append(string)
         else: # if regex
@@ -292,12 +285,11 @@ def tally(lst, indices):
             for item in lst:
                 if re.search(regex, item[0]):
                     word = item[0]
-                    count = []
-                    for tup in item[1:]:
-                        count.append(tup[1])
-                        total = sum(count)
+                    total = item[-1][-1]
                     string = str(lst.index(item)) + ': ' + str(word) + ': ' + str(total) + ' total occurrences.'
                     output.append(string)
+                #else:
+                    #raise ValueError("No matches found. Sorry")
     return output
 
 def merger(lst, indices_to_merge, newname = False):

@@ -75,3 +75,6 @@ def get_trees(path, newpath):
                 for bit in bits_to_keep:
                     newfile.write(str(bit))
     print 'Done!\n'
+
+
+get_dependencies('data/bipolar/postcounts', 'data/bipolar/basic-dep/postcounts')

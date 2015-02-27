@@ -69,7 +69,51 @@ def dictmaker(path, dictname, dictpath = 'data/dictionaries'):
     from StringIO import StringIO
     import shutil
     from collections import Counter
-    from corpling_tools.progressbar import ProgressBar
+
+    # suppress output from conc
+
+    # progress bar
+
+    class ProgressBar:
+        def __init__(self, iterations):
+            self.iterations = iterations
+            self.prog_bar = '[]'
+            self.fill_char = '*'
+            self.width = 60
+            self.__update_amount(0)
+            if have_ipython:
+                self.animate = self.animate_ipython
+            else:
+                self.animate = self.animate_noipython
+    
+        def animate_ipython(self, iter, dirname = None):
+            print '\r', self,
+            sys.stdout.flush()
+            if dirname:
+                self.update_iteration(iter + 1, dirname)
+            else:
+                self.update_iteration(iter + 1, dirname)
+    
+        def update_iteration(self, elapsed_iter, dirname = None):
+            self.__update_amount((elapsed_iter / float(self.iterations)) * 100.0, dirname)
+            self.prog_bar += ' ' # + ' %d of %s complete' % (elapsed_iter, self.iterations)
+    
+        def __update_amount(self, new_amount, dirname = None):
+            percent_done = int(round((new_amount / 100.0) * 100.0))
+            all_full = self.width - 2
+            num_hashes = int(round((percent_done / 100.0) * all_full))
+            time = strftime("%H:%M:%S", localtime())
+            self.prog_bar = time + ': [' + self.fill_char * num_hashes + ' ' * (all_full - num_hashes) + ']'
+            pct_place = (len(self.prog_bar) // 2) + (len(str(percent_done)) // 2)
+            if dirname:
+                pct_string = '%d%% ' % percent_done + '(' + dirname + ')'
+            else:
+                pct_string = '%d%%' % percent_done # could pass dirname here!
+            self.prog_bar = self.prog_bar[0:pct_place] + \
+               (pct_string + self.prog_bar[pct_place + len(pct_string):])
+    
+        def __str__(self):
+            return str(self.prog_bar)
   
     try:
         from IPython.display import display, clear_output
@@ -86,7 +130,7 @@ def dictmaker(path, dictname, dictpath = 'data/dictionaries'):
     if os.path.isfile(os.path.join(dictpath, dictname)):
         raise ValueError(os.path.join(dictpath, dictname) + " already exists. Delete it or use a new filename.")
     time = strftime("%H:%M:%S", localtime())
-    print time + ': Getting leaves from trees ... \n'
+    print time + ': Concordancing ... \n'
     p = ProgressBar(len(sorted_dirs))
     all_results = []
     for index, d in enumerate(sorted_dirs):
@@ -101,24 +145,17 @@ def dictmaker(path, dictname, dictpath = 'data/dictionaries'):
     text = unicode(all_results.lower(), 'utf-8', errors = 'ignore')
     sent_tokenizer=nltk.data.load('tokenizers/punkt/english.pickle')
     sents = sent_tokenizer.tokenize(text)
-    
-    def tokens():
-        p = ProgressBar(len(sents))
-        for index, sent in enumerate(sents):
-            p.animate(index + 1)
-            yield nltk.word_tokenize(sent)
-
-    tokenisation = tokens() # create a generator
-    allwords = []
-    allwords.append([item for sublist in tokenisation for item in sublist])
+    tokenized_sents = [nltk.word_tokenize(i) for i in sents]
+    # flatten  allwords
+    allwords = [item for sublist in tokenized_sents for item in sublist]
     # sort allwords
-    allwords = allwords[0]
     allwords = sorted(allwords)
     time = strftime("%H:%M:%S", localtime())
-    print '\n' + time + ': Counting ' + str(len(allwords)) + ' words ... \n'
+    print time + ': Counting ' + str(len(allwords)) + ' words ... \n'
     # make a dict
     dictionary = Counter(allwords)
     with open(os.path.join(dictpath, dictname), 'wb') as handle:
         pickle.dump(dictionary, handle)
     time = strftime("%H:%M:%S", localtime())
-    print time + ': Done! ' + os.path.join(dictpath, dictname) + ' created' 
+    print time + ': Done! ' + dictname + ' created in ' + dictpath + '/'
+

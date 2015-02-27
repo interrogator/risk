@@ -51,7 +51,7 @@ class ProgressBar:
 
     def __update_amount(self, new_amount, dirname = None):
         from time import localtime, strftime
-        percent_done = int(round((new_amount / 100.0) * 100.0))
+        percent_done = int(round((new_amount / 100.0) * 100.0, 2))
         all_full = self.width - 2
         num_hashes = int(round((percent_done / 100.0) * all_full))
         time = strftime("%H:%M:%S", localtime())

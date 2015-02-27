@@ -6,7 +6,7 @@
 def plotter(title, results, fract_of = False, y_label = False, 
     num_to_plot = 7, skip63 = False, proj63 = 4, 
     multiplier = 100, projection = True, yearspan = False,
-     justyears = False, csvmake = False, x_label = False):
+     justyears = False, csvmake = False, x_label = False, legend_totals = False):
     """
     Takes interrogator output and plots it with matplotlib
 
@@ -38,6 +38,11 @@ def plotter(title, results, fract_of = False, y_label = False,
     %matplotlib inline
     from pylab import rcParams
     rcParams['figure.figsize'] = 9.6, 4.8
+
+    def popper(interrogator_list):
+        """removes totals"""
+
+        return popped
 
     def skipper(interrogator_list):
         """Takes a list and returns a version without 1963"""
@@ -116,10 +121,10 @@ def plotter(title, results, fract_of = False, y_label = False,
             if type(entry) == list:
                 yearlist.append(str(entry[0]))
         # make first line
-        years = ','.join(yearlist)
-        # title then years for top row
-        topline = title + ',' + years
-        csv.append(topline)
+        csv.append(title)
+        # make the second line
+        years = ',' + ','.join(yearlist)
+        csv.append(years)
         # for each word
         for entry in csvdata:
             csvline = []
@@ -132,6 +137,8 @@ def plotter(title, results, fract_of = False, y_label = False,
             line = ','.join(csvline)
             csv.append(line)
         csv = '\n'.join(csv)
+
+
         # now do all data
         csvall = []
         yearlist = []
@@ -140,10 +147,10 @@ def plotter(title, results, fract_of = False, y_label = False,
             if type(entry) == list:
                 yearlist.append(str(entry[0]))
         # make first line
-        years = ','.join(yearlist)
-        # title then years for top row
-        topline = title + ',' + years
-        csvall.append(topline)
+        csvall.append(title)
+        # make the second line
+        years = ',' + ','.join(yearlist)
+        csvall.append(years)
         # for each word
         for entry in csvalldata:
             csvallline = []
@@ -204,35 +211,38 @@ def plotter(title, results, fract_of = False, y_label = False,
     csvdata = []
     csvalldata = []
     final = []
-    # watercolour style:
-    #colours = ["#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"]
-    #colours = ["#4D4D4D", "#5DA5DA", "#FAA43A", "#60BD68", "#F17CB0", "#B2912F", "#B276B2", "#DECF3F", "#F15854"]
     colours = ["#1f78b4", "#33a02c", "#e31a1c", "#ff7f00", "#6a3d9a", "#a6cee3", "#b2df8a", "#fb9a99", "#fdbf6f", "#cab2d6"]
-
     c = 0
-    # get an all data version if making csv
-    if csvmake:
-        for entry in alldata:
-            # run called processes
-            if skip63:
-                entry = skipper(entry)
-            if yearspan:
-                entry = yearspanner(entry, yearspan)
-            if justyears:
-                entry = yearskipper(entry, justyears)
-            if projection:
-                if not fract_of:
-                    entry = projector(entry)
-            # get word
-            word = entry[0]
-            # for each datum [year, count]:
+    for index, entry in enumerate(alldata):
+        # run called processes
+        if skip63:
+            entry = skipper(entry)
+        if yearspan:
+            entry = yearspanner(entry, yearspan)
+        if justyears:
+            entry = yearskipper(entry, justyears)
+        if projection:
+            if not fract_of:
+                entry = projector(entry)
+        # get word
+        word = entry[0]
+        total = str(float(entry[-1][-1]))[:4]
+        #print str(total)
+        if fract_of:
+            totalstring = ' (%s%%)' % total
+        else:
+            totalstring = ' (n=%s)' % total
+        entry.pop()
+        csvalldata.append(entry)
+        # for each datum [year, count]:
+        if index < num_to_plot:
             toplot = []
             xvalsbelow = []
             yvalsbelow = []
             xvalsabove = []
             yvalsabove = []
             d = 1 # first tuple, maybe not very stable
-            tups = len(entry) - 2 # all tuples minus 1
+            tups = len(entry) - 2 # all tuples minus 2 (to skip totals tuple)
             for _ in range(tups):
                 firstpart = entry[d] # first tuple
                 firstyear = firstpart[0]
@@ -250,58 +260,15 @@ def plotter(title, results, fract_of = False, y_label = False,
                     xvalsabove.append(nextpart[0])
                     yvalsabove.append(nextpart[1])
                 d += 1
-            csvalldata.append(entry)
-        # end repeated code
-    
-    # do code for actual plotting
-    
-    for entry in data[:num_to_plot]:
-        # run called processes
-        if skip63:
-            entry = skipper(entry)
-        if justyears:
-            entry = yearskipper(entry, justyears)
-        if yearspan:
-            entry = yearspanner(entry, yearspan)
-        if projection:
-            if not fract_of:
-                entry = projector(entry)
-        # get word
-        word = entry[0]
-        # for each datum [year, count]:
-        toplot = []
-        xvalsbelow = []
-        yvalsbelow = []
-        xvalsabove = []
-        yvalsabove = []
-        d = 1 # first tuple, maybe not very stable
-        # could use list index
-        tups = len(entry) - 2 # all tuples minus 1
-        for _ in range(tups):
-            firstpart = entry[d] # first tuple
-            firstyear = firstpart[0]
-            nextpart = entry[d + 1]
-            nextyear = nextpart[0]
-            if nextyear - firstyear > 1:
-                xvalsbelow.append(firstpart[0])
-                yvalsbelow.append(firstpart[1])
-                xvalsbelow.append(nextpart[0])
-                yvalsbelow.append(nextpart[1])
+            # do actual plotting
+            plt.plot(xvalsbelow, yvalsbelow, '--', color=colours[c])
+            if legend_totals:
+                plt.plot(xvalsabove, yvalsabove, '-', label=word + totalstring, color=colours[c])
             else:
-                xvalsabove.append(firstpart[0])
-                yvalsabove.append(firstpart[1])
-                xvalsabove.append(nextpart[0])
-                yvalsabove.append(nextpart[1])
-            d += 1
-        if csvmake: # append exactly what was plotted...
-            csvdata.append(entry)
-
-        # do actual plotting
-        plt.plot(xvalsbelow, yvalsbelow, '--', color=colours[c])
-        plt.plot(xvalsabove, yvalsabove, '-', label=word, color=colours[c])
-        if c == 8:
-            c = 0 # unpythonic
-        c += 1
+                plt.plot(xvalsabove, yvalsabove, '-', label=word, color=colours[c])
+            if c == 8:
+                c = 0 # unpythonic
+            c += 1
         
         # old way to plot everything at once
         #plt.plot(*zip(*toplot), label=word) # this is other projects...
