@@ -41,7 +41,7 @@ import collections # for making named tuples
 # import functions to be used here:
 for func in [f for f in os.listdir('corpling_tools') if f.endswith(".ipy")]:
     %run corpling_tools/$func
-! rm'riskwords.csv concordances.csv # remove old csv output (temporary code)
+! rm riskwords.csv concordances.csv # remove old csv output (temporary code)
 
 # <markdowncell>
 # We should set two variables that are used repeatedly during the investigation. If you were using this interface for your own corpora, you would change 'nyt' to the path to your data.
