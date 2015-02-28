@@ -81,9 +81,15 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     
     def processwords(list_of_matches):
         # encoding
-        matches = [unicode(match, 'utf-8', errors = 'ignore') for match in list_of_matches]
+        #matches = [unicode(match, 'utf-8', errors = 'ignore') for match in list_of_matches if type(match) != unicode]
+        matches = [match for match in list_of_matches if type(match) == unicode]
+        # remove bad characters
+        strip_bad = re.compile('[^.a-zA-Z0-9/-]', re.UNICODE)
+        matches = [re.sub(strip_bad, "", match) for match in matches]
+        matches = filter(None, matches)
         #lowercasing
-        matches = [w.lower() for w in matches]
+        matches = [match.lower() for match in matches if any(c.isalpha() for c in match)]
+        #matches.append([match for match in matches if not any(c.isalpha() for c in match)])
         if lemmatise:
             tag = gettag(query)
             matches = lemmatiser(matches, tag)
@@ -263,7 +269,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
             data = None
             gc.collect()
         result.sort()
-        main_totals.append([int(d), len(result)])
+        main_totals.append([int(d), len(result)]) # should this move down for more accuracy?
         if only_count:
             continue
         processed_result = processwords(result)
