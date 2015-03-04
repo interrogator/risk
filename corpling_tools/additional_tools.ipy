@@ -3,7 +3,7 @@
 #   Interrogating parsed corpora and plotting the results: additional resources
 #   Author: Daniel McDonald
 
-def surgeon(lst, criteria, remove = True):
+def surgeon(lst, criteria, remove = False):
     """
     Add or remove from results by regex or index.
 
@@ -18,12 +18,21 @@ def surgeon(lst, criteria, remove = True):
     if type(criteria) == str:
         regexp = re.compile(criteria)
         for item in lst:
+            print item
             if remove is True:
-                if not re.search(regexp, item[0]):
-                    newlist.append(item)
+                if len(item) > 1:
+                    if not re.search(regexp, item[0]):
+                        newlist.append(item)
+                else:
+                    if not re.search(regexp, item):
+                        newlist.append(item)                        
             if remove is False:
-                if re.search(regexp, item[0]):
-                    newlist.append(item)
+                if len(item) > 1:
+                    if re.search(regexp, item[0]):
+                        newlist.append(item)
+                else:
+                    if re.search(regexp, item):
+                        newlist.append(item)     
     if type(criteria) == list:
         if remove is True:
             newlist = list(lst)
@@ -96,7 +105,7 @@ def topix_plot(title, results, fract_of = False, **kwargs):
             plotter(newtitle, results[topic_subcorpora.index(topic)], 
                 fract_of = fract_of.totals[topic_subcorpora.index(topic)], **kwargs)
 
-def conc(corpus, query, random = False, window = 30, trees = False, csvmake = False): 
+def conc(corpus, query, random = False, window = 50, trees = False, csvmake = False): 
     """A concordancer for Tregex queries"""
     # add sorting?
     from random import randint
@@ -169,6 +178,8 @@ def conc(corpus, query, random = False, window = 30, trees = False, csvmake = Fa
         raise ValueError("Error parsing Tregex expression. "
             "Check for balanced parentheses and boundary delimiters.") 
     tregex_command = 'sh ./tregex.sh -o -w ' + options + ' \'' + query + '\' ' + corpus + ' 2>/dev/null | grep -vP \'^\s*$\''
+    # replace bracket: '-LRB- ' and ' -RRB- ' ...
+
     allresults = !$tregex_command
     results = list(allresults)
     if csvmake: # this is not optimised at all!
@@ -276,7 +287,7 @@ def tally(lst, indices):
         if indices == 'all':
             for item in lst:
                 word = item[0]
-                total = item_of_interest[-1][-1]
+                total = item[-1][-1]
                 string = str(lst.index(item)) + ': ' + str(word) + ': ' + str(total) + ' total occurrences.'
                 output.append(string)
         else: # if regex
@@ -394,6 +405,7 @@ def table(data_to_table, allresults = False, maxresults = 50):
 
     if allresults, show all results table, rather than just plotted results"""
     import pandas
+    import re
     from StringIO import StringIO
     if type(data_to_table) == str:
         f = open(data_to_table)
@@ -416,15 +428,22 @@ def table(data_to_table, allresults = False, maxresults = 50):
             wrapped = [list(data_to_table)]
         else:
             wrapped = list(data_to_table)
+        regex = re.compile('(?i)total')
+        if re.match(regex, wrapped[-1][0]):
+            total_present = True
+        else:
+            total_present = False
         years = [str(year) for year, count in wrapped[0][1:]]
-        topline = ',' + ','.join(years) + ',total'
+        # uncomment below to make total column
+        topline = ',' + ','.join(years) # + ',total'
         csv.append(topline)
         data = []
         for entry in wrapped[:maxresults]:
             word = entry[0]
             total = sum([count for year, count in entry[1:]])
             counts = [str(count) for year, count in entry[1:]]
-            dataline = str(word) + ',' + ','.join(counts) + ',' + str(total)
+            # uncomment below to make total column
+            dataline = str(word) + ',' + ','.join(counts) # + ',' + str(total)
             csv.append(dataline)
         # table it with pandas
         csv = '\n'.join(csv)

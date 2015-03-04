@@ -1,6 +1,7 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
 
+# from Spindle
 
 from collections import defaultdict
 import sys,os

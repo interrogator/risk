@@ -104,12 +104,14 @@ def interrogator(path, options, query, lemmatise = False, titlefilter = False, l
                word = u'is'
             if word == u'\'re':
                word = u'are'
+            if word == u'\'ve':
+               word = u'have'
             if word == u'\'m':
                word = u'am'
            #if word == u'\'d':
-              #word = u'is'
-           #if word == u'\'ll':
-              #word = u'is'
+              #word = u'had'
+           if word == u'\'ll':
+              #word = u'will'
             if word == u'n\'t':
                word = u'not'
             word = lmtzr.lemmatize(word, tag)
@@ -214,7 +216,7 @@ def interrogator(path, options, query, lemmatise = False, titlefilter = False, l
     for word in list_words:
         total = sum([i[1] for i in word[1:]])
         word.append([u'Total', total])
-    list_words = sorted(list_words, key=lambda x: x[-1], reverse = True)
+    list_words = sorted(list_words, key=lambda x: x[-1], reverse = True) # does this need to be int!?
     
     # add total to main_total
     total = sum([i[1] for i in main_totals[1:]])

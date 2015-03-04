@@ -6,7 +6,7 @@
 def plotter(title, results, fract_of = False, y_label = False, 
     num_to_plot = 7, skip63 = False, proj63 = 4, 
     multiplier = 100, projection = True, yearspan = False,
-     justyears = False, csvmake = False, x_label = False, legend_totals = False):
+     justyears = False, csvmake = False, x_label = False, legend_totals = False, log = False):
     """
     Takes interrogator output and plots it with matplotlib
 
@@ -35,6 +35,7 @@ def plotter(title, results, fract_of = False, y_label = False,
     from time import localtime, strftime
     from IPython.display import display, clear_output
     from matplotlib.ticker import MaxNLocator
+    from matplotlib.ticker import ScalarFormatter
     %matplotlib inline
     from pylab import rcParams
     rcParams['figure.figsize'] = 9.6, 4.8
@@ -137,8 +138,6 @@ def plotter(title, results, fract_of = False, y_label = False,
             line = ','.join(csvline)
             csv.append(line)
         csv = '\n'.join(csv)
-
-
         # now do all data
         csvall = []
         yearlist = []
@@ -232,10 +231,11 @@ def plotter(title, results, fract_of = False, y_label = False,
             totalstring = ' (%s%%)' % total
         else:
             totalstring = ' (n=%s)' % total
-        entry.pop()
+        entry.pop() # get rid of total. good or bad?
         csvalldata.append(entry)
         # for each datum [year, count]:
         if index < num_to_plot:
+            csvdata.append(entry)
             toplot = []
             xvalsbelow = []
             yvalsbelow = []
@@ -262,10 +262,13 @@ def plotter(title, results, fract_of = False, y_label = False,
                 d += 1
             # do actual plotting
             plt.plot(xvalsbelow, yvalsbelow, '--', color=colours[c])
+            plt.plot(xvalsabove, yvalsabove, '.', color=colours[c]) # delete for nyt
             if legend_totals:
                 plt.plot(xvalsabove, yvalsabove, '-', label=word + totalstring, color=colours[c])
+                plt.plot(xvalsabove, yvalsabove, '.', color=colours[c]) # delete for nyt
             else:
                 plt.plot(xvalsabove, yvalsabove, '-', label=word, color=colours[c])
+                plt.plot(xvalsabove, yvalsabove, '.', color=colours[c]) # delete for nyt
             if c == 8:
                 c = 0 # unpythonic
             c += 1
@@ -290,7 +293,19 @@ def plotter(title, results, fract_of = False, y_label = False,
     plt.gca().get_xaxis().set_major_locator(MaxNLocator(integer=True))
     plt.ylabel(y_label)
     pylab.title(title)
-    plt.ticklabel_format(useOffset=False, axis='x', style = 'plain')
+    if log == 'x':
+        plt.xscale('log')
+        plt.gca().get_xaxis().set_major_formatter(ScalarFormatter())
+    elif log == 'y':
+        plt.yscale('log')
+        plt.gca().get_yaxis().set_major_formatter(ScalarFormatter())
+    elif log == 'x, y':
+        plt.xscale('log')
+        plt.gca().get_xaxis().set_major_formatter(ScalarFormatter())
+        plt.yscale('log')
+        plt.gca().get_yaxis().set_major_formatter(ScalarFormatter())
+    else:
+        plt.ticklabel_format(useOffset=False, axis='x', style = 'plain')
     plt.grid()
     plt.show()
 

@@ -52,6 +52,10 @@ def dependencies(path, options, query, lemmatise = False, test = False,
         have_ipython = True
     except ImportError:
         have_ipython = False
+    if lemmatise:
+        from nltk.stem.wordnet import WordNetLemmatizer
+        lmtzr=WordNetLemmatizer()
+    strip_bad = re.compile('[^.a-zA-Z0-9/-:]', re.UNICODE)
 
     # welcomer
     if options == 'depnum':
@@ -65,67 +69,27 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     time = strftime("%H:%M:%S", localtime())
     print "%s: Begining corpus interrogation: %s\n          Query: %s\
     \n          %s\n          Interrogating corpus ... \n" % (time, path, query, optiontext)
-
-
-    def gettag(query):
-        import re
-        if lemmatag is False:
-            #raise ValueError("Need an explicit lemmatag for dependency parsing")
-            tag = 'n' # default to noun tag---same as lemmatiser does with no tag
-        if lemmatag:
-            tag = lemmatag
-            tagchecker = re.compile(r'^[avrn]$')
-            if not re.match(tagchecker, lemmatag):
-                raise ValueError("WordNet POS tag not recognised. Must be 'a', 'v', 'r' or 'n'.")
-        return tag
     
     def processwords(list_of_matches):
         # encoding
         #matches = [unicode(match, 'utf-8', errors = 'ignore') for match in list_of_matches if type(match) != unicode]
         matches = [match for match in list_of_matches if type(match) == unicode]
         # remove bad characters
-        strip_bad = re.compile('[^.a-zA-Z0-9/-]', re.UNICODE)
+
         matches = [re.sub(strip_bad, "", match) for match in matches]
         matches = filter(None, matches)
         #lowercasing
-        matches = [match.lower() for match in matches if any(c.isalpha() for c in match)]
+        lowered = []
+        for match in matches:
+            try:
+                lowered.append(match.lower())
+            except:
+                lowered.append(match)
+        #matches = [match.lower() for match in matches if any(c.isalpha() for c in match)]
         #matches.append([match for match in matches if not any(c.isalpha() for c in match)])
-        if lemmatise:
-            tag = gettag(query)
-            matches = lemmatiser(matches, tag)
         if titlefilter:
-            matches = titlefilter(matches)
-        return matches
-
-    def lemmatiser(list_of_words, tag):
-        """take a list of unicode words and a tag and return a lemmatised list."""
-        import nltk
-        tokenised_list = [nltk.word_tokenize(i) for i in list_of_words]
-        from nltk.stem.wordnet import WordNetLemmatizer
-        lmtzr=WordNetLemmatizer()
-        output = []
-        for entry in tokenised_list:
-            # just get the rightmost word
-            word = entry[-1]
-            entry.pop()
-            # should turn these into a list in a file ... 'transforms'
-            if word == u'\'s':
-               word = u'is'
-            if word == u'\'re':
-               word = u'are'
-            if word == u'\'m':
-               word = u'am'
-           #if word == u'\'d':
-              #word = u'is'
-           #if word == u'\'ll':
-              #word = u'is'
-            if word == u'n\'t':
-               word = u'not'
-            word = lmtzr.lemmatize(word, tag)
-            entry.append(word)
-            output.append(' '.join(entry))
-        return output
-        # if single words: return [lmtsr.lemmatize(word, tag) for word in list_of_matches]
+            lowered = titlefilter(lowered)
+        return lowered
 
     def titlefilter(list_of_matches):
         import re
@@ -142,68 +106,74 @@ def dependencies(path, options, query, lemmatise = False, test = False,
             output.append(str_result)
         return output
 
-    def govrole(soup, lemmatag = False):
-        """print rship:gov"""
+
+    def govrole(soup):
+        """print funct:gov"""
         result = []
         for dep in soup.find_all('dep'):
             for dependent in dep.find_all('dependent'):
                 word = dependent.get_text()
                 if re.match(regex, word):
                     role = dep.attrs.get('type')
-                    # the below is a redundant loop
-                    for gov in dep.find_all('governor'):
-                        govword = gov.get_text()
-                        if lemmatise is True:
-                            tag = lemmatag
-                            if role == 'amod':
-                                tag = 'n'
-                            if role == 'nn':
-                                tag = 'n'
-                            if role == 'rcmod':
-                                tag = 'n'
-                            if role == 'dobj':
-                                tag = 'v'
-                            if role == 'nsubj':
-                                tag = 'v'
-                            if role == 'nsubjpass':
-                                tag = 'v'
-                            if role == 'advmod':
-                                tag = 'v'
-                            if role == 'iobj':
-                                tag = 'v'
-                            if role == 'acomp':
-                                tag = 'v'
-                            if role == 'cop':
-                                tag = 'v'
-                            if role == 'advmod':
-                                tag = 'v'
-                            if role == 'iobj':
-                                tag = 'v'
-                            if role == 'xcomp':
-                                tag = 'v'
-                            if role == 'ccomp':
-                                tag = 'v'
-                            #if 'prep' in role:
-                               #tag = v
-                            if govword == u'\'s':
-                                govword = u'is'
-                            if govword == u'\'re':
-                               govword = u'are'
-                            if govword == u'\'m':
-                               govword = u'am'
-                                    #if govword == u'\'d':
-                                        #govword = u'had or would?'
-                                    #if govword == u'\'ll':
-                                        #govword = u'will or shall?'
-                            if govword == u'n\'t':
-                                govword = u'not'
-                            if tag:    
-                                govword = lmtzr.lemmatize(govword, tag)
-                        colsep = role + ':' + govword
+                    # fixing redundant loop here
+                    gov = dep.find_all('governor')
+                    govword = gov[0].get_text()
+                    if lemmatise is True:
+                        thetag = None
+                        if role == 'amod':
+                            thetag = 'n'
+                        if role == 'nn':
+                            thetag = 'n'
+                        if role == 'rcmod':
+                            thetag = 'n'
+                        if role == 'dobj':
+                            thetag = 'v'
+                        if role == 'nsubj':
+                            thetag = 'v'
+                        if role == 'nsubjpass':
+                            thetag = 'v'
+                        if role == 'advmod':
+                            thetag = 'v'
+                        if role == 'iobj':
+                            thetag = 'v'
+                        if role == 'acomp':
+                            thetag = 'v'
+                        if role == 'cop':
+                            thetag = 'v'
+                        if role == 'advmod':
+                            thetag = 'v'
+                        if role == 'iobj':
+                            thetag = 'v'
+                        if role == 'xcomp':
+                            thetag = 'v'
+                        if role == 'ccomp':
+                            thetag = 'v'
+                        #if 'prep' in role:
+                           #thetag = v
+                        if govword == u'\'s':
+                            govword = u'is'
+                        if govword == u'\'re':
+                            govword = u'are'
+                        if govword == u'\'m':
+                            govword = u'am'
+                        #if govword == u'\'d':
+                            #govword = u'had or would?'
+                        #if govword == u'\'ll':
+                            #govword = u'will or shall?'
+                        if govword == u'n\'t':
+                            govword = u'not'
+                        if not thetag:
+                            if lemmatag:
+                                thetag = lemmatag
+                            else:
+                                thetag = 'v'
+                        govword = lmtzr.lemmatize(govword, thetag)
+                        colsep = role + u':' + govword
                         result.append(colsep)
-            return result
+        return result
 
-    def rship(soup):
+
+    def funct(soup):
         """"print functional role"""
         result = []
         for dep in soup.find_all('dep'):
@@ -221,7 +191,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
                 word = dependent.get_text()
                 if re.match(regex, word):
                     # get just the number
-                    result.append(dependent.attrs.get('idx'))
+                    result.append(int(dependent.attrs.get('idx')))
         return result
         
 #########################################################################
@@ -231,15 +201,18 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     regex = re.compile(query)
     sorted_dirs = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path,d))]
     sorted_dirs.sort(key=int)
+    if test:
+        sorted_dirs = sorted_dirs[:test]
     allwords_list = []
     results_list = []
     main_totals = [u'Totals']
-    coll_dep_regex = re.compile(dep_type)
     num_dirs = len(sorted_dirs)
     all_files = []
     for index, d in enumerate(sorted_dirs):
         yearfinder = re.findall(r'[0-9]+', d)
         files = [f for f in os.listdir(os.path.join(path, d)) if f.endswith('.xml')]
+        if test:
+            files = files[:100]
         #read_files = glob.glob(os.path.join(path, d, "*.xml"))
         all_files.append([d, files])
     total_files = len([item for sublist in all_files for item in sublist[1]])
@@ -248,17 +221,19 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     c = 0
     for d, fileset in all_files:  
         result = []
+        if test:
+            fileset = fileset[:test * 100]
         for f in fileset:
-            c += 1
             p.animate(c, str(c) + '/' + str(total_files))
+            c += 1
             with open(os.path.join(path, d, f), "rb") as text:
                 data = text.read()
-                just_good_deps = SoupStrainer('dependencies', type=coll_dep_regex)
+                just_good_deps = SoupStrainer('dependencies', type=dep_type)
                 soup = BeautifulSoup(data, parse_only=just_good_deps)
                 if options == 'govrole':
-                    result_from_file = govrole(soup, lemmatag)
+                    result_from_file = govrole(soup)
                 if options == 'funct':
-                   result_from_file = rship(soup)
+                   result_from_file = funct(soup)
                 if options == 'depnum':
                   result_from_file = depnum(soup)
             if result_from_file is not None:
@@ -272,9 +247,10 @@ def dependencies(path, options, query, lemmatise = False, test = False,
         main_totals.append([int(d), len(result)]) # should this move down for more accuracy?
         if only_count:
             continue
-        processed_result = processwords(result)
-        allwords_list.append(processed_result)
-        results_list.append(processed_result)
+        if options != 'depnum':
+            result = processwords(result)
+        allwords_list.append(result)
+        results_list.append(result)
     p.animate(total_files)
     if only_count:
         total = sum([i[1] for i in main_totals[1:]])
@@ -308,9 +284,10 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     # do totals (and keep them), then sort list by total
     for word in list_words:
         total = sum([i[1] for i in word[1:]])
-        word.append(total)
-    list_words = sorted(list_words, key=lambda x: x[-1], reverse = True)
-    
+        word.append([u'Total', total])
+    list_words.sort(key=lambda x: x[-1], reverse = True)
+    if options == 'depnum':
+        list_words.sort(key=lambda x: int(x[0]))
     #make results into named tuple
     outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
     query_options = [query, options] 

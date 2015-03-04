@@ -215,6 +215,7 @@ plotter('Risk word / all words', riskwords.results,
 #  | *multiplier* | 100     | result * multiplier / total: use 1 for ratios | integer |
 #  | *x_label* | False    | custom label for the x-axis     |  string |
 #  | *y_label* | False    | custom label for the y-axis     |  string |
+#  | *legend_results* | False    | Print total/rel freq in legend     |  boolean 
 #  | *projection* | True    | Project 1963 and 2014 editions     |  boolean |
 #  | *yearspan* | False    | plot a span of years |  a list of two int years |
 #  | *justyears* | False    | plot specific years |  a list of int years |
@@ -225,7 +226,7 @@ plotter('Risk word / all words', riskwords.results,
 # <codecell>
 plotter('Relative frequencies of risk words', riskwords.results, fract_of = allwords.totals,
     y_label = 'Percentage of all risk words', num_to_plot = 5, 
-    skip63 = False, projection = True, proj63 = 5, csvmake = 'riskwords.csv')
+    skip63 = False, projection = True, proj63 = 5, csvmake = 'riskwords.csv', legend_results = True)
 
 # <markdowncell>
 # If you just generated a csv file, you can quickly get the results with:
@@ -257,7 +258,7 @@ plotter('Relative frequencies of risk words', riskwords.results, fract_of = allw
 
 # <codecell>
 plotter('Relative frequencies of risk words', riskwords.results[2:], fract_of = allwords.totals,
-    y_label = 'Percentage of all risk words', num_to_plot = 5, skip63 = False, projection = True, proj63 = 5)
+    y_label = 'Percentage of all risk words', num_to_plot = 5, skip63 = False, projection = True, proj63 = 5, legend_results = True)
 
 # <markdowncell>
 # If you are after a specific set of indexed items, it's probably better to use *surgeon()* (described below). For completeness, though, here's another way:
@@ -275,8 +276,8 @@ plotter('Relative frequencies of risk words', [ riskwords.results[i] for i in in
 
 # <codecell>
 
-table('medwords.csv')
-table('medwords.csv', allresults = True)
+table('riskwords.csv')
+table('riskwords.csv', allresults = True, maxresults = 30)
 
 # <headingcell level=3>
 # quickview()
@@ -297,7 +298,7 @@ quickview(riskwords.results, n = 25)
 # tally()
 
 # <markdowncell>
-# *tally()* displays the total occurrences of results. Its first argument is the list you want tallies from. For its second argument, you can use:
+# *tally()* simply displays the total occurrences of results. Its first argument is the list you want tallies from. For its second argument, you can use:
 
 # * a list of indices for results you want to tally
 # * a single integer, which will be interpreted as the index of the item you want
@@ -321,21 +322,21 @@ tally(riskwords.results[:10], 'all')
 # 2. *criteria*: either a [Regular Expression](http://www.cheatography.com/davechild/cheat-sheets/regular-expressions/) or a list of indices.
 # 3. *remove = True/False*
 
-# By default, *surgeon()* removes anything matching the regex/indices criteria, but this can be inverted with a *remove = False* argument. Because you are duplicating the original list, you don't have to worry about deleting *interrogator()* results.
+# By default, `surgeon()` keeps anything matching the regex, but this can be inverted with a *remove = True* argument. Because you are duplicating the original list, you don't have to worry about deleting `interrogator()` results.
 
 # <codecell>
 # low and high risks, using indices 
-lowhighrisks = surgeon(riskwords.results, [4, 9, 17], remove = False) # keep 4, 9 and 17
+lowhighrisks = surgeon(riskwords.results, [4, 9, 17]) # keep 4, 9 and 17
 plotter('Low-, high- and higher- risk', lowhighrisks, num_to_plot = 3, skip63 = True)
 
 # only hyphenate words:
-hyphenates = surgeon(riskwords.results, r'\b.*-.*\b', remove = False) # remove tokens with hyphens
+hyphenates = surgeon(riskwords.results, r'\b.*-.*\b') # remove tokens with hyphens
 quickview(hyphenates)
 plotter('Non-hypenate risk words', hyphenates, fract_of = riskwords.totals, 
     y_label = 'Percentage of all risk words', num_to_plot = 7, skip63 = True)
 
 # only verbal risk words
-verbalrisks = surgeon(riskwords.results, r'^\(v.*', remove = False) #keep any token with tag starting with 'v'
+verbalrisks = surgeon(riskwords.results, r'^\(v.*') #keep any token with tag starting with 'v'
 plotter('Verbal risk words', verbalrisks, fract_of = allwords.totals, 
     y_label = 'Percentage of all words', num_to_plot = 6, skip63 = True)
 
@@ -569,7 +570,7 @@ outputnames = collections.namedtuple('functional_role', ['query', 'results'])
 functional_role = outputnames(query, results)
 
 # <codecell>
-plotter('Risk as participant, process and modifier', functional_role.results)
+plotter('Risk as participant, process and modifier', functional_role.results, fract_of = allwords.totals)
 
 # uncomment the line below to project 1963 by 5, rather than 4.
 #plotter('Risk as participant, process and modifier', functional_role.results, proj63 = 5)
@@ -579,7 +580,7 @@ plotter('Risk as participant, process and modifier', functional_role.results)
 
 # <codecell>
 # Perhaps you want to see the result without 1963?
-plotter('Risk as participant, process and modifier', functional_role.results, skip63 = True)
+plotter('Risk as participant, process and modifier', functional_role.results, fract_of = allwords.totals, skip63 = True)
 
 # <headingcell level=3>
 # Risk as participant
@@ -598,7 +599,7 @@ plotter('Risk as participant, process and modifier', functional_role.results, sk
 
 # <codecell>
 query = r'/JJ.?/ > (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
-adj_modifiers = interrogator(annual_trees, '-t', query)
+adj_modifiers = interrogator(annual_trees, '-t', query, lemmatise = True)
 
 # <codecell>
 # Adjectives modifying nominal risk (lemmatised)
@@ -621,12 +622,12 @@ plotter('Adjectives modifying nominal risk (lemmatised)', small_adjs,
     fract_of = adj_modifiers.totals, num_to_plot = 6, skip63 = True)
 
 #get results with seven or more letters
-big_adjs = surgeon(adj_modifiers.results, r'.{10,}', remove = False)
+big_adjs = surgeon(adj_modifiers.results, r'.{10,}')
 plotter('Adjectives modifying nominal risk (lemmatised)', big_adjs, 
     fract_of = adj_modifiers.totals, num_to_plot = 4, skip63 = True)
 
 #get a few interesting points
-select_adjs = surgeon(adj_modifiers.results, r'\b(more|potential|calculated|high)\b', remove = False)
+select_adjs = surgeon(adj_modifiers.results, r'\b(more|potential|calculated|high)\b')
 plotter('Adjectives modifying nominal risk (lemmatised)', select_adjs, 
     num_to_plot = 4)
 
@@ -678,7 +679,7 @@ plotter('Risk of (noun)', risk_of.results, fract_of = risk_of.totals, yearspan =
 quickview(risk_of.results, n = 10)
 
 # <codecell>
-military = surgeon(risk_of.results, [2, 7], remove = False)
+military = surgeon(risk_of.results, [2, 7])
 plotter('Risk of (noun)', military, fract_of = risk_of.totals) 
 
 # <markdowncell>
@@ -818,7 +819,7 @@ quickview(risk_objects.results, n = 100)
 riskobject_regex = (r'(?i)^\b(life|everything|money|career|health|reputation|capital|future|'
     r'job|safety|possibility|anything|return|neck|nothing|lot|)$\b')
 riskedthings = surgeon(risk_objects.results, riskobject_regex, remove = True)
-potentialharm = surgeon(risk_objects.results, riskobject_regex, remove = False)
+potentialharm = surgeon(risk_objects.results, riskobject_regex)
 plotter('Risked things', potentialharm, num_to_plot = 7, skip63 = False)
 plotter('Risked things (minus life)', potentialharm[1:], num_to_plot = 3, skip63 = False)
 plotter('Potential harm', riskedthings, num_to_plot = 7, skip63 = False)
@@ -947,22 +948,17 @@ quickview(merged_propernouns, n = 200)
 # make some new thematic lists
 people = surgeon(merged_propernouns, r'(?i)^\b(bush|clinton|obama|greenspan|gore|johnson|mccain|romney'
     r'|kennedy|giuliani|reagan)$\b',\
-    remove = False)
+  )
 nations = surgeon(merged_propernouns, r'(?i)^\b(iraq|china|america|israel|russia|japan|frace|germany|iran\
-|britain|u\.s\.|afghanistan|australia|canada|spain|mexico|pakistan|soviet union|india)$\b',\
-remove = False)
-geopol = surgeon(merged_propernouns, r'(?i)^\b(middle east|asia|europe|america|soviet union|european union)$\b',\
-remove = False)
+|britain|u\.s\.|afghanistan|australia|canada|spain|mexico|pakistan|soviet union|india)$\b',)
+geopol = surgeon(merged_propernouns, r'(?i)^\b(middle east|asia|europe|america|soviet union|european union)$\b',)
 #usplaces = surgeon(merged_propernouns, r'(?i)^\b(new york|washington|wall street|california|manhattan\
-#|new york city|new jersey|north korea|italy|greece|bosniaboston|los angeles|broadway|texas)$\b',\
-#remove = False)
+#|new york city|new jersey|north korea|italy|greece|bosniaboston|los angeles|broadway|texas)$\b',\)
 companies = surgeon(merged_propernouns, r'(?i)^\b(merck|avandia\
-|citigroup|pfizer|bayer|enron|apple|microsoft|empire)$\b',\
-remove = False)
+|citigroup|pfizer|bayer|enron|apple|microsoft|empire)$\b',)
 organisations = surgeon(merged_propernouns, r'(?i)^\b((white house|congress|federal reserve|nasa|pentagon)\b|'
-    r'f\.d\.a\.|c\.i\.a\.|f\.b\.i\.|e\.p\.a\.)$', remove = False)
-medical = surgeon(merged_propernouns, r'(?i)^\b(vioxx|aids|celebrex)$\b',\
-remove = False)
+    r'f\.d\.a\.|c\.i\.a\.|f\.b\.i\.|e\.p\.a\.)$')
+medical = surgeon(merged_propernouns, r'(?i)^\b(vioxx|aids|celebrex)$\b',)
 
 # <codecell>
 # plot some results
@@ -993,7 +989,7 @@ plotter('Medical', medical, fract_of = propernouns.totals,
 # * From the Organisations and Things, we can see the appearance of Merck and Vioxx in 2004, as well as Empire...
 
 # <codecell>
-vioxx = surgeon(propernouns.results, r'(?i)^\b(vioxx|merck)\b$', remove = False)
+vioxx = surgeon(propernouns.results, r'(?i)^\b(vioxx|merck)\b$')
 plotter('Merck and Vioxx', vioxx, fract_of = propernouns.totals, skip63 = True)
 plotter('Merck and Vioxx', vioxx, fract_of = propernouns.totals, yearspan = [1998,2012])
 
@@ -1090,7 +1086,7 @@ merged_role = merger(risk_functions.results, [2, 11, 19, 25], newname = 'Subject
 #merged_role = merger(merged_role, [1, 4, 5, 10, 13, 16, 18], newname = 'Adjunct')
 
 # remove all other items
-merged_role = surgeon(merged_role, [0, 1, 2, 4], remove = False)
+merged_role = surgeon(merged_role, [0, 1, 2, 4])
 
 # <codecell>
 # resort this list:
@@ -1237,7 +1233,7 @@ propnounphrases = interrogator('nyt/politics', '-t', query, titlefilter = True)
 # <codecell>
 polpeople = surgeon(propnounphrases.results, 
     r'(?i)\b(obama|bush|clinton|dole|romney|reagan|carter|ford|mccain|johnson|kennedy|gore)\b', 
-    remove = False)
+  )
 #topix_plot('Proper noun phrases', results)
 plotter('Politicians in sentences containing a risk word', polpeople)
 
@@ -1338,7 +1334,7 @@ merged_role = merger(merged_role, [], newname = 'Finite/Predicator')
 merged_role = merger(merged_role, [], newname = 'Complement')
 merged_role = merger(merged_role, [], newname = 'Adjunct')
 # remove all other items
-merged_role = surgeon(merged_role, [], remove = False)
+merged_role = surgeon(merged_role, [])
 
 plotter('Functional role using dependency parses', merged_role, fract_of = all_functions.totals)
 
@@ -1377,6 +1373,34 @@ dep_num = sorted(to_reorder, key=itemgetter(0), reverse = True)
 plotter('Dependency indices for all words', sorted_indices, fract_of = all_indices.totals)
 
 # Due to limitations in available computational resources, our investigation did not involve parsing the full collection of NYT articles: we only used paragraphs containing a risk word. Longitudinal changes in the examples above are interesting in their own right. We hope in a further project to be able to expand the size of our corpus dramatically in order to determine the causes of these more general changes.
+
+# <headingcell level=2>
+# Discussion
+
+# <headingcell level=3>
+# Limitations
+
+# <markdowncell>
+# A key challenge accounting for the diverse ways in which a semantic meaning can be made in lexis and grammar. If we are interested in how often *money* is the risked thing, we have to design searches that find: 
+
+#      She risked her money
+#      She risked losing her money
+#      Money was risked
+#      It was risked money
+#      The risk of money loss was there
+#      She took her money from her purse and risked it.
+
+# Though we can design queries to match any of these, it is very difficult to automate this process for every possible 'risked thing'. It's also very hard to know when we have finally developed a query that matches everything we want.
+
+# An added issue is how to treat things like:
+
+#      She didn't risk her money
+#      She risked no money
+#      She could risk money
+
+# Here, the semantic meanings are very different (the risking of money did not occur), but each would match the queries we designed for the above.
+
+# Should these results be counted or excluded? Why?
 
 # <headingcell level=2>
 # interrogator()

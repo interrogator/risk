@@ -4,7 +4,7 @@
 #   for ResBaz NLTK stream
 #   Author: Daniel McDonald
 
-def dependencies(path, options, query, lemmatise = False, test = False, 
+def new_dependencies(path, options, query, lemmatise = False, test = False, 
     titlefilter = False, lemmatag = False, dep_type = 'basic-dependencies'):
     """Uses Tregex to make list of frequency counts in corpora.
     
