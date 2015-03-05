@@ -49,7 +49,7 @@ def plotter(title, results, fract_of = False, y_label = False,
         """Takes a list and returns a version without 1963"""
         skipped = []
         skipped.append(interrogator_list[0]) # append word
-        for item in interrogator_list:
+        for item in interrogator_list[1:]:
             if type(item) != unicode and type(item) != str and item[0] != 1963:
                 skipped.append(item)
         return skipped
@@ -59,7 +59,7 @@ def plotter(title, results, fract_of = False, y_label = False,
         
         skipped = []
         skipped.append(interrogator_list[0]) # append word
-        for item in interrogator_list:
+        for item in interrogator_list[1:]:
             if type(item) != unicode and type(item) != str:
                 for year in justyears:
                     if item[0] == year:
@@ -71,7 +71,7 @@ def plotter(title, results, fract_of = False, y_label = False,
         
         skipped = []
         skipped.append(interrogator_list[0]) # append word
-        for item in interrogator_list:
+        for item in interrogator_list[1:]:
             if type(item) != unicode and type(item) != str:
                 if item[0] >= yearspan[0]:
                     if item [0] <= yearspan[-1]:
@@ -81,8 +81,8 @@ def plotter(title, results, fract_of = False, y_label = False,
     def projector(interrogator_list):
         """Takes a list and returns a version with projections"""
         projected = []
-        #projected.append(interrogator_list[0]) # append word
-        for item in interrogator_list:
+        projected.append(interrogator_list[0]) # append word
+        for item in interrogator_list[1:]:
             if type(item) != str and type(item) != str and item[0] == 1963:
                 newtotal = item[1] * proj63
                 datum = [item[0], newtotal]
@@ -164,7 +164,7 @@ def plotter(title, results, fract_of = False, y_label = False,
         csvall = '\n'.join(csvall)
         # write the csvall file?
         if os.path.isfile(csvmake):
-            raise ValueError("CSV error: " + csvmake + " already exists in current directory.")
+            raise ValueError("CSV error: %s already exists in current directory. Move it, delete it, or change the name of the new .csv file." % csvmake)
         try:
             fo=open(csvmake,"w")
         except IOError:
@@ -225,14 +225,22 @@ def plotter(title, results, fract_of = False, y_label = False,
                 entry = projector(entry)
         # get word
         word = entry[0]
-        total = str(float(entry[-1][-1]))[:4]
+        # what the hell is this?
+        # get proper total here!
+        # if entry[-1][0] == 'total':
+        #total = str(float(entry[-1][-1]))
+        #else:
+        total = 0
         #print str(total)
         if fract_of:
             totalstring = ' (%s%%)' % total
         else:
             totalstring = ' (n=%s)' % total
         entry.pop() # get rid of total. good or bad?
-        csvalldata.append(entry)
+        csvalldata.append(entry) 
+        # it takes a bit too long to process huge lists, 
+        # when they aren't being used! Quick fix is to slice the
+        # results passed to plotter, but eh.
         # for each datum [year, count]:
         if index < num_to_plot:
             csvdata.append(entry)

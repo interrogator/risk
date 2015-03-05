@@ -18,20 +18,19 @@ def surgeon(lst, criteria, remove = False):
     if type(criteria) == str:
         regexp = re.compile(criteria)
         for item in lst:
-            print item
             if remove is True:
-                if len(item) > 1:
-                    if not re.search(regexp, item[0]):
+                if type(item) == str:
+                    if not re.search(regexp, item):
                         newlist.append(item)
                 else:
-                    if not re.search(regexp, item):
+                    if not re.search(regexp, item[0]):
                         newlist.append(item)                        
             if remove is False:
-                if len(item) > 1:
-                    if re.search(regexp, item[0]):
+                if type(item) == str:
+                    if re.search(regexp, item):
                         newlist.append(item)
                 else:
-                    if re.search(regexp, item):
+                    if re.search(regexp, item[0]):
                         newlist.append(item)     
     if type(criteria) == list:
         if remove is True:
@@ -52,12 +51,17 @@ def quickview(lst, n = 50, topics = False):
     topics: for investigation of topic subcorpora"""
     if not topics:
         out = []
-        for item in lst[:n]:
-            indexnum = lst.index(item)
-            word = item[0]
-            index_and_word = [str(indexnum), word]
-            as_string = ': '.join(index_and_word)
-            out.append(as_string)
+        for index, item in enumerate(lst[:n]):
+            # if it's interrogator result
+            if type(item) == list:
+                word = item[0]
+                index_and_word = [str(index), word]
+                as_string = ': '.join(index_and_word)
+                out.append(as_string)
+            else:
+                # limitation: this currently prints the *old* index
+                # to fix this, conc should not join the index and result.
+                out.append(item)
         return out
     if topics:
         topics = [d for d in os.listdir(path)
@@ -169,12 +173,26 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
     output = []
     tregex_command = 'sh ./tregex.sh \'' + query + '\' 2>&1'
     testpattern = !$tregex_command
-    errorregex = re.compile(r'^Error parsing expression')
+    tregex_error = re.compile(r'^Error parsing expression')
+    regex_error = re.compile(r'^Exception in thread')
+    if re.match(tregex_error, testpattern[0]):
+        tregex_error_output = "Error parsing Tregex expression. Check for balanced parentheses and boundary delimiters."
+        raise ValueError(tregex_error_output)
+    if re.match(regex_error, testpattern[0]):
+        info = testpattern[0].split(':')
+        index_of_error = re.findall(r'index [0-9]+', info[1])
+        justnum = index_of_error[0].split('dex ')
+        spaces = ' ' * int(justnum[1])
+        remove_start = query.split('/', 1)
+        remove_end = remove_start[1].split('/', -1)
+        regex_error_output = 'Error parsing regex inside Tregex query:%s '\
+        '. Best guess: \n%s\n%s^' % (str(info[1]), str(remove_end[0]), spaces)
+        raise ValueError(regex_error_output)    
     if trees:
         options = '-s'
     else:
         options = '-t'
-    if re.match(errorregex, testpattern[0]):
+    if re.match(tregex_error, testpattern[0]):
         raise ValueError("Error parsing Tregex expression. "
             "Check for balanced parentheses and boundary delimiters.") 
     tregex_command = 'sh ./tregex.sh -o -w ' + options + ' \'' + query + '\' ' + corpus + ' 2>/dev/null | grep -vP \'^\s*$\''
@@ -241,7 +259,9 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
                 string_index = str(index)
             row = (string_index + ': ' + row)
             with_enum.append(row)
-        return with_enum
+        for entry in with_enum:
+            print entry
+        return formatted_output
     if random:
         outnum = len(formatted_output)
         if random > outnum:
@@ -262,8 +282,9 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
                 string_index = str(index)
             row = (string_index + ': ' + row)
             with_enum.append(row)
-        return with_enum
-
+        for entry in with_enum:
+            print entry
+        return rand_out
 
 def tally(lst, indices):
     """Display total occurrences of a result"""
@@ -319,7 +340,7 @@ def merger(lst, indices_to_merge, newname = False):
         forwards_index = []
         regex = re.compile(indices_to_merge)
         for entry in oldlist_copy:
-            if re.search(regex, entry[0]):
+            if re.search(regex, str(entry[0])):
                 forwards_index.append(oldlist_copy.index(entry))
         backward_indices = sorted(forwards_index, reverse = True)
     #if indices, ensure results are sorted
@@ -335,7 +356,7 @@ def merger(lst, indices_to_merge, newname = False):
     # make list of words that are being merged
     toprint = []
     for entry in tomerge:
-        toprint.append(entry[0])
+        toprint.append(str(entry[0]))
     string_to_print = '\n'.join(toprint)
     print 'Merging the following entries:\n' + string_to_print
     combined = zip(*[l for l in tomerge])
@@ -399,29 +420,28 @@ def quicktree(tree):
     return Image(filename='tree.png')
     ! rm tree.png
 
-
 def table(data_to_table, allresults = False, maxresults = 50):
     """Outputs a table from interrogator or CSV results.
 
     if allresults, show all results table, rather than just plotted results"""
     import pandas
     import re
+    import os
     from StringIO import StringIO
     if type(data_to_table) == str:
         f = open(data_to_table)
         raw = f.read()
-        plotted_results, all_results = raw.split('All results:')
-        plotted_num_lines = plotted_results.strip().count('\n') + 4
-        all_num_lines = all_results.strip().count('\n') + 3
-        max_skipper = all_num_lines - maxresults - 4
-        if max_skipper < 0:
-            max_skipper = 0
+        #raw = os.linesep.join([s for s in raw.splitlines() if s])
+        plotted_results, all_results =  raw.split('All results:')
         if not allresults:
-            print '\n' + plotted_results.splitlines()[1]
-            tab = pandas.read_csv(data_to_table, skiprows = 2, skipfooter = all_num_lines, index_col = 0, engine='python')
-        else:
-            print all_results.splitlines()[1]
-            tab = pandas.read_csv(data_to_table, skiprows = plotted_num_lines, index_col = 0, skipfooter = max_skipper, engine='python')
+            lines = plotted_results.split('\n')
+            print str(lines[1])
+            data = '\n'.join([line for line in lines if line.strip()][2:])
+        if allresults:
+            lines = all_results.split('\n')
+            print str(lines[1])
+            lines = lines[:maxresults + 3]
+            data = '\n'.join([line for line in lines if line.strip()][1:])
     elif type(data_to_table) == list:
         csv = []
         if type(data_to_table[0]) == str or type(data_to_table[0]) == unicode:
@@ -446,8 +466,8 @@ def table(data_to_table, allresults = False, maxresults = 50):
             dataline = str(word) + ',' + ','.join(counts) # + ',' + str(total)
             csv.append(dataline)
         # table it with pandas
-        csv = '\n'.join(csv)
-        tab = pandas.read_csv(StringIO(csv), index_col = 0, engine='python')
+        data = '\n'.join(csv)
+    tab = pandas.read_csv(StringIO(data), index_col = 0, engine='python')
     return tab
 
 
@@ -527,3 +547,23 @@ def report_display():
 
 # colls = collocates('test.csv')
 # print colls
+
+def parsetree(tree):
+    """Parse a sentence and return a visual representation in IPython"""
+    from nltk import Tree
+    from nltk.draw.util import CanvasFrame
+    from nltk.draw import TreeWidget
+    from stat_parser import Parser
+    from IPython.display import display
+    from IPython.display import Image
+    parser = Parser()
+    parsed = parser.parse(sentence)
+    cf = CanvasFrame()
+    tc = TreeWidget(cf.canvas(),parsed)
+    cf.add_widget(tc,10,10) # (10,10) offsets
+    cf.print_to_file('tree.ps')
+    cf.destroy()
+    ! convert tree.ps tree.png
+    ! rm tree.ps
+    return Image(filename='tree.png')
+    ! rm tree.png

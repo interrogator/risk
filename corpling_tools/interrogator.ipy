@@ -85,7 +85,7 @@ def interrogator(path, options, query, lemmatise = False, titlefilter = False, l
             tag = gettag(query)
             matches = lemmatiser(matches, tag)
         if titlefilter:
-            matches = titlefilter(matches)
+            matches = titlefilterer(matches)
         return matches
 
     def lemmatiser(list_of_words, tag):
@@ -104,14 +104,14 @@ def interrogator(path, options, query, lemmatise = False, titlefilter = False, l
                word = u'is'
             if word == u'\'re':
                word = u'are'
-            if word == u'\'ve':
-               word = u'have'
             if word == u'\'m':
                word = u'am'
-           #if word == u'\'d':
-              #word = u'had'
-           if word == u'\'ll':
+            if word == u'\'d':
+               word = u'had'
+           #if word == u'\'ll':
               #word = u'will'
+            if word == u'\'ve':
+               word = u'have'
             if word == u'n\'t':
                word = u'not'
             word = lmtzr.lemmatize(word, tag)
@@ -120,16 +120,16 @@ def interrogator(path, options, query, lemmatise = False, titlefilter = False, l
         return output
         # if single words: return [lmtsr.lemmatize(word, tag) for word in list_of_matches]
 
-    def titlefilter(list_of_matches):
+    def titlefilterer(list_of_matches):
         import re
         import nltk
         from data.dictionaries.titlewords import titlewords
         tokenised_list = [nltk.word_tokenize(i) for i in list_of_matches]
         output = []
         for result in tokenised_list:
-            head = result[-1]
+            head = result[-1] # ???
             non_head = result.index(head) # ???
-            title_stripped = [token for token in result[:non_head] if token not in titlewords]
+            title_stripped = [token for token in result[:non_head] if token.rstrip('.') not in titlewords]
             title_stripped.append(head)
             str_result = ' '.join(title_stripped)
             output.append(str_result)

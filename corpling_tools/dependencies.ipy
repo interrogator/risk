@@ -73,25 +73,25 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     def processwords(list_of_matches):
         # encoding
         #matches = [unicode(match, 'utf-8', errors = 'ignore') for match in list_of_matches if type(match) != unicode]
-        matches = [match for match in list_of_matches if type(match) == unicode]
+        #matches = [match for match in list_of_matches if type(match) == unicode]
         # remove bad characters
-
-        matches = [re.sub(strip_bad, "", match) for match in matches]
-        matches = filter(None, matches)
+        #matches = [re.sub(strip_bad, "", match) for match in matches]
+        #matches = filter(None, matches)
         #lowercasing
         lowered = []
-        for match in matches:
+        for match in list_of_matches:
             try:
                 lowered.append(match.lower())
             except:
                 lowered.append(match)
+        #print lowered[:50]
         #matches = [match.lower() for match in matches if any(c.isalpha() for c in match)]
         #matches.append([match for match in matches if not any(c.isalpha() for c in match)])
         if titlefilter:
-            lowered = titlefilter(lowered)
+            lowered = titlefilterer(lowered)
         return lowered
 
-    def titlefilter(list_of_matches):
+    def titlefilterer(list_of_matches):
         import re
         import nltk
         from data.dictionaries.titlewords import titlewords
@@ -168,8 +168,8 @@ def dependencies(path, options, query, lemmatise = False, test = False,
                             else:
                                 thetag = 'v'
                         govword = lmtzr.lemmatize(govword, thetag)
-                        colsep = role + u':' + govword
-                        result.append(colsep)
+                    colsep = role + u':' + govword
+                    result.append(colsep)
         return result
 
 
@@ -193,6 +193,30 @@ def dependencies(path, options, query, lemmatise = False, test = False,
                     # get just the number
                     result.append(int(dependent.attrs.get('idx')))
         return result
+
+    def depnum_reorder(results_list, output = 'results'):
+        """reorder depnum results and/or generate totals list"""
+        yearlist = [unicode([i[0]]) for i in results_list[0][1:]]
+        totallist = [u'Totals']
+        counts = []
+        for entry in results_list: # for each depnum:
+            depnum = entry[0]
+            count = sum(d[1] for d in entry[1:])
+            totallist.append([depnum, count])
+        for year in yearlist[:len(yearlist) - 1]:
+            for entry in results_list:
+                word = entry[0]
+                data = entry[1:]
+                #depnum_and_count = [word, sum([d[1] for d in data])] # sum for each depnum
+                #totallist.append(depnum_and_count)
+                for theyear, count in data:
+                    if theyear == year[0]:
+                        fixed_datum = [word, count]
+                        year.append(fixed_datum)
+        if output == 'results':
+            return yearlist
+        if output == 'totals':
+            return totallist
         
 #########################################################################
 #########################################################################
@@ -212,7 +236,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
         yearfinder = re.findall(r'[0-9]+', d)
         files = [f for f in os.listdir(os.path.join(path, d)) if f.endswith('.xml')]
         if test:
-            files = files[:100]
+            files = files[:2000]
         #read_files = glob.glob(os.path.join(path, d, "*.xml"))
         all_files.append([d, files])
     total_files = len([item for sublist in all_files for item in sublist[1]])
@@ -222,14 +246,14 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     for d, fileset in all_files:  
         result = []
         if test:
-            fileset = fileset[:test * 100]
+            fileset = fileset[:test * 2000]
         for f in fileset:
             p.animate(c, str(c) + '/' + str(total_files))
             c += 1
             with open(os.path.join(path, d, f), "rb") as text:
                 data = text.read()
                 just_good_deps = SoupStrainer('dependencies', type=dep_type)
-                soup = BeautifulSoup(data, parse_only=just_good_deps)
+                soup = BeautifulSoup(data, "lxml", parse_only=just_good_deps)
                 if options == 'govrole':
                     result_from_file = govrole(soup)
                 if options == 'funct':
@@ -281,13 +305,17 @@ def dependencies(path, options, query, lemmatise = False, test = False,
             getval = dictionary[word[0]]
             word.append([int(subcorpus_name), getval])
     p.animate(len(results_list))
-    # do totals (and keep them), then sort list by total
+    # do totals (and keep them)
+    if options == 'depnum':
+        list_words.sort(key=lambda x: int(x[0]))
+        main_totals = depnum_reorder(list_words, output = 'totals') 
+        list_words = depnum_reorder(list_words, output = 'results') 
+    else: 
+        list_words.sort(key=lambda x: x[-1], reverse = True)
     for word in list_words:
         total = sum([i[1] for i in word[1:]])
         word.append([u'Total', total])
-    list_words.sort(key=lambda x: x[-1], reverse = True)
-    if options == 'depnum':
-        list_words.sort(key=lambda x: int(x[0]))
+
     #make results into named tuple
     outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
     query_options = [query, options] 

@@ -1,4 +1,4 @@
-%!TEX root = ../risk_book.tex
+%!TEX root = ../risk_report.tex
 
 \chapter{Limitations of the study}
 
@@ -12,7 +12,36 @@
 
 \section{The limits of lexicogrammatical querying}
 
-		~\ \todo[inline,color=green!40]{\noindent Discuss how our investigation focusses more or less on congruent realisations, and is monomodal...}
+        A major issue we face, and have not dealt with head-on, is the potential for similar discourse-semantic meanings to be made via a number of different kinds of lexicogrammatical arrangements:
+
+        \begin{enumerate} [before=\itshape,font=\normalfont] \setlength\itemsep{0em} \small
+            \item Risked money was lost
+            \item They risked their money
+            \item They risked their savings
+            \item Money was risked
+            \item The money, which they risked, was lost.
+            \item They had money. They risked it.
+        \end{enumerate}
+
+        Each of these hypothetical examples communicates that money was risked, but through different grammatical strategies, ranging from the group level (Ex. 1) to the clause-complex (Ex. 6). With great difficulty, we could construct a query that matches every one of these results, or merge the results of a number of searches. As the queries grow in complexity, however, undesirably results may creep in: a query matching \emph{money} in the above cases would also likely match \emph{death} in \emph{They risked death}, despite the fact that one is the risked object and one is the potential harm. Determining the proper functional role is simple for human coders, but the number of results in need of categorisation is often far from trivial. 
+
+        %Furthermore, in Examples 5 and 6 (in which meanings are made across clauses) are at the very limits of even the most sophisticated kinds of grammatical and semantic annotation tools available today.
+
+        The second major issue is the converse: counted in many our automatic queries are many examples in which the money was never risked:
+
+        \begin{enumerate} [before=\itshape,font=\normalfont] \setlength\itemsep{0em} \small
+            \item They would have risked their money
+            \item They didn't risk their money
+            \item Risking money was a terrible idea, so they didn't do it.
+            \item Don't risk their money.
+        \end{enumerate}
+
+        Few corpus-based studies of discourse have attempted to distinguish between these kinds of meanings automatically. Though many grammars account for the notions of \emph{possibility}, \emph{counterfactuality} or \emph{negation} presented above, how to use these meanings to include\slash exclude matches has yet to be determined.
+
+        It must also be noted, of course, that any study of text corpora necessarily involves removing text from the actuality in which it was produced. Though we can be attuned to the nature of written news journalism, we have not been able to account for meanings made multimodally (through adjacent images, advertisements, etc.). Though perhaps not a critical issue in studies of news corpora, it is nontheless important to acknowledge that in some sense we have been studying \emph{text}, rather than \emph{texts}. Synthesis of corpus findings with in-depth analyses of individual articles, or of the influence of the media production process, would no doubt improve our ability to generalise our results. Indeed, future research incorporating these perspectives is planned.
+
+        % Predictive applications of Big Data/corpus linguistic methods have already been discussed: \citeA{michel_quantitative_2011} and \citeA{leetaru_culturomics_2011} argue that nuanced mining of large quantities of language can potentially predict civil uprisings such as those seen in the Arab Spring, for example. It must be remembered that these studies have been criticised for their far-reaching conclusions \cite<e.g.>{zimmer_when_????}, and of course that predictive applications of corpus linguistics to date have had the benefit of hindsight. Interpreting peaks and troughs in particular kinds of language is also far from straightforward: increasing numbers of risk words before 9\slash 11 could be interpreted as either a possible predictor of the event or as evidence that the event did not itself cause an increase in the use of risk words. As such, we remain cautiously optimistic about predictive applications. More practically, it seems that such applications are feasible only when there is little delay between text production and text analysis: automated analysis of language circulated via the Web seems a much more sensible starting point for predictive work than static corpora of digitised newspapers and books.
+
 
 \section{Conclusions}
 
