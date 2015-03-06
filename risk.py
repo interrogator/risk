@@ -60,7 +60,7 @@ annual_trees = 'data/nyt/trees/years' # corpus of every article, with annual
 # Depending on your browser's capabilities/settings, the following will download or display our report:
 
 # <codecell>
-report_display()
+# report_display()
 
 # <headingcell level=3>
 # The data
@@ -1184,22 +1184,20 @@ plotter('Merck and Vioxx', vioxx, fract_of = propernouns.totals, yearspan = [199
 # It takes five arguments:
 
 # 1. a path to the corpus
-# 2. A search option: *'rship'*, *'depnum'* or *'govrole'*
+# 2. A search option: *'funct'*, *'depnum'* or *'govrole'*
 # 3. a regular expression to, match a token (in our case, to match a risk word)
 # 4. the kind of dependencies parses we want to search: *'basic-dependencies'*, '*collapsed-dependencies'*, or *'collapsed-ccprocessed-dependencies'*.
 # 5. lemmatise = *True/False*
 
 # With regard to (2): the three search options give different kinds of information about the matched tokens:
 
-# * 'rship' gets the functional role only
+# * 'funct' gets the functional role only
 # 'govrole' gets the function and the governor (which can be lemmatised)
 # 'depnum' gets the index of the word within the dependency parse
 
 # We were interested in each of these three kinds of dependency information.
 
 # With regard to (4): though the *collapsed-cc-dependencies* are perhaps the most commonly used, we use basic dependencies here, as this assisted the lemmatisation process (see the report for more information).
-
-
 
 # <headingcell level=5>
 # Functional role of risk in dependency parses
@@ -1209,7 +1207,7 @@ plotter('Merck and Vioxx', vioxx, fract_of = propernouns.totals, yearspan = [199
 annual_deps = 'data/nyt/basic-dependencies/years'
 
 # <codecell>
-risk_functions = dependencies(annual_deps, 'rship', r'(?i)\brisk', dep_type = 'basic-dependencies')
+risk_functions = dependencies(annual_deps, 'funct', r'(?i)\brisk', dep_type = 'basic-dependencies')
 
 # <codecell>
 plotter('Top functions of risk words', risk_functions.results, fract_of = risk_functions.totals)
@@ -1258,6 +1256,7 @@ plotter('Governors of risk and their roles', role_and_gov.results, fract_of = ro
 # <headingcell level=5>
 # Dependency index
 
+# <markdowncell>
 # In a dependency parse, smaller indices will be given to words close to the root of the dependency string. These correspond (roughly) with more arguable roles in SFL. Large indices are more dependent, and are generally less arguable.
 
 # Thus, we also thought we could roughly approximate arguability by looking for the index of each risk word within each dependency parse.
@@ -1268,21 +1267,10 @@ risk_indices = dependencies(annual_deps, 'depnum', r'(?i)\brisk', dep_type = 'ba
 # <markdowncell>
 # Our existing way of plotting results needed to be modified in order to show the information provided by the *depnum* search.
 
-# <codecell>
-from operator import itemgetter # for more complex sorting
-# make a new list to reorder
-to_reorder = list(risk_indices.results)
-dep_num = sorted(to_reorder, key=itemgetter(0), reverse = True)
-
-
 # alter list here
 
 # <codecell>
 plotter()
-
-
-
-
 
 # <headingcell level=2>
 # Risk in economics, health and politics articles
@@ -1458,7 +1446,7 @@ plotter('Noun/verb ratio', nouncount.totals, fract_of = verbcount.totals,
 # Our final area of investigation was general dependency. This is identical to our investigation of risk dependencies, excepyt that we change our token definition from any risk word to any word.
 
 # <codecell>
-all_functions = dependencies(annual_deps, 'rship', 
+all_functions = dependencies(annual_deps, 'funct', 
     r'(?i)[a-z0-9]', dep_type = 'basic-dependencies')
 
 # <codecell>
@@ -1495,6 +1483,7 @@ plotter('Most common dependencies for risk words', all_role_and_gov.results,
 # <headingcell level=5>
 # Dependency index
 
+# <markdowncell>
 # We were interested in whether the changes in risk dependency indices were part of a more general trend.
 
 # <codecell>
