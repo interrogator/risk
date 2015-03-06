@@ -12,7 +12,6 @@ def surgeon(lst, criteria, remove = False):
 
     If regex, remember to add word boundaries!
     """
-
     import re
     newlist = []
     if type(criteria) == str:
@@ -496,7 +495,7 @@ def keywords(data, dictionary = 'years.p', **kwargs):
 # keywords, ngrams = keywords('test.csv', nBigrams = 4)
 # print ngrams
 
-def collocates(data, nbest = 30, window_size = 5):
+def collocates(data, nbest = 30, window = 5):
     """Feed this a csv file generated with conc() and get its collocations"""
     import nltk
     from nltk import collocations
@@ -517,14 +516,15 @@ def collocates(data, nbest = 30, window_size = 5):
         # make a list of all words
             allwords.append(word)
     bigram_measures = nltk.collocations.BigramAssocMeasures()
-    finder = BigramCollocationFinder.from_words(allwords, window_size=5)
+    finder = BigramCollocationFinder.from_words(allwords, window_size=window)
     ignored_words = nltk.corpus.stopwords.words('english')
     # anything containing letter or number
     regex = r'[A-Za-z0-9]'
     # the n't token
     nonot = r'n\'t'
     # lots of conditions!
-    finder.apply_word_filter(lambda w: len(w) < 2 or w.lower() in ignored_words or not re.match(regex, w) or re.match(nonot, w))
+    finder.apply_word_filter(lambda w: len(w) < 2 or w.lower() \
+        in ignored_words or not re.match(regex, w) or re.match(nonot, w))
     finder.apply_freq_filter(2)
     results = sorted(finder.nbest(bigram_measures.raw_freq, nbest))
     listversion = []

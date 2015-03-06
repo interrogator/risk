@@ -6,7 +6,8 @@
 def plotter(title, results, fract_of = False, y_label = False, 
     num_to_plot = 7, skip63 = False, proj63 = 4, 
     multiplier = 100, projection = True, yearspan = False,
-     justyears = False, csvmake = False, x_label = False, legend_totals = False, log = False):
+     justyears = False, csvmake = False, x_label = False, 
+     legend_totals = False, log = False, figsize = 15, save = False):
     """
     Takes interrogator output and plots it with matplotlib
 
@@ -38,7 +39,13 @@ def plotter(title, results, fract_of = False, y_label = False,
     from matplotlib.ticker import ScalarFormatter
     %matplotlib inline
     from pylab import rcParams
-    rcParams['figure.figsize'] = 9.6, 4.8
+    from matplotlib import rc
+    rcParams['figure.figsize'] = figsize, figsize/2
+    import pylab as pl
+    imagefolder = 'images'
+    rcParams.update({'font.size': (figsize / 2) + 7}) # half your size plus seven
+    rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
+    rc('text', usetex=True)
 
     def popper(interrogator_list):
         """removes totals"""
@@ -180,14 +187,21 @@ def plotter(title, results, fract_of = False, y_label = False,
     ##################################################################
 
     # copy results and embed in list if need be.
+    if csvmake:
+        cutoff = len(results)
+    else:
+        cutoff = num_to_plot
     if type(results[0]) == unicode or type(results[0]) == str:
         legend = False
-        data = [list(results)]
-        alldata = [list(results)]
+        data = [list(results)][:cutoff]
+        alldata = [list(results)][:cutoff]
     else:
         legend = True
-        data = list(results)
-        alldata = list(results)
+        data = list(results[:cutoff])
+        alldata = list(results[:cutoff])
+    # cut it short if we're not saving results
+    if not csvmake:
+        alldata = alldata[:num_to_plot]
 
     # find out if we're doing years or not:
     if x_label:
@@ -227,10 +241,10 @@ def plotter(title, results, fract_of = False, y_label = False,
         word = entry[0]
         # what the hell is this?
         # get proper total here!
-        # if entry[-1][0] == 'total':
-        #total = str(float(entry[-1][-1]))
-        #else:
-        total = 0
+        if entry[-1][0] == 'Total':
+            total = str(float(entry[-1][1]))
+        else:
+            total = 0
         #print str(total)
         if fract_of:
             totalstring = ' (%s%%)' % total
@@ -286,7 +300,7 @@ def plotter(title, results, fract_of = False, y_label = False,
     
     #make legend
     if legend:
-        plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+        lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 
     # make axis labels
     plt.xlabel(x_lab)
@@ -315,8 +329,17 @@ def plotter(title, results, fract_of = False, y_label = False,
     else:
         plt.ticklabel_format(useOffset=False, axis='x', style = 'plain')
     plt.grid()
+    fig1 = plt.gcf()
     plt.show()
-
+    if save:
+        if type(save) == str:
+            savename = os.path.join(imagefolder, save.replace(" ", "_").lower() + '.png')
+        else:
+            savename = os.path.join(imagefolder, title.replace(" ", "_").lower() + '.png')
+        if legend:
+            fig1.savefig(savename, bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=150) 
+        time = strftime("%H:%M:%S", localtime())
+        print time + ": " + savename + " created."
     if csvmake:
         csvmaker(csvdata, csvalldata, csvmake)
         

@@ -42,10 +42,10 @@ from IPython.display import display, clear_output
 # import functions to be used here:
 for func in [f for f in os.listdir('corpling_tools') if f.endswith(".ipy")]:
     %run corpling_tools/$func
-! rm riskwords.csv concordances.csv # remove old csv output (temporary code)
+! rm *.csv# remove old csv output (temporary code)
 
 # <markdowncell>
-# We should set two variables that are used repeatedly during the investigation. If you were using this interface for your own corpora, you would change 'nyt' to the path to your data.
+# Next, let's set the path to our corpus. If you were using this interface for your own corpora, you would change this to the path to your data.
 
 # <codecell>
 annual_trees = 'data/nyt/trees/years' # corpus of every article, with annual 
@@ -55,9 +55,7 @@ annual_trees = 'data/nyt/trees/years' # corpus of every article, with annual
 # The report
 
 # <markdowncell>
-# The focus of this notebook is our methodology and findings. These project is contextualised, and the findings are elaborated upon, in our written report of the project.
-
-# Depending on your browser's capabilities/settings, the following will download or display our report:
+# The focus of this notebook is our methodology and findings. These parts of the project are contextualised and elaborated upon in our written report of the project. Depending on your browser's capabilities/settings, the following will download or display our report:
 
 # <codecell>
 # report_display()
@@ -753,7 +751,7 @@ plotter('Adjectives modifying nominal risk (lemmatised)', select_adjs,
     num_to_plot = 4)
 
 # <markdowncell>
-# Wow! What's happening with `calculated risk* in 1963? Let's modify the original Tregex query a little and use *conc()` to find out.
+# Wow! What's happening with *calculated risk* in 1963? Let's modify the original Tregex query a little and use `conc()` to find out.
 
 # <codecell>
 ### old query: r'/JJ.?/ > (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
@@ -1094,8 +1092,9 @@ companies = surgeon(merged_propernouns, r'(?i)^\b(merck|avandia\
 |citigroup|pfizer|bayer|enron|apple|microsoft|empire)$\b')
 organisations = surgeon(merged_propernouns, r'(?i)^\b((white house|congress|federal reserve|nasa|pentagon)\b|'
     r'f\.d\.a\.|c\.i\.a\.|f\.b\.i\.|e\.p\.a\.)$')
-medical = surgeon(merged_propernouns, r'(?i)^\b(vioxx|aids|celebrex)$\b')
+medical = surgeon(merged_propernouns, r'(?i)^\b(vioxx|aids|celebrex|f.d.a)\b')
 balkan = surgeon(merged_propernouns, r'(?i)^(balkan|yugoslav|milos|serbia|croatia|bosnia|kosovo|nato)$')
+# geopol[5][0] == u'e.u.'
 
 # <codecell>
 # plot some results
@@ -1114,8 +1113,8 @@ plotter('Companies', companies, fract_of = propernouns.totals,
 plotter('Organisations', organisations, fract_of = propernouns.totals, 
         y_label = 'Percentage of all proper noun groups', skip63 = True)
 
-plotter('Medical', medical, fract_of = propernouns.totals, 
-        y_label = 'Percentage of all proper noun groups', skip63 = True)
+plotter('Medicine', medical, fract_of = propernouns.totals, num_to_plot = 4,
+        y_label = 'Percentage of all proper noun groups', skip63 = True, save = True, figsize = 15)
 
 plotter('Balkan Wars', balkan, num_to_plot = 12,
         y_label = 'Absolute frequency', skip63 = True, yearspan = [1989, 2001])

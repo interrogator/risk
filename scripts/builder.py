@@ -21,11 +21,11 @@ import IPython.nbformat.current as nbf # API converter
 arg = str(sys.argv[1]) # get filename argument
 outbasename = os.path.splitext(arg)[0] # get input file basename
 output = outbasename + '.ipynb' # create output name
-print 'Converting ' + arg + ' ---> ' + output + ' ...' # print status
-nb = nbf.read(open(arg, 'r'), 'py') # read and convert .py file
-nbf.write(nb, open(output, 'w'), 'ipynb') # create .ipynb file
-print 'Done!'
+#print 'Converting ' + arg + ' ---> ' + output + ' ...' # print status
+#nb = nbf.read(open(arg, 'r'), 'py') # read and convert .py file
+#nbf.write(nb, open(output, 'w'), 'ipynb') # create .ipynb file
+#print 'Done!'
 #shellscript = '/anaconda/bin/ipython notebook --profile customcss ' + output # create shell command to open iPython in browser
-shellscript = '/anaconda/bin/ipython notebook ' + output # create shell command to open iPython in browser
+shellscript = 'ipython notebook ' + output # create shell command to open iPython in browser
 
 os.system(shellscript) # issue command

@@ -6,7 +6,7 @@
 
 	We relied on two sources for our data. The \emph{New York Times Annotated Corpus} \cite{sandhaus_new_2008} was used as the source for all articles published between 1987--2006. ProQuest was used to search for and download articles containing a risk word from 2007--2014, alongside some metadata, in HTML format. We also created a subcorpus of articles from NYT 1963 editions through optimal character recognition (OCR) of PDF documents archived by ProQuest as containing a risk word in either metadata (i.e. title, lede) or content. Due to the time-intensive nature of manual correction of OCR, a random sample of one-third (1218 texts) was selected, with paragraphs of texts containing a risk word being manually corrected by hand.
 
-	Article text and any available metadata were extracted from this unstructured source content using \emph{Python}'s \emph{Beautiful Soup} module and \emph{Shell} scripting, and added to uniquely named text files in annual subfolders. The kinds of metadata available varied according to the data source: The \emph{New York Times Annotated Corpus} provides a number of potentially valuable metadata fields, such as author, newspaper section, and subject (manually added by trained archivists). We then value-added to this partially annotated corpus in three main ways. First, keywords and clusters for each article were calculated using \emph{Spindle} \cite<see>{puerto_spindle_2012} and added as metadata fields. Second, \emph{MALLET} \cite<see>{mccallum_mallet:_2002}, a topic modelling tool, used LDA to algorithmically assign `topics' to each article. The topics and their strengths were added as a metadata field. Finally, we used the \emph{Stanford CoreNLP suite} \cite<see>{manning_stanford_2014} to parse each risk token and its co-text for grammatical structure and dependencies.\endnote{As a part of an ongoing Australian Digital Humanities initiative, since the beginning of our analysis, we have been allocated resources for creating and cloud-hosting a much larger corpus. All 1.8 million articles from the \emph{New York Times Annotated Corpus} were turned into an identically structured, though dramatically larger, cloud-hosted corpus. Interrogation of this corpus was used to determine whether trends in the behaviour of risk words were localised to the word itself, or to general stylistic/language change in the \emph{New York Times}. More details on this project are to be presented in Zinn and McDonald, forthcoming.}~
+	Article text and any available metadata were extracted from this unstructured source content using \emph{Python}'s \emph{Beautiful Soup} library and added to uniquely named text files in annual subfolders. The kinds of metadata available varied according to the data source: The \emph{New York Times Annotated Corpus} provides a number of potentially valuable metadata fields, such as author, newspaper section, and subject (manually added by trained archivists). We then value-added to this partially annotated corpus in three main ways. First, keywords and clusters for each article were calculated using \emph{Spindle} \cite<see>{puerto_spindle_2012} and added as metadata fields. Second, \emph{MALLET} \cite<see>{mccallum_mallet:_2002}, a topic modelling tool, used LDA to algorithmically assign `topics' to each article. The topics and their strengths were added as a metadata field. Finally, we used the \emph{Stanford CoreNLP suite} \cite<see>{manning_stanford_2014} to parse each risk token and its co-text for grammatical structure and dependencies.\endnote{As a part of an ongoing Australian Digital Humanities initiative, since the beginning of our analysis, we have been allocated resources for creating and cloud-hosting a much larger corpus. All 1.8 million articles from the \emph{New York Times Annotated Corpus} are currently being turned into an identically structured, though dramatically larger, cloud-hosted corpus. In planned future research, interrogation of this corpus will be used to determine whether trends in the behaviour of risk words were localised to the word itself, or to general stylistic/language change in the \emph{New York Times}. More details on this project are to be presented in Zinn and McDonald, forthcoming.}~
 
 	A key strength of the methodology is that subcorpora based on article or metadata attributes can can be easily created and compared. Our interest was in creating a small set of topic-specific corpora in order to look for changes in risk word behaviour within specific fields of discourse. As a case study, we decided to focus on three broadly defined topics: \emph{economy}, \emph{health} and \emph{politics}. Librarian-added metadata concerning article topic/category (MC metadata field) was used to locate all articles tagged case-insensitive regular expressions \texttt{\textbackslash beconom.*}, \texttt{\textbackslash bhealth.*} or \texttt{\textbackslash bpolitic.*}.\endnote{We tried a number of strategies for collecting topic subcorpora, such as exploiting topic modeller and keyword metadata. Ultimately, however, we relied on the hand-classification. A limitation of the selected approach is that---an article collected in the health subcorpus was tagged with `Livestock health', for example. Similarly, article categories may be lacking: Figure \ref{fig:exfile} is tagged only with MENINGITIS, and thus is not included in our health subcorpus. More obviously, 1963 articles had not been classified this way, and thus do not feature in the three topic subcorpora.} 
 
@@ -32,9 +32,7 @@
     \caption{Metadata tags and content}
 \end{table}
 	
-	We used some of the metadata fields to identify and remove listings (of best-selling books, plays, TV guides, etc.). Reasons for this were threefold. First, the jargon, abbreviations and non-clausal nature of listing language was not handled well by the parser. Second, list content was often repeated verbatim in multiple files, potentially skewing counts. Third, our two data sources archived listings in different ways.
-
-	Listings were located by querying metadata fields in a number of ways. Files with titles such as \emph{Spare Times}, \emph{Best Sellers}, articles with keywords such as `theater', `listing', or days of the week. If a file contained only a listing, the file was removed. If a risk word appeared only within the list portion of an article, the file was deleted. If a file contained both a body and listing, only the listing was removed.
+	We used some of the metadata fields to identify and remove listings (of best-selling books, plays, TV guides, etc.). Reasons for this were threefold. First, the jargon, abbreviations and non-clausal nature of listing language was not handled well by the parser. Second, list content was often repeated verbatim in multiple files, potentially skewing counts. Third, our two data sources archived listings in different ways. Listings were located by querying metadata fields in a number of ways. Files with titles such as \emph{Spare Times}, \emph{Best Sellers}, articles with keywords such as `theater', `listing', or days of the week. If a file contained only a listing, the file was removed. If a risk word appeared only within the list portion of an article, the file was deleted. If a file contained both a body and listing, only the listing was removed.
 
 	After all data processing, we had a 150 million word corpus of nearly 150,000 articles containing a risk word published in the NYT or \url{NYT.com} in 1963, and between 1987 and mid 2014. The corpus had 29 annual subcorpora. The three subcorpora of economics, health and politics articles contained a subset of these articles. A breakdown of the size and composition of each annual subcorpus is provided in Table \ref{tab:stats}. Where necessary, frequency counts in the 1963 subcorpus were multiplied by four, to account for the smaller sample size. Frequency counts for 2014 were multiplied by 1.37 to fill in the uncaptured period between August 18--December 31.
 
@@ -124,6 +122,86 @@ One family has lost a child and others may be at risk from a deadly brain inflam
 \caption{Example file: NYT-1995-12-30-10.txt}
 \label{fig:exfile}
 \end{figure}
+
+\section{Tools and interface used for corpus interrogation}
+
+Special tools needed to be developed to work with the very large dataset of both raw NYT articles and parsed paragraphs containing a risk word. Given a well-established history of use within humanities and social sciences, as well as a particular strength in working with linguistic data, we developed a Python-based toolkit for querying our data and visualising query results. Our purpose-built toolkit provided the ability to quickly search each subcorpus of our data and generate useful visualisations of results. Though many parts of the toolkit were designed with more general Digital Humanities projects in mind, certain components of the toolkit were designed exclusively to aid in our particular investigation (projection of counts from 1963 and 2014; automatically stripping names and titles from U.S. politician names, etc.). The specific functions and their purpose are outlined in Table \ref{tab:pyfunc}, with a simple example of a function shown in Figure \ref{fig:code}. More detailed explanations and demonstrations are provided at \url{http://nbviewer.ipython.org/github/interrogator/risk/blob/master/risk.ipynb}; the repository of code itself is available via \emph{GitHub} (\url{https://github.com/interrogator/risk}), where it can freely be downloaded, or duplicated and modified.
+
+\begin{table}[h!]
+\small
+\centering
+\begin{tabularx}{0.5\textwidth}{|l|X|} \hline
+
+\textbf{Function name} &  \textbf{Purpose}     \\ \hline
+\texttt{interrogator()}  &  interrogate parsed corpora          \\ \hline
+\texttt{dependencies()}  &  interrogate parsed corpora for dependency info (presented later)          \\ \hline
+\texttt{plotter()}       &  visualise \texttt{interrogator()} results  \\ \hline
+\texttt{table()}          &  return \texttt{plotter()} results as table  \\ \hline
+\texttt{quickview()}     &  view \texttt{interrogator()} results       \\ \hline
+\texttt{tally()}       &  get total frequencies for \texttt{interrogator()} results       \\ \hline
+\texttt{surgeon()}       &  edit \texttt{interrogator()} results       \\ \hline
+\texttt{merger()}       &  merge \texttt{interrogator()} results       \\ \hline
+\texttt{conc()}          &  complex concordancing of subcorpora  \\ \hline
+\texttt{keywords()}          &  get keywords and ngrams from \texttt{conc()} output  \\ \hline
+\texttt{collocates()}          &  get collocates from \texttt{conc()} output \\ \hline
+\texttt{quicktree()}          &  visually represent a parse tree  \\ \hline
+\texttt{searchtree()}          &  search a parse tree with a Tregex query  \\ \hline
+\end{tabularx}
+\caption{Python functions developed for our investigation}
+\label{tab:pyfunc}
+\end{table}
+
+\begin{figure}
+\centering
+\begin{minipage}[c]{.75\textwidth}
+\centering
+\begin{minted}[fontsize=\small,linenos=true]{python}
+def collocates(data, nbest = 30, window = 5):
+    """Feed this a csv file generated with conc() and get collocations"""
+    import nltk
+    from nltk import collocations
+    from nltk.collocations import BigramCollocationFinder
+    import re
+    f = open(data)
+    raw = f.read()
+    bad, good = re.compile(r'Entire sentences \(n=[0-9]+\):').split(raw)
+    good = unicode(good.lower(), 'utf-8', errors = 'ignore')
+    sent_tokenizer=nltk.data.load('tokenizers/punkt/english.pickle')
+    sents = sent_tokenizer.tokenize(good)
+    tokenized_sents = [nltk.word_tokenize(i) for i in sents]
+    allwords = []
+    # for each sentence,
+    for sent in tokenized_sents:
+    # for each word,
+        for word in sent:
+        # make a list of all words
+            allwords.append(word)
+    bigram_measures = nltk.collocations.BigramAssocMeasures()
+    finder = BigramCollocationFinder.from_words(allwords, window_size=window)
+    ignored_words = nltk.corpus.stopwords.words('english')
+    # anything containing letter or number
+    regex = r'[A-Za-z0-9]'
+    # the n't token
+    nonot = r'n\'t'
+    # lots of conditions!
+    finder.apply_word_filter(lambda w: len(w) < 2 or w.lower() in \
+        ignored_words or not re.match(regex, w) or re.match(nonot, w))
+    finder.apply_freq_filter(2)
+    results = sorted(finder.nbest(bigram_measures.raw_freq, nbest))
+    listversion = []
+    for index, thecollocation in enumerate(results):
+        aslist = [index, thecollocation[0], thecollocation[1]]
+        listversion.append(aslist)
+    return listversion
+\end{minted}
+\caption{Code to find collocates in concordance results}
+\label{fig:code}
+\end{minipage}
+\end{figure}
+
+
+Finally, we developed an IPython Notebook based interface for using these functions to investigate the NYT corpus (also available cia our GitHub URL above). This served not only as our main platform for interrogating the dataset, but also as a means of dynamically disseminating results without being limited by considerations of space. In being open-source, and in explicitly showing the exact queries used to generate findings, the Notebook ensures both reproducability and transparency of the entirety of our investigation. At the same time, it provides a framework for sophisticated corpus-assisted discourse analysis using cutting-edge digital research tools. Researchers are encouraged to run the Notebook in conjunction with this report, so that they can generate and manipulate our key findings as they see fit.
+
 
 % \begin{table}
 % \centering
