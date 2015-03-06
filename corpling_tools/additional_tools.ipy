@@ -3,7 +3,7 @@
 #   Interrogating parsed corpora and plotting the results: additional resources
 #   Author: Daniel McDonald
 
-def surgeon(lst, criteria, remove = False):
+def surgeon(lst, criteria, remove = False, resort = False):
     """
     Add or remove from results by regex or index.
 
@@ -40,6 +40,12 @@ def surgeon(lst, criteria, remove = False):
         if remove is False:
             for index in criteria:
                 newlist.append(lst[index])
+    if resort:
+        if resort == 'alpha':
+            resort(newlist, critera = 'alpha')
+        else:
+            resort(newlist, critera = 'total')
+            # assume total sort
     return newlist
 
 def quickview(lst, n = 50, topics = False):
@@ -58,8 +64,6 @@ def quickview(lst, n = 50, topics = False):
                 as_string = ': '.join(index_and_word)
                 out.append(as_string)
             else:
-                # limitation: this currently prints the *old* index
-                # to fix this, conc should not join the index and result.
                 out.append(item)
         return out
     if topics:
@@ -323,7 +327,7 @@ def tally(lst, indices):
                     #raise ValueError("No matches found. Sorry")
     return output
 
-def merger(lst, indices_to_merge, newname = False):
+def merger(lst, indices_to_merge, newname = False, printmerge = True):
     """Merges result items by their index
 
     lst: list to work on
@@ -357,7 +361,8 @@ def merger(lst, indices_to_merge, newname = False):
     for entry in tomerge:
         toprint.append(str(entry[0]))
     string_to_print = '\n'.join(toprint)
-    print 'Merging the following entries:\n' + string_to_print
+    if printmerge:
+        print 'Merging the following entries:\n' + string_to_print
     combined = zip(*[l for l in tomerge])
     merged = []
     # get the new word or use the first entry
@@ -567,3 +572,37 @@ def parsetree(tree):
     ! rm tree.ps
     return Image(filename='tree.png')
     ! rm tree.png
+
+def resort(lst, criteria = 'total', reverse = True):
+    """Re-sort interrogation results alphabetically or by total"""
+    # consider adding this within surgeon and merger
+    from operator import itemgetter # for more complex sorting
+    to_reorder = list(lst)
+    if criteria == 'total':
+        for item in to_reorder:
+            total = sum([t[1] for t in item[1:]])
+            item.append(total)
+        sorted = sorted(to_reorder, key=lambda x: x[-1], reverse = reverse)
+        for item in sorted:
+            item.pop()
+    if criteria == 'alpha':
+        sorted = to_reorder.sort(key=lambda x: x[0])
+    return sorted
+
+def multiquery(corpus, query):
+    """Creates a named tuple for a list of named queries to count
+
+    Pass in something like:
+
+    [[u'NPs', r'NP'], [u'VPs', r'VP']]"""
+
+    import collections
+    results = []
+    for name, pattern in query:
+        result = interrogator(corpus, '-C', pattern)
+        result.totals[0] = name # rename count
+        results.append(result.totals)
+    totals = merger(results, r'.*', newname = 'Totals', printmerge = False)
+    outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
+    output = outputnames(query, results, totals[0])
+    return output
