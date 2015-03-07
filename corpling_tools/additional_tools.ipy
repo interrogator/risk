@@ -13,6 +13,11 @@ def surgeon(lst, criteria, remove = False, resort = False):
     If regex, remember to add word boundaries!
     """
     import re
+    import collections
+    if remove:
+        remove_string = 'remove = True'
+    else:
+        remove_string = 'remove = False'
     newlist = []
     if type(criteria) == str:
         regexp = re.compile(criteria)
@@ -41,12 +46,18 @@ def surgeon(lst, criteria, remove = False, resort = False):
             for index in criteria:
                 newlist.append(lst[index])
     if resort:
-        if resort == 'alpha':
-            resort(newlist, critera = 'alpha')
+        if resort == 'name':
+            resort(newlist, criteria = 'name')
         else:
-            resort(newlist, critera = 'total')
+            resort(newlist, criteria = 'total')
             # assume total sort
-    return newlist
+    totals = combiner(newlist, 'Totals', printmerge = False)
+    # make into name tuple
+    outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
+    query_options = [str(criteria), remove_string]
+    #main_totals.append([u'Total', total])
+    output = outputnames(query_options, newlist, totals)
+    return output
 
 def quickview(lst, n = 50, topics = False):
     """See first n words of an interrogation.
@@ -54,6 +65,8 @@ def quickview(lst, n = 50, topics = False):
     lst: interrogator() list
     n: number of results to view
     topics: for investigation of topic subcorpora"""
+    if type(lst[0]) == str or type(lst[0]) == unicode:
+        return '0: %s: %d' % (lst[0], lst[-1][1])
     if not topics:
         out = []
         for index, item in enumerate(lst[:n]):
@@ -327,44 +340,36 @@ def tally(lst, indices):
                     #raise ValueError("No matches found. Sorry")
     return output
 
-def merger(lst, indices_to_merge, newname = False, printmerge = True):
+def merger(lst, criteria, newname = False, printmerge = True, resort = 'total'):
     """Merges result items by their index
 
     lst: list to work on
-    indices_to_merge: list of result indexes
+    criteria: list of result indexes
     newname = if str, this becomes the new name
                         if int, the item indexed with that int becomes newname
                         if False, most common item becomes newname"""
     import re
+    import collections
     tomerge = []
     oldlist_copy = list(lst)
     # if regex, get list of indices for mwatches
-    if type(indices_to_merge) ==  str:
+    if type(criteria) ==  str:
         forwards_index = []
-        regex = re.compile(indices_to_merge)
+        regex = re.compile(criteria)
         for entry in oldlist_copy:
             if re.search(regex, str(entry[0])):
                 forwards_index.append(oldlist_copy.index(entry))
         backward_indices = sorted(forwards_index, reverse = True)
     #if indices, ensure results are sorted
-    if type(indices_to_merge) == list:
-        forwards_index = list(indices_to_merge)
-        backward_indices = sorted(indices_to_merge, reverse = True)
+    if type(criteria) == list:
+        forwards_index = list(criteria)
+        backward_indices = sorted(criteria, reverse = True)
     # remove old entries
     for index in backward_indices:
         oldlist_copy.remove(oldlist_copy[index])
     # add matching entries to tomerge
     for index in forwards_index:
         tomerge.append(lst[index])
-    # make list of words that are being merged
-    toprint = []
-    for entry in tomerge:
-        toprint.append(str(entry[0]))
-    string_to_print = '\n'.join(toprint)
-    if printmerge:
-        print 'Merging the following entries:\n' + string_to_print
-    combined = zip(*[l for l in tomerge])
-    merged = []
     # get the new word or use the first entry
     if type(newname) == int:
         getnewname= lst[newname]
@@ -376,26 +381,29 @@ def merger(lst, indices_to_merge, newname = False, printmerge = True):
     else:
         duplicated_word = combined[0]
         the_newname = duplicated_word[0]
-    merged.append(the_newname)
-    for tup in combined[1:]: # for each tuple of combined years and counts
-        getyearfrom = tup[0]
-        year = getyearfrom[0]
-        counts = []
-        for bit in tup:
-            counts.append(bit[1])
-        total = sum(counts)
-        goodtup = [year, total]
-        merged.append(goodtup)
+
+    merged = combiner(tomerge, the_newname)
+    
+    # put the merged entry back in the list
+    # this is a bit redundant now that there's sorting
     output = []
-    if type(indices_to_merge) == list:
-        forwards_index = sorted(indices_to_merge)
-    # could make a for item in forwards_index, put word in first place, put dummies in others...
+    if type(criteria) == list:
+        forwards_index = sorted(criteria)
     first_index = forwards_index[0]
     for entry in oldlist_copy[:first_index]:
         output.append(entry)
     output.append(merged)
     for entry in oldlist_copy[first_index:]:
          output.append(entry)
+    if resort:
+        output = resorter(output, sort_by = resort, reverse = True)
+    # generate totals:
+    totals = combiner(output, 'Totals', printmerge = False)
+    # make into name tuple
+    outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
+    query_options = [str(criteria), the_newname]
+    #main_totals.append([u'Total', total])
+    output = outputnames(query_options, output, totals)
     return output
 
 def searchtree(tree, query):
@@ -580,21 +588,23 @@ def resort(lst, criteria = 'total', reverse = True):
     to_reorder = list(lst)
     if criteria == 'total':
         for item in to_reorder:
-            total = sum([t[1] for t in item[1:]])
-            item.append(total)
-        sorted = sorted(to_reorder, key=lambda x: x[-1], reverse = reverse)
-        for item in sorted:
+            #print item[0]
+            total = sum([t[-1] for t in item[1:]])
+            item.append([u'Total', total])
+        to_reorder.sort(key=lambda x: x[-1], reverse = reverse)
+        for item in to_reorder:
             item.pop()
-    if criteria == 'alpha':
-        sorted = to_reorder.sort(key=lambda x: x[0])
-    return sorted
+    if criteria == 'name':
+        # case sensitive!
+        to_reorder.sort(key=lambda x: x[0])
+    return to_reorder
 
 def multiquery(corpus, query):
-    """Creates a named tuple for a list of named queries to count
+    """Creates a named tuple for a list of named queries to count.
 
     Pass in something like:
 
-    [[u'NPs', r'NP'], [u'VPs', r'VP']]"""
+    [[u'NPs in corpus', r'NP'], [u'VPs in corpus', r'VP']]"""
 
     import collections
     results = []
@@ -606,3 +616,43 @@ def multiquery(corpus, query):
     outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
     output = outputnames(query, results, totals[0])
     return output
+
+def resorter(lst, sort_by = 'total', reverse = True):
+    """Re-sort interrogation results alphabetically or by total"""
+    # consider adding this within surgeon and merger
+    from operator import itemgetter # for more complex sorting
+    to_reorder = list(lst)
+    if sort_by == 'total':
+        #for item in to_reorder:
+            #print item[0]
+            # wait, are totals not already calculated?!
+            #total = sum([t[-1] for t in item[1:]])
+            #item.append([u'Total', total])
+        to_reorder.sort(key=lambda x: x[-1], reverse = reverse)
+        #for item in to_reorder:
+            #item.pop()
+    if sort_by == 'name':
+        # case insensitive!
+        to_reorder.sort(key=lambda x: x[0].lower())
+    return to_reorder
+
+def combiner(tomerge, newname, printmerge = True):
+    toprint = []
+    for entry in tomerge:
+        toprint.append(str(entry[0]))
+    string_to_print = '\n'.join(toprint)
+    if printmerge:
+        # add newname to this print
+        print 'Merging the following entries:\n' + string_to_print
+    combined = zip(*[l for l in tomerge])
+    merged = [newname]
+    for tup in combined[1:]: # for each tuple of combined years and counts
+        getyearfrom = tup[0]
+        year = getyearfrom[0]
+        counts = []
+        for bit in tup:
+            counts.append(bit[1])
+        total = sum(counts)
+        goodtup = [year, total]
+        merged.append(goodtup)
+    return merged
