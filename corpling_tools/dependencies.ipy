@@ -196,23 +196,27 @@ def dependencies(path, options, query, lemmatise = False, test = False,
 
     def depnum_reorder(results_list, output = 'results'):
         """reorder depnum results and/or generate totals list"""
-        yearlist = [unicode([i[0]]) for i in results_list[0][1:]]
+        yearlist = [[unicode(i[0])] for i in results_list[0][1:]]
+        #print yearlist
         totallist = [u'Totals']
         counts = []
         for entry in results_list: # for each depnum:
             depnum = entry[0]
+            #print depnum
             count = sum(d[1] for d in entry[1:])
+            #print count
             totallist.append([depnum, count])
-        for year in yearlist[:len(yearlist) - 1]:
+        for year in yearlist:
             for entry in results_list:
                 word = entry[0]
                 data = entry[1:]
                 #depnum_and_count = [word, sum([d[1] for d in data])] # sum for each depnum
                 #totallist.append(depnum_and_count)
                 for theyear, count in data:
-                    if theyear == year[0]:
+                    if theyear == int(year[0]):
                         fixed_datum = [word, count]
                         year.append(fixed_datum)
+        #print totallist
         if output == 'results':
             return yearlist
         if output == 'totals':
@@ -307,11 +311,13 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     p.animate(len(results_list))
     # do totals (and keep them)
     if options == 'depnum':
+        print list_words
         list_words.sort(key=lambda x: int(x[0]))
         main_totals = depnum_reorder(list_words, output = 'totals') 
         list_words = depnum_reorder(list_words, output = 'results') 
     else: 
         list_words.sort(key=lambda x: x[-1], reverse = True)
+    print list_words
     for word in list_words:
         total = sum([i[1] for i in word[1:]])
         word.append([u'Total', total])
