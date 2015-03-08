@@ -353,11 +353,11 @@ def merger(lst, criteria, newname = False, printmerge = True, resort = 'total'):
     tomerge = []
     oldlist_copy = list(lst)
     # if regex, get list of indices for mwatches
-    if type(criteria) ==  str:
+    if type(criteria) == str:
         forwards_index = []
-        regex = re.compile(criteria)
+        regex = re.compile(criteria, re.UNICODE)
         for entry in oldlist_copy:
-            if re.search(regex, str(entry[0])):
+            if re.search(regex, unicode(entry[0])):
                 forwards_index.append(oldlist_copy.index(entry))
         backward_indices = sorted(forwards_index, reverse = True)
     #if indices, ensure results are sorted
@@ -382,7 +382,7 @@ def merger(lst, criteria, newname = False, printmerge = True, resort = 'total'):
         duplicated_word = combined[0]
         the_newname = duplicated_word[0]
 
-    merged = combiner(tomerge, the_newname)
+    merged = combiner(tomerge, the_newname, printmerge = printmerge)
     
     # put the merged entry back in the list
     # this is a bit redundant now that there's sorting
@@ -612,9 +612,10 @@ def multiquery(corpus, query):
         result = interrogator(corpus, '-C', pattern)
         result.totals[0] = name # rename count
         results.append(result.totals)
-    totals = merger(results, r'.*', newname = 'Totals', printmerge = False)
+    tot = merger(results, r'.*', newname = 'Totals', printmerge = False)
+    print tot
     outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
-    output = outputnames(query, results, totals[0])
+    output = outputnames(query, results, tot.totals)
     return output
 
 def resorter(lst, sort_by = 'total', reverse = True):
@@ -639,11 +640,11 @@ def resorter(lst, sort_by = 'total', reverse = True):
 def combiner(tomerge, newname, printmerge = True):
     toprint = []
     for entry in tomerge:
-        toprint.append(str(entry[0]))
+        toprint.append(unicode(entry[0]))
     string_to_print = '\n'.join(toprint)
-    if printmerge:
+    if printmerge is True:
         # add newname to this print
-        print 'Merging the following entries:\n' + string_to_print
+        print "Merging the following entries as '%s':\n%s" % (newname, string_to_print)
     combined = zip(*[l for l in tomerge])
     merged = [newname]
     for tup in combined[1:]: # for each tuple of combined years and counts

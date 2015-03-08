@@ -75,7 +75,7 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
           \end{minipage}%
           \begin{minipage}{.48\textwidth}
             \centering
-            \includegraphics[width=0.98\textwidth]{../images/risk_as_participant,_process_and_modifier.png}
+            \includegraphics[width=0.98\textwidth]{../images/risk-as-participant-process-and-modifier-via-dependency-parsing.png}
            \end{minipage}
            \caption{Functional roles of risk words (via constituency and dependency parses)}
                 \label{fig:funcrole}
@@ -441,8 +441,45 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 
 			%Note here an emerging methodological issue: the various  \emph{potential harms} can also be located by querying nominal risks (e.g. \emph{the risk of death}). Some methodological adaptability is thus required.
 
-		\section{When risk is a modifier, what are the most common forms?}
+		\section{When risk is a modifier, what are the most common forms?} \label{sect:riskmod}
 		\FloatBarrier
+
+            \begin{table}
+            \small
+            \centering
+            \begin{tabular}{|l|l|}
+            \hline
+            \textbf{Modifier type}       & \textbf{Example}          \\ \hline
+            Adjectival pre-head & \emph{a risky move}     \\ \hline
+            Post-head           & \emph{A person at risk} \\ \hline
+            pre-head nominal    & \emph{risk management}  \\ \hline
+            Adverbial           & \emph{to riskily act}   \\ \hline
+            Circumstance head   & \emph{to be at risk }   \\ \hline
+            \end{tabular}
+            \caption{Types of risk-as-modifier}
+            \label{tab:modriskwords}
+            \end{table}
+
+            There are many different kinds of risk as modifier (see Table \ref{tab:modriskwords} for a non-exhaustive list of examples). Our first interest was in gauging the prevalence of the different forms. From this query, we noted that pre-head nominal modifiers are increasing in frequency. A good example is \emph{risk factor} (see Figure \ref{fig:riskfactor}).
+
+
+          \noindent
+          \begin{figure}[htb!]
+          \centering
+          \begin{minipage}{.567\textwidth}
+            \centering
+            \includegraphics[width=0.98\textwidth]{../images/types-of-risk-modifiers.png}
+         \captionof{figure}{Types of risk modifier}
+         \label{fig:riskmod_types}
+          \end{minipage}%
+          \begin{minipage}{.433\textwidth}
+            \centering
+              \includegraphics[width=0.98\textwidth]{../images/risk-factor.png}
+              \captionof{figure}{Relative frequency of \emph{risk factor}}
+                \label{fig:riskfactor}
+           \end{minipage}
+          \end{figure}
+
 
 			Modifier risks are unique for their variety and diversity: through compounding, comprehensible new risk words and phrases can easily be created. The entire corpus contained 327 unique adjectival risk words, including \emph{non-risk}, \emph{de-risk}, \emph{once-risky}, \emph{take-no-risks}, \emph{risk-swapping}, \emph{risk-abhorrent}, \emph{price-for-risk}, \emph{post-risky}, \emph{pooled-risk}, \emph{personal-risk}, \emph{optimum-risk}, \emph{one-risk-factor}, \emph{one-pitch-can-end-his-career-risk} and \emph{low-risk-to-society}. That said, most of these occur no more than a handful of times. By far the most common were \emph{risky\slash riskier\slash riskiest} (15588 occurrences), \emph{high-risk} (5533), \emph{low-risk} (1086), \emph{at-risk} (902), \emph{risk-free} (883) and \emph{risk-taking} (789). Of these, four exhibited trajectory shifts (see Figure \ref{fig:adjtraj}). The basic adjectival forms (\emph{risky}, \emph{riskier}, \emph{riskiest}) are dominant in the 1963 sample, then decrease, and re-emerge in 2000. \emph{High-risk} though very rare (two instances) in 1963, has become more common, and stabilised in trajectory. \emph{Low-risk} and \emph{at-risk} are on a consistent inbound trajectory.
 
@@ -565,7 +602,7 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 
 			\begin{figure}[htb!]
 			\centering
-			\addvbuffer[12pt 8pt]{\includegraphics[width=0.75\textwidth]{../images/depnum.png}}
+			\addvbuffer[12pt 8pt]{\includegraphics[width=0.75\textwidth]{../images/frequency-of-risk-words-by-dependency-index.png}}
 			\caption{Risk words by dependency position in clause}
 			\label{fig:depnum}
 			\end{figure}

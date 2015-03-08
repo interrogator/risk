@@ -1212,7 +1212,34 @@ risk_functions = dependencies(annual_deps, 'funct', r'(?i)\brisk', dep_type = 'b
 plotter('Top functions of risk words', risk_functions.results, fract_of = risk_functions.totals)
 
 # <markdowncell>
-# We can then merge results into the categories of Subject, Finite/Predicator, Complement and Adjunct:
+# We can divide these functions into experiential categories of Participant, Process and Modifier
+
+# <codecell>
+merged = merger(risk_functions.results, [1, 2, 10, 18, 17, 20, 24], newname = 'Participant')
+merged = merger(merged.results, [5, 6, 7, 11, 20, 22], newname = 'Process')
+merged = merger(merged.results, [1, 4, 5, 8, 9, 12, 13, 14, 17], newname = 'Modifier')
+
+merging = merger(risk_functions.results, r'^(dobj|nsubj|nsubjpass|csubj|acomp|iobj|csubjpass)$', newname = 'Participant')
+merged = merger(merged.results, r'^(root|ccomp|xcomp|pcomp|auxpass|aux)$', newname = 'Process')
+
+merged = merger(merged.results, [1, 4, 5, 8, 9, 12, 13, 14, 17], newname = 'Modifier')
+
+
+^(pobj|nn|amod|rcmod|vmod|tmod|npadvmod|advmod)$
+
+
+# <markdowncell>
+# We can also use this information to determine whether risk is more commonly the experiential subject or object:
+
+# <codecell>
+
+subjobj = surgeon(risk_functions.results, r'^(nsubj|(d|i)obj)', remove = False)
+mergesub = merger(subjobj, [0, 2, 3], newname = 'Experiential object')
+mergesub[1][0] = 'Experiential subject'
+plotter('Experiential subject\slash object frequency', mergesub, fract_of = risk_functions.totals, save = True)
+
+# <markdowncell>
+# We can also merge results into the categories of Subject, Finite/Predicator, Complement and Adjunct:
 
 # <codecell>
 quickview(risk_functions.results, n = 30)
@@ -1220,13 +1247,15 @@ quickview(risk_functions.results, n = 30)
 
 # <codecell>
 # run the first part, uncomment above, check, repeat ...
-merged_role = merger(risk_functions.results, [2, 11, 19, 25], newname = 'Subject') # add csubj
-#merged_role = merger(merged_role, [6, 23, 26], newname = 'Finite/Predicator')
-#merged_role = merger(merged_role, [0, 16, 20], newname = 'Complement')
-#merged_role = merger(merged_role, [1, 4, 5, 10, 13, 16, 18], newname = 'Adjunct')
+merged_role = merger(risk_functions.results, [2, 10, 18, 24], newname = 'Subject') # add csubj
+#quickview(merged_role)
+merged_role = merger(merged_role, [6, 22, 23], newname = 'Finite/Predicator')
+merged_role = merger(merged_role, [1, 16, 18, 20], newname = 'Complement')
+merged_role = merger(merged_role, [0, 3, 5, 10, 13, 16, 20], newname = 'Adjunct')
 
+# <codecell>
 # remove all other items
-merged_role = surgeon(merged_role, [0, 1, 2, 4])
+merged_role = surgeon(merged_role, [0, 1, 2, 4], remove = False)
 
 # <codecell>
 # resort this list:

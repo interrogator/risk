@@ -332,10 +332,16 @@ def plotter(title, results, fract_of = False, y_label = False,
     fig1 = plt.gcf()
     plt.show()
     if save:
+        def urlify(s):
+            import re
+            s = s.lower()
+            s = re.sub(r"[^\w\s]", '', s)
+            s = re.sub(r"\s+", '-', s)
+            return s     
         if type(save) == str:
-            savename = os.path.join(imagefolder, save.replace(" ", "_").lower() + '.png')
+            savename = os.path.join(imagefolder, urlify(save) + '.png')
         else:
-            savename = os.path.join(imagefolder, title.replace(" ", "_").lower() + '.png')
+            savename = os.path.join(imagefolder, urlify(title) + '.png')
         if legend:
             fig1.savefig(savename, bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=150) 
         time = strftime("%H:%M:%S", localtime())

@@ -219,10 +219,10 @@ def dependencies(path, options, query, lemmatise = False, test = False,
         # this could be done more efficiently earlier:
         for year in yearlist:
             for entry in year[1:]:
-                if entry[0] > 99:
+                if entry[0] > 50:
                     year.remove(entry)
         for entry in totallist[1:]:
-            if entry[0] > 99:
+            if entry[0] > 50:
                     totallist.remove(entry)
         if output == 'results':
             return yearlist
