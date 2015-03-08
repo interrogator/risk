@@ -3,7 +3,7 @@
 #   Interrogating parsed corpora and plotting the results: additional resources
 #   Author: Daniel McDonald
 
-def surgeon(lst, criteria, remove = False, resort = False):
+def surgeon(lst, criteria, remove = False, **kwargs):
     """
     Add or remove from results by regex or index.
 
@@ -14,6 +14,10 @@ def surgeon(lst, criteria, remove = False, resort = False):
     """
     import re
     import collections
+    import warnings
+    if isinstance(lst, tuple) is True:
+        warnings.warn('No branch of results selected. Using .results ... ')
+        lst = lst.results
     if remove:
         remove_string = 'remove = True'
     else:
@@ -45,12 +49,8 @@ def surgeon(lst, criteria, remove = False, resort = False):
         if remove is False:
             for index in criteria:
                 newlist.append(lst[index])
-    if resort:
-        if resort == 'name':
-            resort(newlist, criteria = 'name')
-        else:
-            resort(newlist, criteria = 'total')
-            # assume total sort
+    if 'sort_by' in kwargs:
+        newlist = resorter(newlist, **kwargs)        
     totals = combiner(newlist, 'Totals', printmerge = False)
     # make into name tuple
     outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
@@ -65,6 +65,10 @@ def quickview(lst, n = 50, topics = False):
     lst: interrogator() list
     n: number of results to view
     topics: for investigation of topic subcorpora"""
+    import warnings
+    if isinstance(lst, tuple) is True:
+        warnings.warn('No branch of results selected. Using .results ... ')
+        lst = lst.results
     if type(lst[0]) == str or type(lst[0]) == unicode:
         return '0: %s: %d' % (lst[0], lst[-1][1])
     if not topics:
@@ -340,7 +344,7 @@ def tally(lst, indices):
                     #raise ValueError("No matches found. Sorry")
     return output
 
-def merger(lst, criteria, newname = False, printmerge = True, resort = 'total'):
+def merger(lst, criteria, newname = False, printmerge = True, **kwargs):
     """Merges result items by their index
 
     lst: list to work on
@@ -350,6 +354,10 @@ def merger(lst, criteria, newname = False, printmerge = True, resort = 'total'):
                         if False, most common item becomes newname"""
     import re
     import collections
+    import warnings
+    if isinstance(lst, tuple) is True:
+        warnings.warn('No branch of results selected. Using .results ... ')
+        lst = lst.results
     tomerge = []
     oldlist_copy = list(lst)
     # if regex, get list of indices for mwatches
@@ -379,8 +387,7 @@ def merger(lst, criteria, newname = False, printmerge = True, resort = 'total'):
     elif type(newname) == unicode:
         the_newname = newname
     else:
-        duplicated_word = combined[0]
-        the_newname = duplicated_word[0]
+        the_newname = tomerge[0][0]
 
     merged = combiner(tomerge, the_newname, printmerge = printmerge)
     
@@ -396,7 +403,7 @@ def merger(lst, criteria, newname = False, printmerge = True, resort = 'total'):
     for entry in oldlist_copy[first_index:]:
          output.append(entry)
     if resort:
-        output = resorter(output, sort_by = resort, reverse = True)
+        output = resorter(output, **kwargs)
     # generate totals:
     totals = combiner(output, 'Totals', printmerge = False)
     # make into name tuple
@@ -581,12 +588,12 @@ def parsetree(tree):
     return Image(filename='tree.png')
     ! rm tree.png
 
-def resort(lst, criteria = 'total', reverse = True):
+def resorter(lst, reverse = True, sort_by = 'total'):
     """Re-sort interrogation results alphabetically or by total"""
     # consider adding this within surgeon and merger
     from operator import itemgetter # for more complex sorting
     to_reorder = list(lst)
-    if criteria == 'total':
+    if sort_by == 'total':
         for item in to_reorder:
             #print item[0]
             total = sum([t[-1] for t in item[1:]])
@@ -594,7 +601,7 @@ def resort(lst, criteria = 'total', reverse = True):
         to_reorder.sort(key=lambda x: x[-1], reverse = reverse)
         for item in to_reorder:
             item.pop()
-    if criteria == 'name':
+    if sort_by == 'name':
         # case sensitive!
         to_reorder.sort(key=lambda x: x[0])
     return to_reorder
