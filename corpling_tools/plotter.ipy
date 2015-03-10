@@ -77,12 +77,11 @@ def plotter(title, results, fract_of = False, y_label = False,
     def yearspanner(interrogator_list, yearspan):
         """Takes a list and returns results from between the first and last year in yearspan"""
         
-        skipped = []
-        skipped.append(interrogator_list[0]) # append word
+        skipped = [interrogator_list[0]] # append word
         for item in interrogator_list[1:]:
             if type(item) != unicode and type(item) != str:
                 if item[0] >= yearspan[0]:
-                    if item [0] <= yearspan[-1]:
+                    if item [0] <= yearspan[-1] + 1:
                         skipped.append(item)
         return skipped
 
@@ -103,23 +102,25 @@ def plotter(title, results, fract_of = False, y_label = False,
                 projected.append(item)
         return projected
 
-    def fraction_maker(first_list, second_list):
-        """Takes two lists and returns fraction totals for plotting"""
-        fractioned = []
-        for entry in first_list:
-            fractioned_entry = []
-            fractioned_entry.append(entry[0]) # append word
-            for part in entry[1:]:
-                numerator = part[1]
-                denominator_datum = second_list[entry.index(part)]
-                if denominator_datum[1] == 0:
-                    fraction = 0
-                else:
-                    fraction = numerator * multiplier / float(denominator_datum[1])
-                datum = [part[0], fraction]
-                fractioned_entry.append(datum)
-            fractioned.append(fractioned_entry)
-        return fractioned
+    
+    # made obsolete by mather()
+    # def fraction_maker(first_list, second_list):
+    #     """Takes two lists and returns fraction totals for plotting"""
+    #     fractioned = []
+    #     for entry in first_list:
+    #         fractioned_entry = []
+    #         fractioned_entry.append(entry[0]) # append word
+    #         for part in entry[1:]:
+    #             numerator = part[1]
+    #             denominator_datum = second_list[entry.index(part)]
+    #             if denominator_datum[1] == 0:
+    #                 fraction = 0
+    #             else:
+    #                 fraction = numerator * multiplier / float(denominator_datum[1])
+    #             datum = [part[0], fraction]
+    #             fractioned_entry.append(datum)
+    #         fractioned.append(fractioned_entry)
+    #     return fractioned
 
     def csvmaker(csvdata, csvalldata, csvmake):
         """Takes whatever ended up getting plotted and puts it into a csv file"""
@@ -225,8 +226,13 @@ def plotter(title, results, fract_of = False, y_label = False,
             warnings.warn('No branch of fract_of selected. Using .totals ... ')
             fract_of = fract_of.totals
         totals = list(fract_of)
-        # make fractions
-        fractdata = fraction_maker(data, totals)
+        # old:
+        #make fractions
+        #fractdata = fraction_maker(data, totals)
+        #new: use mather:
+        fractdata = []
+        for entry in data:
+            fractdata.append(mather(entry, '%', totals, multiplier = multiplier))
         data = list(fractdata)
         alldata = list(fractdata)
 
@@ -248,17 +254,20 @@ def plotter(title, results, fract_of = False, y_label = False,
                 entry = projector(entry)
         # get word
         word = entry[0]
-        # what the hell is this?
-        # get proper total here!
-        if entry[-1][0] == 'Total':
-            total = str(float(entry[-1][1]))
-        else:
-            total = 0
-        #print str(total)
+
+        # get totals ... horrible code
+        total = 0
         if fract_of:
-            totalstring = ' (%s%%)' % total
+            if entry[-1][0] == 'Total':
+                num = entry[-1][1]
+                total = "%.2f" % num
+                #total = str(float(entry[-1][1]))[:5]
+            totalstring = ' (' + str(total) + '\%)'     
         else:
-            totalstring = ' (n=%s)' % total
+            if entry[-1][0] == 'Total':
+                total = entry[-1][1]
+            totalstring = ' (n=%d)' % total
+
         entry.pop() # get rid of total. good or bad?
         csvalldata.append(entry) 
         # it takes a bit too long to process huge lists, 
@@ -292,10 +301,11 @@ def plotter(title, results, fract_of = False, y_label = False,
                     yvalsabove.append(nextpart[1])
                 d += 1
             # do actual plotting
-            plt.plot(xvalsbelow, yvalsbelow, '--', color=colours[c])
             plt.plot(xvalsabove, yvalsabove, '.', color=colours[c]) # delete for nyt
+            plt.plot(xvalsbelow, yvalsbelow, '--', color=colours[c])
             if legend_totals:
-                plt.plot(xvalsabove, yvalsabove, '-', label=word + totalstring, color=colours[c])
+                thelabel = word + totalstring
+                plt.plot(xvalsabove, yvalsabove, '-', label=thelabel, color=colours[c])
                 plt.plot(xvalsabove, yvalsabove, '.', color=colours[c]) # delete for nyt
             else:
                 plt.plot(xvalsabove, yvalsabove, '-', label=word, color=colours[c])

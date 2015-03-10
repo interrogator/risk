@@ -42,7 +42,7 @@ from IPython.display import display, clear_output
 # import functions to be used here:
 for func in [f for f in os.listdir('corpling_tools') if f.endswith(".ipy")]:
     %run corpling_tools/$func
-! rm *.csv# remove old csv output (temporary code)
+! rm *.csv # remove old csv output (temporary code)
 
 # <markdowncell>
 # Next, let's set the path to our corpus. If you were using this interface for your own corpora, you would change this to the path to your data.
@@ -214,21 +214,26 @@ plotter('Risk word / all words', riskwords.results,
 #  | *multiplier* | 100     | result * multiplier / total: use 1 for ratios | integer |
 #  | *x_label* | False    | custom label for the x-axis     |  string |
 #  | *y_label* | False    | custom label for the y-axis     |  string |
-#  | *legend_results* | False    | Print total/rel freq in legend     |  boolean 
+#  | *legend_totals* | False    | Print total/rel freq in legend     |  boolean 
 #  | *projection* | True    | Project 1963 and 2014 editions     |  boolean |
 #  | *yearspan* | False    | plot a span of years |  a list of two int years |
-#  | *justyears* | False    | plot specific years |  a list of int years |
 #  | *csvmake* | False    | make csvmake the title of csv output file    |  string |
+#  | *save* | False    | save generated image (True = with title as name)   |  True/False/string |
 
 # You can easily use these to get different kinds of output. Try changing some parameters below:
 
 # <codecell>
 plotter('Relative frequencies of risk words', riskwords.results, fract_of = allwords.totals,
     y_label = 'Percentage of all risk words', num_to_plot = 5, 
-    skip63 = False, projection = True, proj63 = 5, csvmake = 'riskwords.csv', legend_results = True)
+    skip63 = False, projection = True, proj63 = 5, csvmake = 'riskwords.csv', legend_totals = True)
 
 # <markdowncell>
 # If you just generated a csv file, you can quickly get the results with:
+
+# <codecell>
+!cat 'riskwords.csv'  | head -n 7
+# and to delete it:
+#!rm 'riskwords.csv'
 
 # Use *yearspan* or *justyears* to specify years of interest:
 
@@ -236,17 +241,6 @@ plotter('Relative frequencies of risk words', riskwords.results, fract_of = allw
 plotter('Relative frequencies of risk words', riskwords.results, fract_of = allwords.totals,
     y_label = 'Percentage of all risk words', num_to_plot = 5, skip63 = False, 
     yearspan = [1963,1998])
-plotter('Relative frequencies of risk words', riskwords.results, fract_of = allwords.totals,
-    y_label = 'Percentage of all risk words', num_to_plot = 5, skip63 = False, 
-    justyears = [1998, 1999, 2000, 2001, 2005, 5006, 2007])
-
-# <markdowncell>
-# Note that dotted lines are used wherever years are not processed.
-
-# <codecell>
-!cat 'riskwords.csv'  | head -n 7
-# and to delete it:
-#!rm 'riskwords.csv'
 
 # <markdowncell>
 # Another way to change `plotter()` visualisations is by not passing certain results to `plotter()`.
@@ -257,7 +251,7 @@ plotter('Relative frequencies of risk words', riskwords.results, fract_of = allw
 
 # <codecell>
 plotter('Relative frequencies of risk words', riskwords.results[2:], fract_of = allwords.totals,
-    y_label = 'Percentage of all risk words', num_to_plot = 5, skip63 = False, projection = True, proj63 = 5, legend_results = True)
+    y_label = 'Percentage of all risk words', num_to_plot = 5, skip63 = False, projection = True, proj63 = 5, legend_totals = True)
 
 # <markdowncell>
 # If you are after a specific set of indexed items, it's probably better to use `surgeon()` (described below). For completeness, though, here's another way:
@@ -266,8 +260,6 @@ plotter('Relative frequencies of risk words', riskwords.results[2:], fract_of = 
 indices_we_want = [32,30,40]
 plotter('Relative frequencies of risk words', [ riskwords.results[i] for i in indices_we_want], 
         num_to_plot = 5, skip63 = True, projection = True, proj63 = 5)
-
-
 
 # <headingcell level=3>
 # table()
@@ -278,6 +270,8 @@ plotter('Relative frequencies of risk words', [ riskwords.results[i] for i in in
 # <codecell>
 
 table('riskwords.csv')
+
+# <codecell>
 table('riskwords.csv', allresults = True, maxresults = 30)
 
 # <headingcell level=3>
@@ -308,6 +302,8 @@ quickview(riskwords.results, n = 25)
 
 # <codecell>
 tally(riskwords.results, [0, 5, 10])
+
+# <codecell>
 tally(riskwords.results[:10], 'all')
 
 # <markdowncell>
@@ -328,12 +324,12 @@ tally(riskwords.results[:10], 'all')
 # <codecell>
 # low and high risks, using indices 
 lowhighrisks = surgeon(riskwords.results, [4, 9, 17]) # keep 4, 9 and 17
-plotter('Low-, high- and higher- risk', lowhighrisks, num_to_plot = 3, skip63 = True)
+plotter('Low-, high- and higher- risk', lowhighrisks.results, num_to_plot = 3, skip63 = True)
 
 # only hyphenate words:
-hyphenates = surgeon(riskwords.results, r'\b.*-.*\b') # remove tokens with hyphens
-quickview(hyphenates)
-plotter('Non-hypenate risk words', hyphenates, fract_of = riskwords.totals, 
+nohyphenates = surgeon(riskwords.results, r'\b.*-.*\b', remove = True) # remove tokens with hyphens
+quickview(nohyphenates.results)
+plotter('Non-hypenate risk words', hyphenates.results, fract_of = riskwords.totals, 
     y_label = 'Percentage of all risk words', num_to_plot = 7, skip63 = True)
 
 # only verbal risk words
@@ -342,7 +338,7 @@ plotter('Verbal risk words', verbalrisks, fract_of = allwords.totals,
     y_label = 'Percentage of all words', num_to_plot = 6, skip63 = True)
 
 # <markdowncell>
-# Note that you do not access surgeon lists with *allwords.nohyphens* syntax, but simply with *nohyphens*.
+# Note the warning you'll receive if you specify an interrogation, rather than a results list.
 
 # <headingcell level=3>
 # merger()
@@ -359,10 +355,10 @@ plotter('Verbal risk words', verbalrisks, fract_of = allwords.totals,
 
 # <codecell>
 low_high_combined = merger(lowhighrisks, [0, 2],  newname = 'high/higher risk')
-plotter('Low and high risks', low_high_combined)
+plotter('Low and high risks', low_high_combined.results)
 
 # <markdowncell>
-# Note that `merger()` puts the merged entry where the first merged item was, even if the merged result's total frequency is higher than that of the items above it. Also note that `merger()` will make new indices, so if you have a number of merges to make, do each individually, and quickview the results after each merge to get the next lot of indices.
+
 
 # <headingcell level=4>
 # Diversity of risk words
@@ -373,7 +369,7 @@ plotter('Low and high risks', low_high_combined)
 # To do this, we can take `riskwords.results`, duplicate it, and change every count over 0 into 1.
 
 # <codecell>
-all_ones = list(riskwords.results)
+all_ones = copy.deepcopy(riskwords.results)
 for entry in all_ones:
     for tup in entry[1:]:
         if tup[1] > 0:
@@ -388,8 +384,8 @@ mergedresults = merger(results, r'.*', newname = 'Different risk words')
 clear_output()
 
 # <codecell>
-# the [0] is a hack to stop the legend from showing
-plotter('Diversity of risk words', mergedresults[0], 
+# you could also use mergedresults.results[0]
+plotter('Diversity of risk words', mergedresults.totals, 
     skip63 = True, y_label = 'Unique risk words')
 
 # <markdowncell>
@@ -407,33 +403,31 @@ plotter('Diversity of risk words', mergedresults[0],
 # <codecell>
 # here, we use a subcorpus of politics articles,
 # rather than the total annual editions.
-conc('data/nyt/trees/politics/1999', r'/JJ.?/ << /(?i).?\brisk.?\b/') # adj containing a risk word
+lines = conc('data/nyt/trees/politics/1999', r'/JJ.?/ << /(?i).?\brisk.?\b/') # adj containing a risk word
 
 # <markdowncell>
 # You can set `conc()` to print *n* random concordances with the *random = n* parameter. You can also store the output to a variable for further searching.
 
 # <codecell>
-randoms = conc('data/nyt/trees/years/2007', r'/VB.?/ < /(?i).?\brisk.?\b/', random = 25)
-for random in randons:
-    print random
+lines = randoms = conc('data/nyt/trees/years/2007', r'/VB.?/ < /(?i).?\brisk.?\b/', random = 25)
 
 # <markdowncell>
-# `conc()` takes another argument, window, which alters the amount of co-text appearing either side of the match.
+# `conc()` takes another argument, window, which alters the amount of co-text appearing either side of the match. The default is 50 characters
 
 # <codecell>
-conc('data/nyt/trees/health/2013', r'/VB.?/ << /(?i).?\brisk.?\b/', random = 25, window = 50)
+lines = conc('data/nyt/trees/health/2013', r'/VB.?/ << /(?i).?\brisk.?\b/', random = 25, window = 20)
 
 # <markdowncell>
 # `conc()` also allows you to view parse trees. By default, it's false:
 
 # <codecell>
-conc('data/nyt/trees/years/2013', r'/VB.?/ < /(?i)\btrad.?/',  window = 50, trees = True)
+lines = conc('data/nyt/trees/years/2013', r'/VB.?/ < /(?i)\btrad.?/', trees = True)
 
 # <markdowncell>
 # The final `conc()` argument is a *csv = 'filename'*, which will produce a tab-separated spreadsheet with the results of your query. You can copy and paste this data into Excel.
 
 # <codecell>
-conc('data/nyt/trees/years/2005', r'/JJ.?/ < /(?i).?\brisk.?/ > (NP <<# /(?i)invest.?/)',
+lines = conc('data/nyt/trees/years/2005', r'/JJ.?/ < /(?i).?\brisk.?/ > (NP <<# /(?i)invest.?/)',
     window = 30, trees = False, csvmake = 'concordances.csv')
 
 # <codecell>
@@ -463,7 +457,7 @@ for coll in colls:
 # With the `collocates()` function, you can specify the maximum distance at which two tokens will be considered collocates.
 
 # <codecell>
-colls = collocates('concordances.csv', window_size = 2)
+colls = collocates('concordances.csv', window = 2)
 for coll in colls:
     print coll
 
@@ -516,7 +510,7 @@ HTML('<iframe src=http://en.mobile.wikipedia.org/wiki/Michael_Halliday?useformat
 # Here's one visualisation of it. We're concerned with the two left-hand columns. Each level is an abstraction of the one below it.
 
 # <br>
-# <img style="float:left" src="https://raw.githubusercontent.com/interrogator/sfl_corpling/master/cmc-2014/images/egginsfixed.jpg" />
+# <img style="float:left" src="https://raw.githubusercontent.com/interrogator/sfl_corpling/master/cmc-2014/images/egginsfixed.jpg" alt="SFL metafunctions"  height="500" width="500" />
 # <br>
 
 # <markdowncell>
@@ -775,7 +769,7 @@ for line in lines[:20]:
 
 # If we want to ignore the difference between singular and plural (or different inflections of a verb), we need to use a `lemmatiser*. Luckily, *interrogator()` has one built in.
 
-# When lemmatisation is necessary, we can pass a `lemmatise = True* parameter to *interrogator()`.
+# When lemmatisation is necessary, we can pass a `lemmatise = True` parameter to `interrogator()`.
 
 # Lemmatisation requires knowing the part of speech of the input. `interrogator()` determines this by looking at the first part of the Tregex query: if it's */JJ.?/*, the lemmatiser will be told that the word is an adjective. If the part of speech cannot be located, noun is used as a default. You can also manually pass a tag to the lemmatiser with a *lemmatag = 'n/v/r/a'* option.
 

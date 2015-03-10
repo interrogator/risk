@@ -8,9 +8,7 @@ def surgeon(lst, criteria, remove = False, **kwargs):
     Add or remove from results by regex or index.
 
     criteria: if string, it is a regular expression to keep/remove by.
-                 if list, a list of indices to remove keep remove by
-
-    If regex, remember to add word boundaries!
+                 if list, a list of indices to keep/remove by
     """
     import re
     import collections
@@ -191,7 +189,7 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
     time = strftime("%H:%M:%S", localtime())
     print "\n" + time + ': Getting concordances for ' + corpus + ' ... \n          Query: ' + query + '\n'
     output = []
-    tregex_command = 'sh ./tregex.sh \'' + query + '\' 2>&1'
+    tregex_command = "sh ./tregex.sh '%s' 2>&1" % query
     testpattern = !$tregex_command
     tregex_error = re.compile(r'^Error parsing expression')
     regex_error = re.compile(r'^Exception in thread')
@@ -212,18 +210,16 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
         options = '-s'
     else:
         options = '-t'
-    if re.match(tregex_error, testpattern[0]):
-        raise ValueError("Error parsing Tregex expression. "
-            "Check for balanced parentheses and boundary delimiters.") 
-    tregex_command = 'sh ./tregex.sh -o -w ' + options + ' \'' + query + '\' ' + corpus + ' 2>/dev/null | grep -vP \'^\s*$\''
+    tregex_command = "sh ./tregex.sh -o -w %s '%s' %s 2>/dev/null | grep -vP '^\s*$'" % (options, query, corpus)
     # replace bracket: '-LRB- ' and ' -RRB- ' ...
-
     allresults = !$tregex_command
+    #print allresults
     results = list(allresults)
     if csvmake: # this is not optimised at all!
         sentences = list(results)
-    tregex_command = 'sh ./tregex.sh -o ' + options + ' \'' + query + '\' ' + corpus + ' 2>/dev/null | grep -vP \'^\s*$\''
+    tregex_command = "sh ./tregex.sh -o %s '%s' %s 2>/dev/null | grep -vP '^\s*$'" % (options, query, corpus)
     alltresults = !$tregex_command
+    #print alltresults
     tresults = list(alltresults)
     zipped = zip(allresults, alltresults)
     all_dupes = []
@@ -246,9 +242,13 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
     unique_results = []
     for result in zipped: 
         tree = result[0]
+
         pattern = result[1]
-        regex = re.compile(r"(\b[^\s]{0,1}.{," + re.escape(str(window)) + r"})(\b" + 
+        if not trees:
+            regex = re.compile(r"(\b[^\s]{0,1}.{," + re.escape(str(window)) + r"})(\b" + 
             re.escape(pattern) + r"\b)(.{," + re.escape(str(window)) + r"}[^\s]\b)")
+        else:
+            regex = re.compile(r"(.{,%s})(%s)(.{,%s})" % (window, re.escape(pattern), window ))
         search = re.findall(regex, tree)
         for result in search:
             unique_results.append(result)
@@ -344,7 +344,7 @@ def tally(lst, indices):
                     #raise ValueError("No matches found. Sorry")
     return output
 
-def merger(lst, criteria, newname = False, printmerge = True, **kwargs):
+def merger(lst, criteria, newname = False, printmerge = True, sort_by = 'totals'):
     """Merges result items by their index
 
     lst: list to work on
@@ -402,8 +402,8 @@ def merger(lst, criteria, newname = False, printmerge = True, **kwargs):
     output.append(merged)
     for entry in oldlist_copy[first_index:]:
          output.append(entry)
-    if resort:
-        output = resorter(output, **kwargs)
+    if sort_by is not False:
+        output = resorter(output, sort_by = sort_by)
     # generate totals:
     totals = combiner(output, 'Totals', printmerge = False)
     # make into name tuple
@@ -444,6 +444,7 @@ def table(data_to_table, allresults = False, maxresults = 50):
 
     if allresults, show all results table, rather than just plotted results"""
     import pandas
+    from pandas import DataFrame
     import re
     import os
     from StringIO import StringIO
@@ -486,9 +487,9 @@ def table(data_to_table, allresults = False, maxresults = 50):
             csv.append(dataline)
         # table it with pandas
         data = '\n'.join(csv)
-    tab = pandas.read_csv(StringIO(data), index_col = 0, engine='python')
-    return tab
-
+    df = DataFrame(pandas.read_csv(StringIO(data), index_col = 0, engine='python'))
+    pandas.options.display.float_format = '{:,.2f}'.format
+    return df
 
 def keywords(data, dictionary = 'years.p', **kwargs):
     """Feed this a csv file generated with conc() and get its keywords"""
@@ -627,7 +628,6 @@ def multiquery(corpus, query):
 
 def resorter(lst, sort_by = 'total', reverse = True):
     """Re-sort interrogation results alphabetically or by total"""
-    # consider adding this within surgeon and merger
     from operator import itemgetter # for more complex sorting
     to_reorder = list(lst)
     if sort_by == 'total':
@@ -645,6 +645,7 @@ def resorter(lst, sort_by = 'total', reverse = True):
     return to_reorder
 
 def combiner(tomerge, newname, printmerge = True):
+    """the main engine for merging entries, making totals"""
     toprint = []
     for entry in tomerge:
         toprint.append(unicode(entry[0]))
@@ -664,3 +665,48 @@ def combiner(tomerge, newname, printmerge = True):
         goodtup = [year, total]
         merged.append(goodtup)
     return merged
+
+def mather(oldlist, operation, newlist, multiplier = 100):
+    """does simple maths on two lists of results/totals"""
+    import operator
+    the_oldlist = list(oldlist)
+    the_newlist = list(newlist)
+    if type(the_oldlist) != type(the_newlist):
+        raise ValueError('Different list types: %s and %s' % (type(the_oldlist), type(the_newlist)))
+    # implement when everything is definitely in unicode, maybe:
+    #if type(the_oldlist[0]) != type(the_newlist[0]):
+        #raise ValueError('Different list depths.' 
+    if len(the_oldlist) != len(the_newlist):
+        print the_oldlist
+        print the_newlist
+        raise ValueError('Different list lengths: %d and %d' % (len(the_oldlist), len(the_newlist)))
+    ops = {"+": operator.add,
+        "-": operator.sub,
+        "*": operator.mul,
+        "/": operator.div}
+    try:
+        op_func = ops[operation]
+    except KeyError:
+        if operation != '%':
+            raise ValueError("Operator not recognised. Must be '+', '-', '*', '/' or '%'.")
+    # put word into a newly declared list
+    mathedlist = [the_oldlist[0]]
+    for index, entry in enumerate(the_oldlist[1:]):
+        x_axis = entry[0]
+        oldnum = entry[1]
+        newtup = the_newlist[index + 1]
+        if newtup[0] == x_axis:
+            newnum = the_newlist[index + 1][1]
+            if operation != '%':
+                result = op_func(oldnum, float(newnum))
+                # one day there will probably be a divide by zero error here. sorry!
+            else:
+                if newnum == 0:
+                    result = 0
+                else:
+                    result = oldnum * multiplier / float(newnum)
+
+            mathedlist.append([x_axis, result])
+        else:
+            raise ValueError('Different list labels: %s and %s' % (str(x_axis), str(newtup[0])))
+    return mathedlist

@@ -42,8 +42,7 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 
 			%FUNCTIONAL CATEGORISATION?
 
-	We compared this against the relative frequencies of nominal, verbal and adjectival/adverbial lexical items in the corpus as a whole, in order to account for any trends toward nominalisation in our dataset more generally (Figure \ref{fig:wordclasses}). This showed that even when compared to potential trends toward nominalisation generally, nominal risks are still on an inbound trajectory.
-
+	We compared this against the relative frequencies of nominal, verbal and adjectival\slash adverbial lexical items in the corpus as a whole, in order to account for any trends toward nominalisation in our dataset more generally (Figure \ref{fig:wordclasses}). This showed that even when compared to potential trends toward nominalisation generally, nominal risks are still on an inbound trajectory.
 
 	These initial findings guided the rest of the investigation: particular attention was paid to nominal risks, as these were the site of the most longitudinal change. That said, these categories provide merely a categorisation of the formal features of risk words. Functionally, things are substantially more complicated: \emph{running a risk}, for example, while featuring a nominal risk, is in reality a risk process; similarly, though risk is nominal in \emph{risk management}, risk is nominal, it functions as a modifier, rather than a participant.
 
@@ -63,23 +62,74 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 	\section{Which experiential roles do risk words occupy?} 
 	\FloatBarrier
 
-	Within the Transitivity system, a risk word may take the form of a participant (\emph{The risk was there}), process (\emph{I risked it}) or a modifier (\emph{a risky encounter}). Using both constituency parsing\slash SFL categories and Stanford CoreNLP's dependency parsing, we counted the frequency of risk words within these three functional roles (Figure \ref{fig:funcrole}). In line with the results from word-class based searching, we find that risk as a process is declining in use. Risk as modifier, patterning with adjectival risk, today comprises a larger proportion of risk participants than in earlier samples.
-    %Somewhat unexpectedly, the results were very similar to the word-class based results.
+    %alongside a 
 
-		  \noindent
-          \begin{figure}[htb!]
-          \centering
-          \begin{minipage}{.48\textwidth}
-			\centering
-			\includegraphics[width=0.98\textwidth]{../images/risk_as_participant,_process_and_modifier.png}
-          \end{minipage}%
-          \begin{minipage}{.48\textwidth}
+    In a systemic-functional conceptualisation of the experiential metafunction of language, risk words may take the form of a Participant (\emph{The risk was there}), Process (\emph{I risked it}) or a Modifier (\emph{a risky encounter}). Though these pattern to some extent with word classes (e.g. \emph{Participant = noun, Process = Verb, Modifier = adjective}), word classes on the whole are a poor indiciation of functional role, especially in genres such as print news journalism, which rely heavily on nominalisation and grammatical metaphor. As shown in Table \ref{tab:class_and_role}, for example, nominal risks commonly perform Modifier functions, and adjectival functions often perform Participant functions.
+
+            \begin{table}
+            \small
             \centering
-            \includegraphics[width=0.98\textwidth]{../images/risk-as-participant-process-and-modifier-via-dependency-parsing.png}
-           \end{minipage}
-           \caption{Functional roles of risk words (via constituency and dependency parses)}
+            \begin{tabular}{|l|l|l|}
+            \hline
+            \textbf{Example}       & \textbf{Word class}     & \textbf{Experiential role}     \\ \hline
+            ~  &  &     \\ \hline
+            ~  &  &     \\ \hline
+            ~  &  &     \\ \hline
+            ~  &  &     \\ \hline
+            \end{tabular}
+            \caption{Key differences between word class and experiential role}
+            \label{tab:class_and_role}
+            \end{table}
+
+
+
+    \begin{enumerate} [before=\itshape,font=\normalfont]  \setlength\itemsep{0em} \small
+        \item Risk management
+        \item 
+    \end{enumerate}
+
+    Using Stanford CoreNLP's dependency parses, we counted the frequency of risk words within these three functional roles (Figure \ref{fig:funcrole}). 
+
+
+    In line with the results from word-class based searching, we find that risk as a Process is declining in use. Risk as Modifier, patterning in part with adjectival risk, appears to be increasing. That said, we can also see here the affordances of a functional grammar in corpus assisted discourse research: in this case, much richer evidence of changing usage of risk can be found through an understanding of its semantic function rather than its word class alone.
+
+    % today comprises a larger proportion of risk Participants than in earlier samples. 
+
+    There is a clear trend toward using risk as a Participant.
+     Nominalisation of risk is in and of itself evidence of a greater implicitness of risk, as the core function of nominalisation is to pack more information into the clause. Nominalisation thus reflects 
+
+
+    
+
+    In terms of experiential meaning
+
+    Nominalisation is also closely tied to arguability. This link is discussed in Section \ref{sect:arguability}.
+
+    %``From studies comparing identical and fraternal twins, it is estimated that genetic factors account for 40 to 60 percent of the variation in the risk for addiction.''
+
+    Risk as Modifier is
+
+    a construction like:
+
+
+
+
+    %That was just one day after Richard S. Fuld Jr. , Lehman 's chief executive , announced a new strategy that he said would `` accomplish a significant de-risking of our balance sheet , '' in part by putting risky assets into a new company it would spin off to shareholders next year .
+
+    % `` Ambac has consistently emphasized that in this period of extreme uncertainty in the capital markets , the de-risking and de-leveraging of our balance sheet is our highest priority , '' David W. Wallis , the chief executive , said in a news release .
+
+
+
+
+    %Somewhat unexpectedly, the results were very similar to the word-class based results.
+            
+
+            \begin{figure}[htb!]
+            \centering
+            \includegraphics[width=0.7\textwidth]{../images/risk-as-participant-process-and-modifier-via-dependency-parsing.png}
+           \caption{Experiential roles of risk words}
                 \label{fig:funcrole}
-          \end{figure}
+            \end{figure}
 
 	%~\ \todo[inline,color=green!40]{\noindent More discussion here, perhaps, as well as the above chart as relative frequencies. I may also have to account for risk within prepositional phrases here.}
 		
@@ -295,7 +345,7 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 			%
 			Our first interest is the overall frequency of these five risk processes. 
             %From Figure \ref{fig:riskprocesses}, we concluded that risk processes generally are on an static\slash slightly outbound trajectory, with a notable decrease in frequency between the 1963--1987 samples.
-            Figure \ref{fig:verbalrisks} charts the trajectory of the five identified risk processes. Most interesting here are that the `standard' (predicatorial) risk process is steadily decreasing, in favour of the other processes, each of which seems to provide additional connodations of the agency of the risker as well as his\slash her\slash its understanding of the level of risk. 
+            Figure \ref{fig:riskprocesses} charts the trajectory of the five identified risk processes. Most interesting here are that the `standard' (predicatorial) risk process is steadily decreasing, in favour of the other processes, each of which seems to provide additional connodations of the agency of the risker as well as his\slash her\slash its understanding of the level of risk. 
 
             The second notable finding here is that \emph{putting at risk} has overtaken \emph{running risk} in frequency.
 
