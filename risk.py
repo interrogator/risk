@@ -329,7 +329,7 @@ plotter('Low-, high- and higher- risk', lowhighrisks.results, num_to_plot = 3, s
 # only hyphenate words:
 nohyphenates = surgeon(riskwords.results, r'\b.*-.*\b', remove = True) # remove tokens with hyphens
 quickview(nohyphenates.results)
-plotter('Non-hypenate risk words', hyphenates.results, fract_of = riskwords.totals, 
+plotter('Non-hypenate risk words', nohyphenates.results, fract_of = riskwords.totals, 
     y_label = 'Percentage of all risk words', num_to_plot = 7, skip63 = True)
 
 # only verbal risk words
@@ -354,7 +354,7 @@ plotter('Verbal risk words', verbalrisks, fract_of = allwords.totals,
 #   * if not specified/False, the most most frequent item in the list becomes the name.
 
 # <codecell>
-low_high_combined = merger(lowhighrisks, [0, 2],  newname = 'high/higher risk')
+low_high_combined = merger(lowhighrisks.results, [0, 2],  newname = 'high/higher risk')
 plotter('Low and high risks', low_high_combined.results)
 
 # <markdowncell>
@@ -369,6 +369,7 @@ plotter('Low and high risks', low_high_combined.results)
 # To do this, we can take `riskwords.results`, duplicate it, and change every count over 0 into 1.
 
 # <codecell>
+import copy
 all_ones = copy.deepcopy(riskwords.results)
 for entry in all_ones:
     for tup in entry[1:]:
@@ -376,11 +377,11 @@ for entry in all_ones:
             tup[1] = 1
 
 # <markdowncell>
-We can then use merger to merge every entry. This will tell use how many unique words there are each year.
+We can then use `merger()` to merge every entry. This will tell use how many unique words there are each year.
 
 # <codecell>
 # this generates heaps of output, so let's clear it
-mergedresults = merger(results, r'.*', newname = 'Different risk words')
+mergedresults = merger(all_ones.results, r'.*', newname = 'Different risk words')
 clear_output()
 
 # <codecell>
