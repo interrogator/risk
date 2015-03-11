@@ -135,6 +135,7 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
     from time import localtime, strftime
     import re
     from collections import defaultdict
+    import pydoc
     if csvmake:
         if os.path.isfile(csvmake):
             raise ValueError("CSV error: " + csvmake + " already exists in current directory. Move it, delete it, or change the name of the new .csv file.")
@@ -264,24 +265,13 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
             lstversion[1] = lstversion[1] + ' ' * whitespace_second
             output.append(lstversion)
     formatted_output = []
-    for row in output:
+    for index, row in enumerate(output):
         formatted_output.append(" ".join(row))
+        print '% 4d' % index, " ".join(row)
     if csvmake:
         csvmaker(csvdata, sentences, csvmake)
     if not random:
-        with_enum = []
-        for index, row in enumerate(formatted_output):
-            if len(str(index)) == 1:
-                string_index = '  ' + str(index)
-            if len(str(index)) == 2:
-                string_index = ' ' + str(index)
-            if len(str(index)) > 2:
-                string_index = str(index)
-            row = (string_index + ': ' + row)
-            with_enum.append(row)
-        for entry in with_enum:
-            print entry
-        return formatted_output
+        return pydoc.pager('\n'.join(formatted_output))
     if random:
         outnum = len(formatted_output)
         if random > outnum:
@@ -292,18 +282,9 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
             possible = formatted_output[randomnum]
             if possible not in rand_out:
                 rand_out.append(possible)
-        with_enum = []
         for index, row in enumerate(rand_out):
-            if len(str(index)) == 1:
-                string_index = '  ' + str(index)
-            if len(str(index)) == 2:
-                string_index = ' ' + str(index)
-            if len(str(index)) > 2:
-                string_index = str(index)
-            row = (string_index + ': ' + row)
-            with_enum.append(row)
-        for entry in with_enum:
-            print entry
+            formatted_output.append(" ".join(row))
+            print '% 4d' % index, " ".join(row)
         return rand_out
 
 def tally(lst, indices):
@@ -621,7 +602,7 @@ def multiquery(corpus, query):
         result.totals[0] = name # rename count
         results.append(result.totals)
     tot = merger(results, r'.*', newname = 'Totals', printmerge = False)
-    print tot
+    #print tot
     outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
     output = outputnames(query, results, tot.totals)
     return output

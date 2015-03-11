@@ -11,6 +11,12 @@ def interrogator(path, options, query, lemmatise = False, titlefilter = False, l
     import re
     from corpling_tools.progressbar import ProgressBar
     from time import localtime, strftime
+    if lemmatise:
+        import nltk
+        from nltk.stem.wordnet import WordNetLemmatizer
+        lmtzr=WordNetLemmatizer()
+        # location of words for manual lemmatisation
+        from data.dictionaries.manual_lemmatisation import wordlist
 
     # check if we are in ipython
     try:
@@ -90,30 +96,14 @@ def interrogator(path, options, query, lemmatise = False, titlefilter = False, l
 
     def lemmatiser(list_of_words, tag):
         """take a list of unicode words and a tag and return a lemmatised list."""
-        import nltk
         tokenised_list = [nltk.word_tokenize(i) for i in list_of_words]
-        from nltk.stem.wordnet import WordNetLemmatizer
-        lmtzr=WordNetLemmatizer()
         output = []
         for entry in tokenised_list:
             # just get the rightmost word
             word = entry[-1]
             entry.pop()
-            # should turn these into a list in a file ... 'transforms'
-            if word == u'\'s':
-               word = u'is'
-            if word == u'\'re':
-               word = u'are'
-            if word == u'\'m':
-               word = u'am'
-            if word == u'\'d':
-               word = u'had'
-           #if word == u'\'ll':
-              #word = u'will'
-            if word == u'\'ve':
-               word = u'have'
-            if word == u'n\'t':
-               word = u'not'
+            if word in wordlist:
+                word = wordlist[word]
             word = lmtzr.lemmatize(word, tag)
             entry.append(word)
             output.append(' '.join(entry))

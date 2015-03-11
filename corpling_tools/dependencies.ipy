@@ -40,6 +40,12 @@ def dependencies(path, options, query, lemmatise = False, test = False,
     import glob
     from corpling_tools.progressbar import ProgressBar
     import gc
+    if lemmatise:
+        import nltk
+        from nltk.stem.wordnet import WordNetLemmatizer
+        lmtzr=WordNetLemmatizer()
+        # location of words for manual lemmatisation
+        from data.dictionaries.manual_lemmatisation import wordlist, deptags
     try:
         from IPython.display import display, clear_output
         have_ipython = True
@@ -52,9 +58,6 @@ def dependencies(path, options, query, lemmatise = False, test = False,
         have_ipython = True
     except ImportError:
         have_ipython = False
-    if lemmatise:
-        from nltk.stem.wordnet import WordNetLemmatizer
-        lmtzr=WordNetLemmatizer()
     strip_bad = re.compile('[^.a-zA-Z0-9/-:]', re.UNICODE)
 
     # welcomer
@@ -115,58 +118,21 @@ def dependencies(path, options, query, lemmatise = False, test = False,
                 word = dependent.get_text()
                 if re.match(regex, word):
                     role = dep.attrs.get('type')
-                    # fixing redundant loop here
                     gov = dep.find_all('governor')
                     govword = gov[0].get_text()
+                    # very messy here, sorry
                     if lemmatise is True:
-                        thetag = None
-                        if role == 'amod':
-                            thetag = 'n'
-                        if role == 'nn':
-                            thetag = 'n'
-                        if role == 'rcmod':
-                            thetag = 'n'
-                        if role == 'dobj':
-                            thetag = 'v'
-                        if role == 'nsubj':
-                            thetag = 'v'
-                        if role == 'nsubjpass':
-                            thetag = 'v'
-                        if role == 'advmod':
-                            thetag = 'v'
-                        if role == 'iobj':
-                            thetag = 'v'
-                        if role == 'acomp':
-                            thetag = 'v'
-                        if role == 'cop':
-                            thetag = 'v'
-                        if role == 'advmod':
-                            thetag = 'v'
-                        if role == 'iobj':
-                            thetag = 'v'
-                        if role == 'xcomp':
-                            thetag = 'v'
-                        if role == 'ccomp':
-                            thetag = 'v'
-                        #if 'prep' in role:
-                           #thetag = v
-                        if govword == u'\'s':
-                            govword = u'is'
-                        if govword == u'\'re':
-                            govword = u'are'
-                        if govword == u'\'m':
-                            govword = u'am'
-                        #if govword == u'\'d':
-                            #govword = u'had or would?'
-                        #if govword == u'\'ll':
-                            #govword = u'will or shall?'
-                        if govword == u'n\'t':
-                            govword = u'not'
+                        if role in deptags:
+                            thetag = deptags[role]
+                        else:
+                            thetag = None
                         if not thetag:
                             if lemmatag:
                                 thetag = lemmatag
                             else:
                                 thetag = 'v'
+                        if word in wordlist:
+                            word = wordlist[word]
                         govword = lmtzr.lemmatize(govword, thetag)
                     colsep = role + u':' + govword
                     result.append(colsep)
