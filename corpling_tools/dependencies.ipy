@@ -45,7 +45,7 @@ def dependencies(path, options, query, lemmatise = False, test = False,
         from nltk.stem.wordnet import WordNetLemmatizer
         lmtzr=WordNetLemmatizer()
         # location of words for manual lemmatisation
-        from data.dictionaries.manual_lemmatisation import wordlist, deptags
+        from data.dictionaries.manual_lemmatisation import wordlist, deptags, usa_english
     try:
         from IPython.display import display, clear_output
         have_ipython = True

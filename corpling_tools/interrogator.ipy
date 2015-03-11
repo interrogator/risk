@@ -4,7 +4,7 @@
 #   for ResBaz NLTK stream
 #   Author: Daniel McDonald
 
-def interrogator(path, options, query, lemmatise = False, titlefilter = False, lemmatag = False):
+def interrogator(path, options, query, lemmatise = False, titlefilter = False, lemmatag = False, usa_english = True):
     import collections
     from collections import Counter
     import os
@@ -16,7 +16,7 @@ def interrogator(path, options, query, lemmatise = False, titlefilter = False, l
         from nltk.stem.wordnet import WordNetLemmatizer
         lmtzr=WordNetLemmatizer()
         # location of words for manual lemmatisation
-        from data.dictionaries.manual_lemmatisation import wordlist
+        from data.dictionaries.word_transforms import wordlist, usa_convert
 
     # check if we are in ipython
     try:
@@ -92,6 +92,8 @@ def interrogator(path, options, query, lemmatise = False, titlefilter = False, l
             matches = lemmatiser(matches, tag)
         if titlefilter:
             matches = titlefilterer(matches)
+        if usa_english:
+            matches = usa_english_maker(matches)
         return matches
 
     def lemmatiser(list_of_words, tag):
@@ -111,7 +113,6 @@ def interrogator(path, options, query, lemmatise = False, titlefilter = False, l
         # if single words: return [lmtsr.lemmatize(word, tag) for word in list_of_matches]
 
     def titlefilterer(list_of_matches):
-        import re
         import nltk
         from data.dictionaries.titlewords import titlewords
         tokenised_list = [nltk.word_tokenize(i) for i in list_of_matches]
@@ -123,6 +124,20 @@ def interrogator(path, options, query, lemmatise = False, titlefilter = False, l
             title_stripped.append(head)
             str_result = ' '.join(title_stripped)
             output.append(str_result)
+        return output
+
+    def usa_english_maker(list_of_matches):
+        import nltk
+        from data.dictionaries.word_transforms import usa_convert
+        tokenised_list = [nltk.word_tokenize(i) for i in list_of_matches]
+        output = []
+        for result in tokenised_list:
+            head = result[-1]
+            try:
+                result[-1] = usa_convert[result[-1]]
+            except KeyError:
+                pass
+            output.append(' '.join(result))
         return output
 
     # welcome message based on kind of interrogation

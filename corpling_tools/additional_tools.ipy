@@ -257,6 +257,8 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
     for unique_result in unique_results:
         lstversion = list(unique_result)
         if len(lstversion) == 3:
+            # make match red!
+            # lstversion[1] = "\x1b[31m%s\x1b[0m" % lstversion[1]
             if csvmake:
                 csvdata.append(lstversion)
             whitespace_first = window + 2 - len(lstversion[0])
@@ -271,7 +273,7 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
     if csvmake:
         csvmaker(csvdata, sentences, csvmake)
     if not random:
-        return pydoc.pager('\n'.join(formatted_output))
+        return formatted_output
     if random:
         outnum = len(formatted_output)
         if random > outnum:
@@ -662,9 +664,9 @@ def mather(oldlist, operation, newlist, multiplier = 100):
         print the_newlist
         raise ValueError('Different list lengths: %d and %d' % (len(the_oldlist), len(the_newlist)))
     ops = {"+": operator.add,
-        "-": operator.sub,
-        "*": operator.mul,
-        "/": operator.div}
+           "-": operator.sub,
+           "*": operator.mul,
+           "/": operator.div}
     try:
         op_func = ops[operation]
     except KeyError:
