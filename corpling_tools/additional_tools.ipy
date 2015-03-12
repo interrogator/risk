@@ -188,7 +188,8 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
         ##############################################################
 
     time = strftime("%H:%M:%S", localtime())
-    print "\n" + time + ': Getting concordances for ' + corpus + ' ... \n          Query: ' + query + '\n'
+    #if noprint is False:
+    print "\n%s: Getting concordances for %s ... \n          Query: %s\n" % (time, corpus, query)
     output = []
     tregex_command = "sh ./tregex.sh '%s' 2>&1" % query
     testpattern = !$tregex_command
@@ -269,6 +270,7 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
     formatted_output = []
     for index, row in enumerate(output):
         formatted_output.append(" ".join(row))
+        #if noprint is False:
         print '% 4d' % index, " ".join(row)
     if csvmake:
         csvmaker(csvdata, sentences, csvmake)
@@ -474,16 +476,63 @@ def table(data_to_table, allresults = False, maxresults = 50):
     pandas.options.display.float_format = '{:,.2f}'.format
     return df
 
-def keywords(data, dictionary = 'years.p', **kwargs):
+def datareader(data):
+    """Figures out what kind of thing you're parsing
+    and returns a big string of text"""
+    import os
+    if type(data) == str:
+        # if it's a file, assume csv and get the big part
+        if os.path.isfile(data):
+            f = open(data)
+            raw = f.read()
+            if data.endswith('csv'):
+                bad, good = re.compile(r'Entire sentences \(n=[0-9]+\):').split(raw)
+            else:
+                good = raw
+        # if it's a dir, conc()
+        elif os.path.isdir(data):
+            # why did root appear as key???
+            tregex_command = "sh ./tregex.sh -o -w -t '/ROOT/ < __' %s 2>/dev/null | grep -vP '^\s*$'" % data
+            trees = !$tregex_command
+            good = '\n'.join(trees)
+            if len(trees) == 0:
+                # assuming data isn't trees, so 
+                # read plain text out of files ...
+                list_of_texts = []
+                for f in os.listdir(data):
+                    raw = open(os.path.join(data, f))
+                    list_of_texts.append(raw)
+                good = '\n'.join(list_of_texts)
+        # if a string of text, just keyword that
+        else:
+            good = str(data)
+    # if conc results, turn into string...
+    if type(data) == list:
+        good = '\n'.join(data)
+        #type(data) == str:
+        # assume it's text
+    return good
+
+def keywords(data, dictionary = 'all.p', **kwargs):
     """Feed this a csv file generated with conc() and get its keywords"""
     #import sys
     #sys.path.insert(0, 'spindle-code-master/keywords')
-    % run corpling_tools/keywords.ipy
+    #% run corpling_tools/keywords.ipy
+    from corpling_tools.spindle_keywords import ngrams, keywords_and_ngrams
     import re
+    import os
+    import time
+    from time import localtime, strftime
+    try:
+        from IPython.display import display, clear_output
+        have_ipython = True
+    except ImportError:
+        have_ipython = False
     # turn all sentences into long string
-    f = open(data)
-    raw = f.read()
-    bad, good = re.compile(r'Entire sentences \(n=[0-9]+\):').split(raw)
+    time = strftime("%H:%M:%S", localtime())
+    #if noprint is False:
+    print "\n%s: Generating keywords and ngrams... \n" % time
+    good = datareader(data)
     keywords, ngrams = keywords_and_ngrams(good, dictionary = dictionary, **kwargs)
     keywords_list_version = []
     for index, item in enumerate(keywords):
@@ -493,7 +542,8 @@ def keywords(data, dictionary = 'years.p', **kwargs):
     for index, item in enumerate(ngrams):
         joined_ngram = ' '.join(item[0])
         aslist = [index, joined_ngram, item[1]]
-        ngrams_list_version.append(aslist)    
+        ngrams_list_version.append(aslist)
+    clear_output()    
     return keywords_list_version, ngrams_list_version
 
 # keywords, ngrams = keywords('test.csv', nBigrams = 4)
@@ -505,9 +555,19 @@ def collocates(data, nbest = 30, window = 5):
     from nltk import collocations
     from nltk.collocations import BigramCollocationFinder
     import re
-    f = open(data)
-    raw = f.read()
-    bad, good = re.compile(r'Entire sentences \(n=[0-9]+\):').split(raw)
+    import os
+    import time
+    from time import localtime, strftime
+    try:
+        from IPython.display import display, clear_output
+        have_ipython = True
+    except ImportError:
+        have_ipython = False
+    # turn all sentences into long string
+    time = strftime("%H:%M:%S", localtime())
+    #if noprint is False:
+    print "\n%s: Generating %d collocates ... \n" % (time, nbest)
+    good = datareader(data)
     good = unicode(good.lower(), 'utf-8', errors = 'ignore')
     sent_tokenizer=nltk.data.load('tokenizers/punkt/english.pickle')
     sents = sent_tokenizer.tokenize(good)
@@ -535,6 +595,7 @@ def collocates(data, nbest = 30, window = 5):
     for index, thecollocation in enumerate(results):
         aslist = [index, thecollocation[0], thecollocation[1]]
         listversion.append(aslist)
+    clear_output()
     return listversion
 
 def report_display():
