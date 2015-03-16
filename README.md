@@ -1,10 +1,45 @@
 ## Discourse-semantics of risk in the *New York Times*, 1963&mdash;2014: a corpus linguistic approach
 
-This repository contains everything created and used in our longitudinal analysis of risk language in the *New York Times*. The investigation involves systematic analysis of over 150,000 NYT paragraphs containing a risk token (*risk*, *risking*, *at-risk*, *risk-to-reward*, *risk-laden*, etc). These paragraphs have been parsed with *Stanford CoreNLP*, and are interrogated using *Tregex* queries, combined with custom-built Python scripts for viewing and merging results, concordancing, etc. 
+This repository contains everything created and used in our longitudinal analysis of risk language in the *New York Times*. The investigation involves systematic analysis of over 150,000 NYT paragraphs containing a risk token (*risk*, *risking*, *at-risk*, *risk-to-reward*, *risk-laden*, etc), though the tools and functions could easily be used with other datasets. These paragraphs have been parsed with *Stanford CoreNLP*, and are interrogated using *Tregex* queries, combined with custom-built Python functions:
 
-Theoretically, our interest is in empirically examining sociological claims about risk made by (e.g.) Beck, Giddens and Luhmann. To do this, we rely on *Systemic Functional Linguistics* (e.g. Halliday & Matthiessen, 2004), with particular focus on experiential meaning.
+| **Function name** | **Purpose**                            |
+| ----------------- | ---------------------------------- |
+| `interrogator()`  | interrogate bracketted trees using Tregex, NLTK lemmatisation, etc.         |
+| `dependencies()`  | interrogate dependency parses         |
+| `plotter()`       | visualise `interrogator()` results using Matplotlib |
+| `table()`          | return plotter() results as table using Pandas |
+| `quickview()`     | view top `interrogator()` results      |
+| `tally()`       | get total frequencies for `interrogator()` results      |
+| `surgeon()`       | quickly edit `interrogator()` results      |
+| `merger()`       | quickly merge `interrogator()` results      |
+| `conc()`          | Concordancing using Tregex, regex |
+| `keywords()`          | get keywords and ngrams from subcorpora, concordance lines (uses Spindle) |
+| `collocates()`          | get collocates from from subcorpora, concordance lines, etc. |
+| misc | A few other simple functions for working with corpora |
 
-Our *IPython Notebook* presents the code used in our analysis side-by-side with our results. It can be viewed via *nbviewer* [here](http://nbviewer.ipython.org/github/interrogator/risk/blob/master/risk.ipynb). Our report, which contextualises and elaborates on these results, is available [as PDF](https://raw.githubusercontent.com/interrogator/risk/master/report/risk_report.pdf) and (bleeding-edge) [.tex source](https://github.com/interrogator/risk/blob/master/report/risk_report.tex). If you want to interrogate the corpus yourself, you are advised to clone the repository, which includes the parse trees, and use the provided functions within the IPython Notebook.
+Here's a basic example of `interrogator()` and `plotter()':
+
+```python
+# set path to corpus
+corpus = 'data/nyt/trees/years'
+# make tregex query
+q = r'/NN.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'
+# count terminals/leaves of trees only, and do lemmatisation:
+riskofnoun = interrogator(corpus, '-t', q, lemmatise = True)
+# plot top 7 entries as percentage of all entries:
+plotter('Risk of ... ', riskofnoun.results, fract_of = riskofnoun.totals, num_to_plot = 7, skip63 = False)
+```
+
+Output: 
+
+<br>
+<img style="float:left" src="https://raw.githubusercontent.com/interrogator/risk/master/images/riskofnoun.png" />
+<br>
+
+
+Our *IPython Notebook* presents the code used in our analysis side-by-side with our results. It can be viewed via *nbviewer* [here](http://nbviewer.ipython.org/github/interrogator/risk/blob/master/risk.ipynb). 
+
+Theoretically, our interest is in empirically examining sociological claims about risk made by (e.g.) Beck, Giddens and Luhmann. To do this, we rely on *Systemic Functional Linguistics* (e.g. Halliday & Matthiessen, 2004), with particular focus on experiential meaning. Our report, which contextualises and elaborates on these results, is available [as PDF](https://raw.githubusercontent.com/interrogator/risk/master/report/risk_report.pdf) and (bleeding-edge) [.tex source](https://github.com/interrogator/risk/blob/master/report/risk_report.tex). If you want to interrogate the corpus yourself, you are advised to clone the repository, which includes the parse trees, and use the provided functions within the IPython Notebook.
 
 ## Installation:
 

@@ -44,17 +44,9 @@ def plotter(title, results, fract_of = False, y_label = False,
     import pylab as pl
     import warnings
     imagefolder = 'images'
-    datafolder = 'data'
     rcParams.update({'font.size': (figsize / 2) + 7}) # half your size plus seven
     rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
     rc('text', usetex=True)
-
-    def urlify(s):
-        import re
-        s = s.lower()
-        s = re.sub(r"[^\w\s]", '', s)
-        s = re.sub(r"\s+", '-', s)
-        return s     
 
     def popper(interrogator_list):
         """removes totals"""
@@ -195,11 +187,6 @@ def plotter(title, results, fract_of = False, y_label = False,
         print time + ": " + csvmake + " written to currect directory."
 
     ##################################################################
-
-    if type(csvmake) == str:
-        csv_savename = os.path.join(datafolder, urlify(csvmake) + '.csv')
-    else:
-        csv_savename = os.path.join(datafolder, urlify(title) + '.csv')
 
     # copy results and embed in list if need be.
     if isinstance(results, tuple) is True:
@@ -364,10 +351,20 @@ def plotter(title, results, fract_of = False, y_label = False,
     fig1 = plt.gcf()
     plt.show()
     if save:
+        def urlify(s):
+            import re
+            s = s.lower()
+            s = re.sub(r"[^\w\s]", '', s)
+            s = re.sub(r"\s+", '-', s)
+            return s     
+        if type(save) == str:
+            savename = os.path.join(imagefolder, urlify(save) + '.png')
+        else:
+            savename = os.path.join(imagefolder, urlify(title) + '.png')
         if legend:
-            fig1.savefig(image_savename, bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=150) 
+            fig1.savefig(savename, bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=150) 
         time = strftime("%H:%M:%S", localtime())
-        print time + ": " + image_savename + " created."
+        print time + ": " + savename + " created."
     if csvmake:
-        csvmaker(csvdata, csvalldata, csv_savename)
+        csvmaker(csvdata, csvalldata, csvmake)
         

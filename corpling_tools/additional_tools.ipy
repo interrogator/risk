@@ -660,7 +660,7 @@ def resorter(lst, reverse = True, sort_by = 'total'):
         to_reorder.sort(key=lambda x: x[0])
     return to_reorder
 
-def multiquery(corpus, query):
+def multiquery(corpus, query, sort_by = 'total'):
     """Creates a named tuple for a list of named queries to count.
 
     Pass in something like:
@@ -673,6 +673,8 @@ def multiquery(corpus, query):
         result = interrogator(corpus, '-C', pattern)
         result.totals[0] = name # rename count
         results.append(result.totals)
+    if sort_by:
+        results = resorter(results, sort_by = sort_by)
     tot = merger(results, r'.*', newname = 'Totals', printmerge = False)
     #print tot
     outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
