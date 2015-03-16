@@ -4,6 +4,10 @@
 
 \noindent Findings are organised according to the formulation of areas of interest as questions. These questions progress from general frequency counting (Q1), through experiential meanings (Qs 2--7), to risk as modifier (Qs 8 \& 9) and finally to arguability (Q10). Discussion of the general significance of individual findings is also presented in this section, as the Discussion section synergises all findings to explain the discourse-semantics of risk.
 
+  \noindent\colorbox{yellow!20}{%
+  \parbox{1\textwidth}{%
+  \textsc{\textbf{Note:}} Summarised versionf for each main question will be presented in highlighted text boxes of this form.}}
+
 An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinney_python_2012}, as well as the code used to interrogate it and the findings we produced, is available online: \url{https://github.com/interrogator/risk}. A non-interactive version is available at \url{http://nbviewer.ipython.org/github/interrogator/risk/blob/master/risk.ipynb}. This Notebook does not suffer from spatial limitations, and thus contains additional information, including the exact Tregex queries used in interrogations, as well as complete lists of the concordance lines discussed only briefly here. Tools and results from other kinds of corpus linguistic analysis, such as keywording and collocation, are also available there, but have not been described here.
 
 \section{How frequently do risk words appear?} 
@@ -14,20 +18,21 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 	The first point of interest was the overall frequency of risk words in the NYT (Figure \ref{fig:relative_frequency_of_risk_words}) and the distribution of risk words by word class (nominal, verbal, adjectival\slash adverbial), absent any consideration of surrounding grammar (see Figure \ref{fig:wordclasses}). In terms of the relative frequency of risk words, we note a general upward trend, with a number of peaks and troughs worthy of further investigation. In terms of word classes of risk, we found that not only are nominal forms by far the most common in the NYT, but that it is nominal risk words that vary the most in frequency, with the other categories remaining more or less stable. Interestingly, in the span for which we have no data (1964--1986), adjectival forms overtake verbal forms of risk in frequency.
 
     %Using our reference corpus, we checked to see whether nominals were becoming more frequent within the NYT more generally.
+
           \noindent
           \begin{figure}[htb!]
           \centering
           \begin{minipage}{.45\textwidth}
-            \centering
-                      \includegraphics[width=.95\textwidth]{../images/relative_frequency_of_risk_words.png}
-                      \caption{Relative frequency of risk words}
-                      \label{fig:relative_frequency_of_risk_words}
+          \centering
+          \includegraphics[width=.95\textwidth]{../images/relative_frequency_of_risk_words.png}
+          \caption{Relative frequency of risk words}
+          \label{fig:relative_frequency_of_risk_words}
           \end{minipage}%
           \begin{minipage}{.55\textwidth}
-            \centering
-                      \includegraphics[width=.95\textwidth]{../images/risk_words_by_word_class.png}
-                      \caption{Relative frequency by word class}
-                      \label{fig:wordclasses}
+          \centering
+          \includegraphics[width=.95\textwidth]{../images/risk_words_by_word_class.png}
+          \caption{Relative frequency by word class}
+          \label{fig:wordclasses}
           \end{minipage}
           \end{figure}
 
@@ -46,8 +51,11 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 
 	These initial findings guided the rest of the investigation: particular attention was paid to nominal risks, as these were the site of the most longitudinal change. That said, these categories provide merely a categorisation of the formal features of risk words. Functionally, things are substantially more complicated: \emph{running a risk}, for example, while featuring a nominal risk, is in reality a risk process; similarly, though risk is nominal in \emph{risk management}, risk is nominal, it functions as a modifier, rather than a participant.
 
-    A similar question is the number of unique risk words appearing per year. Figure \ref{fig:diffriskwords} demonstrates that there does appear to be a general increase in the relative number of risk words over time. That said, given that approximately half of unique tokens in each subcorpus appear only once, 
-        1963 is excluded from analysis here, as poor quality OCR created a number of non-word results.
+    A similar question is the number of unique risk words appearing per year. Figure \ref{fig:diffriskwords} demonstrates that there does appear to be a general increase in the relative number of risk words over time. %That said, given that approximately half of unique tokens in each subcorpus appear only once, 
+    
+
+    1963 is excluded from analysis here, as poor quality OCR created a number of non-word results\endnote{Poor quality OCR caused single occurrences of tokens such as \emph{risks-wnrk}, \emph{risks.North} and \emph{risks.With} to appear in 1963}.
+ 
 
             \begin{figure}[htb!]
             \centering
@@ -56,13 +64,13 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
             \label{fig:diffriskwords}
             \end{figure}
 
+  \noindent\colorbox{yellow!20}{%
+  \parbox{1\textwidth}{%
+  \textsc{\textbf{Finding 1:}} Risk words appear to be increasing in relative frequency, with modest increases in the number of unique risk words per year.}}
 
-	%\section{Experiential meaning: risk as Participant and Process}
 
 	\section{Which experiential roles do risk words occupy?} 
 	\FloatBarrier
-
-    %alongside a 
 
     In a systemic-functional conceptualisation of the experiential metafunction of language, risk words may take the form of a Participant (\emph{The risk was there}), Process (\emph{I risked it}) or a Modifier (\emph{a risky encounter}). Though these pattern to some extent with word classes (e.g. \emph{Participant = noun, Process = Verb, Modifier = adjective}), word classes on the whole are a poor indiciation of functional role, especially in genres such as print news journalism, which rely heavily on nominalisation and grammatical metaphor. As shown in Table \ref{tab:class_and_role}, for example, nominal risks commonly perform Modifier functions, and adjectival functions often perform Participant functions.
 
@@ -81,15 +89,7 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
             \label{tab:class_and_role}
             \end{table}
 
-
-
-    \begin{enumerate} [before=\itshape,font=\normalfont]  \setlength\itemsep{0em} \small
-        \item Risk management
-        \item 
-    \end{enumerate}
-
     Using Stanford CoreNLP's dependency parses, we counted the frequency of risk words within these three functional roles (Figure \ref{fig:funcrole}). 
-
 
     In line with the results from word-class based searching, we find that risk as a Process is declining in use. Risk as Modifier, patterning in part with adjectival risk, appears to be increasing. That said, we can also see here the affordances of a functional grammar in corpus assisted discourse research: in this case, much richer evidence of changing usage of risk can be found through an understanding of its semantic function rather than its word class alone.
 
@@ -99,30 +99,15 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
      Nominalisation of risk is in and of itself evidence of a greater implicitness of risk, as the core function of nominalisation is to pack more information into the clause. Nominalisation thus reflects 
 
 
-    
-
     In terms of experiential meaning
 
     Nominalisation is also closely tied to arguability. This link is discussed in Section \ref{sect:arguability}.
 
     %``From studies comparing identical and fraternal twins, it is estimated that genetic factors account for 40 to 60 percent of the variation in the risk for addiction.''
 
-    Risk as Modifier is
-
-    a construction like:
-
-
-
-
     %That was just one day after Richard S. Fuld Jr. , Lehman 's chief executive , announced a new strategy that he said would `` accomplish a significant de-risking of our balance sheet , '' in part by putting risky assets into a new company it would spin off to shareholders next year .
 
     % `` Ambac has consistently emphasized that in this period of extreme uncertainty in the capital markets , the de-risking and de-leveraging of our balance sheet is our highest priority , '' David W. Wallis , the chief executive , said in a news release .
-
-
-
-
-    %Somewhat unexpectedly, the results were very similar to the word-class based results.
-            
 
             \begin{figure}[htb!]
             \centering
@@ -134,6 +119,10 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 	%~\ \todo[inline,color=green!40]{\noindent More discussion here, perhaps, as well as the above chart as relative frequencies. I may also have to account for risk within prepositional phrases here.}
 		
 	%only when the risk word forms the head of these groups, rather than a dependent/modifier (e.g. \emph{a risky decision}).
+
+  \noindent\colorbox{yellow!20}{%
+  \parbox{1\textwidth}{%
+  \textsc{\textbf{Finding 2:}} Risk as a process is declining in use, and has been overtaken in frequency by risk as a participant.}}
 
 		\section{Is risk more commonly in the position of experiential subject or experiential object?} 
 		\FloatBarrier
@@ -160,6 +149,10 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
     \caption{Examples of risk as experiential subject and object in 2001}
     \label{tab:subj_conc}
     \end{table}
+
+      \noindent\colorbox{yellow!20}{%
+  \parbox{1\textwidth}{%
+  \textsc{\textbf{Finding 3:}} Risk is more often an experiential object than an experiential subject. The gap has widened considerably over time.}}
 
 	\section{What processes are involved when risk is a participant?}
 	\FloatBarrier
@@ -233,6 +226,10 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 										\end{minipage}}
 										\end{table}
 
+  \noindent\colorbox{yellow!20}{%
+  \parbox{1\textwidth}{%
+  \textsc{\textbf{Finding N:}} TEXT.}}
+
 
 	\section{How are participant risks modified?}
 	\FloatBarrier
@@ -303,7 +300,7 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 					\end{minipage}}
 					\end{table}
 
-				Some of these modifiers are undergoing longitudinal trajectory change. As can be seen in Figure \ref{fig:reladjrisk}, \emph{calculated risk} has an outbound trajectory, decreasing steadily. The large number of occurrences projected for 1963, however, is partially the result of the 1962 Broadway play by the same name. Of course, the choice of name for the production may also serve as evidence for the salience of the construction in the earlier samples.  \emph{Potential risk}, on the other hand, is on an inbound trajectory. Also interesting is the spike in the \emph{high risk} construction between 2002--2004. %REDO PROJECTION FOR 1963...
+				Some of these modifiers are undergoing longitudinal trajectory change. As can be seen in Figure \ref{fig:reladjrisk}, \emph{calculated risk} has an outbound trajectory, decreasing steadily. The large number of occurrences projected for 1963, however, is partially the result of the 1962 Broadway play by the same name. Of course, the choice of name for the production may also serve as evidence for the salience of the construction in the earlier samples.  \emph{Potential risk}, on the other hand, is increasing in frequency. Also interesting is the spike in the \emph{high risk} construction between 2002--2004. %REDO PROJECTION FOR 1963...
 
                 Concordancing reveals links to particular events. \emph{High risk}, peaking in 2004, is asociated with the outbreak of the H5N1 avian flu outbreak. Interestingly, however, many concordance examples deal only with strains common in the USA:
 
@@ -328,6 +325,11 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 				\end{figure}
 
 				%~\ \todo[inline,color=green!40]{\noindent Significance of this?}
+
+  \noindent\colorbox{yellow!20}{%
+  \parbox{1\textwidth}{%
+  \textsc{\textbf{Finding N:}} TEXT.}}
+
 
 		\section{What kinds of risk processes are there, and what are their relative frequencies?}
 		\FloatBarrier
@@ -380,6 +382,10 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
             \end{enumerate}
             %
             Overall, the shift in both the semantics of risk running and the increasing preference for \emph{putting at risk} can be seen as evidence for decreasing agency in risk, as well as an increasing implicitness of the potential harm. This finding is especially significant, given that the existing descriptions of risk \cite{fillmore_toward_1992}, as well as the current FrameNet database, include accounts of \emph{running risk} as a frame, but not \emph{putting at risk}.
+
+  \noindent\colorbox{yellow!20}{%
+  \parbox{1\textwidth}{%
+  \textsc{\textbf{Finding N:}} TEXT.}}
 		
 		\section{When risk is a process, what participants are involved?}
 		\FloatBarrier
@@ -491,6 +497,10 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 
 			%Note here an emerging methodological issue: the various  \emph{potential harms} can also be located by querying nominal risks (e.g. \emph{the risk of death}). Some methodological adaptability is thus required.
 
+  \noindent\colorbox{yellow!20}{%
+  \parbox{1\textwidth}{%
+  \textsc{\textbf{Finding N:}} TEXT.}}
+
 		\section{When risk is a modifier, what are the most common forms?} \label{sect:riskmod}
 		\FloatBarrier
 
@@ -563,6 +573,9 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 				%Health experts say scarce funds for AIDS prevention would be better spent on high-risk groups .
 				%Very few Americans know that Haitians have long since been removed from the list of high-risk groups because it was discovered that the H
 
+  \noindent\colorbox{yellow!20}{%
+  \parbox{1\textwidth}{%
+  \textsc{\textbf{Finding N:}} TEXT.}}
 
 			\section{When risk is a modifier, what is being modified?}
 			\FloatBarrier
@@ -640,7 +653,11 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
         \end{enumerate}
 
         Note that it is difficult to reconcile the semantic meaning of \emph{at-risk} constructions with the semantic frame of risk provided by \citeA{fillmore_toward_1992}. Though elements of both the \textsc{victim} and \emph{valued object} appear to be at work, neither provides an adequate label for \emph{at-risk people, children, homeowners or nations}. Rather than being an oversight during the articulation of the risk frame (recall Figure~\ref{fig:fil_atk}), in light of the increased use of these kinds of constructions since the mid 1990s, we hypothesise that \emph{at-risk} constructions (as well as \emph{to put at risk}) are demonstrative of a broader shift in risk discourse toward general clusters of negative outcomes, rather than specific and measurable potential harms. Connection between this shift and sociological theory is made in the following chapter.
-        
+
+  \noindent\colorbox{yellow!20}{%
+  \parbox{1\textwidth}{%
+  \textsc{\textbf{Finding N:}} TEXT.}}
+
 	\section{How arguable is risk?} \label{sect:arguability}
 	\FloatBarrier
 
@@ -682,69 +699,92 @@ An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinn
 
 			%Using the full list of risk dependencies, we can also locate more specific constructions undergoing trajectory shift. Figure \ref{fig:salienttrajectories} shows that risk is increasingly instantiated within prepositional phrases (which are by their nature dependent on Participants and Processes), and decreasingly as a predicator. From this view too, risk words are increasingly implicit within news language.
 
-	\section{Risk words and proper nouns}
+  \noindent\colorbox{yellow!20}{%
+  \parbox{1\textwidth}{%
+  \textsc{\textbf{Finding N:}} TEXT.}}
 
-                We searched for proper noun groups in parse trees containing a risk word. This is a departure from many of our earlier queries, as here we are looking only at which entities co-occur with risk language, rather than determining how risk words and non-risk words relate to other another lexicogrammatically. The result of this query was 68891 different proper noun groups. We took the 200 most common results, and merged any that denoted the same entity: \emph{F.D.A.\slash Food and Drug Administration}, or \emph{Federal Reserve and Fed}. We then grouped results into thematic categories: \emph{People}, \emph{Nations}, \emph{Geopolitical entities}, \emph{Companies}, \emph{Organisations} and \emph{Medical themes}. The results were then plotted (See Figure \ref{fig:propernouns}). 
+\section{Risk words and proper nouns}
 
-                  \begin{landscape}
-                  \centering
-                  \begin{figure}
-                  \captionsetup[subfigure]{oneside,margin={-1.5cm,-.5cm}}
-                  \centering % [t!] % "[t!]" placement specifier just for this example
-                  \begin{subfigure}{.64\textwidth}
-                  \includegraphics[width=\linewidth]{../images/people}
-                  \caption{People} \label{fig:a}
-                  \end{subfigure}
-                  \begin{subfigure}{.64\textwidth}
-                  \includegraphics[width=\linewidth]{../images/nations}
-                  \caption{Nations} \label{fig:b}
-                  \end{subfigure}
+    We searched for proper noun groups in parse trees containing a risk word. This is a departure from many of our earlier queries, as here we are looking only at which entities co-occur with risk language, rather than determining how risk words and non-risk words relate to other another lexicogrammatically. The result of this query was 68891 different proper noun groups. We took the 200 most common results, and merged any that denoted the same entity: \emph{F.D.A.\slash Food and Drug Administration}, or \emph{Federal Reserve and Fed}. We then grouped results into thematic categories: \emph{People}, \emph{Nations}, \emph{Geopolitical entities}, \emph{Companies}, \emph{Organisations} and \emph{Medical themes}. The results were then plotted (See Figure \ref{fig:propernouns}). 
 
-                  \medskip
-                  \begin{subfigure}{.64\textwidth}
-                  \includegraphics[width=\linewidth]{../images/geopolitical_entities}
-                  \caption{Geopolitical entities} \label{fig:c}
-                  \end{subfigure}
-                  \begin{subfigure}{.64\textwidth}
-                  \includegraphics[width=\linewidth]{../images/companies}
-                  \caption{Companies} \label{fig:d}
-                  \end{subfigure}
+    \begin{landscape}
+    \centering
+    \begin{figure}
+    \captionsetup[subfigure]{oneside,margin={-1.5cm,-.5cm}}
+    \centering % [t!] % "[t!]" placement specifier just for this example
+    \begin{subfigure}{.64\textwidth}
+    \includegraphics[width=\linewidth]{../images/people}
+    \caption{People} \label{fig:a}
+    \end{subfigure}
+    \begin{subfigure}{.64\textwidth}
+    \includegraphics[width=\linewidth]{../images/nations}
+    \caption{Nations} \label{fig:b}
+    \end{subfigure}
 
-                  \medskip
-                  \begin{subfigure}{.64\textwidth}
-                  \includegraphics[width=\linewidth]{../images/organisations}
-                  \caption{Organisations} \label{fig:e}
-                  \end{subfigure}
-                  \begin{subfigure}{.64\textwidth}
-                  \includegraphics[width=\linewidth]{../images/medicine}
-                  \caption{Medical terms} \label{fig:f}
-                  \end{subfigure}
-                  \caption{Proper noun groups co-occurring with risk} \label{fig:propernouns}
-                  \end{figure}
-                  \end{landscape}
+    \medskip
+    \begin{subfigure}{.64\textwidth}
+    \includegraphics[width=\linewidth]{../images/geopolitical_entities}
+    \caption{Geopolitical entities} \label{fig:c}
+    \end{subfigure}
+    \begin{subfigure}{.64\textwidth}
+    \includegraphics[width=\linewidth]{../images/companies}
+    \caption{Companies} \label{fig:d}
+    \end{subfigure}
 
-                A number of historical events were easily recognisable within the peaks and troughs of these charts. Key events represented through these interrogations include:
+    \medskip
+    \begin{subfigure}{.64\textwidth}
+    \includegraphics[width=\linewidth]{../images/organisations}
+    \caption{Organisations} \label{fig:e}
+    \end{subfigure}
+    \begin{subfigure}{.64\textwidth}
+    \includegraphics[width=\linewidth]{../images/medicine}
+    \caption{Medical terms} \label{fig:f}
+    \end{subfigure}
+    \caption{Proper noun groups co-occurring with risk} \label{fig:propernouns}
+    \end{figure}
+    \end{landscape}
 
-                \begin{enumerate} \setlength\itemsep{0em}
-                    \item US presidents and presidential candidates\endnote{Though the filtering out of titles and given names collapses the distinction between Bushes and Clintons, we can still reasonably infer which was being spoken about at which, and doubt can be eliminated by concordancing}~(Figure~\ref{fig:a})
-                    \item The First Persian Gulf War (Figure~\ref{fig:b})                   
-                    \item The Iraq Wars (Figure~\ref{fig:b})
-                    \item September 11 and the War in Afghanistan (Figure~\ref{fig:b})   
-                    \item The beginning of the 2014 Crimean crisis (Figure~\ref{fig:b})       
-                    \item The Asian financial crisis (Figure~\ref{fig:c})
-                    \item The breakup of the Soviet Union (Figure~\ref{fig:c})
-                    \item The Eurozone crisis (Figure~\ref{fig:c})
-                    \item The Space Shuttle Colombia Disaster (Figure~\ref{fig:d})
-                    \item The collapse of Enron (Figure~\ref{fig:e})
-                    \item The U.S. subprime mortgage crisis  (Figure~\ref{fig:e})
-                    \item The U.S. outbreak of HIV and the AIDS crisis (Figure~\ref{fig:f})
-                    \item The recall of Vioxx (Figure~\ref{fig:f})
-                \end{enumerate}
-                %
-                This area of our investigation is by far the most promising as a means of connecting risk language to particular people and events. Spatial considerations have precluded a full treatment of the charting of risk language to specific events, despite the fact that enough data exists for detailed analyses of any number of potential foci. Future research that centres on detailed exploration of health domains (including the Vioxx recall) is planned.
+    A number of historical events were easily recognisable within the peaks and troughs of these charts. Key events represented through these interrogations include:
 
-                It should also be noted that the kinds of tasks needed for analysis of proper nouns in particular (selecting particular tokens or thematic clusters of tokens, merging results, zooming in to particular spans of time, etc.) are key components of the corpus analysis toolkit and IPython Notebook interface (\url{https://github.com/interrogator/risk}). Exploration using the purpose-built interface reveals that many topics are present in the data, but are hidden by the frequency of the very prominent examples charted here. Searching for \emph{Yugoslavia}, \emph{Bosnia}, \emph{Kosovo}, \emph{Serbia}, \emph{Mil{\u o}sevi{\'c}}, \emph{\textsc{NATO}}, (etc.), reveal expected peaks at different stages of the 1990s, despite falling outside of the range of the visualisations presented here. Given that the dataset and toolkit are open-sourced, we encourage researchers to conduct further, more specific analysis of risk language and either particular people, places and events, or risk language and topics such as health, politics, economics or sport.
+    \begin{enumerate} \setlength\itemsep{0em}
+    \item US presidents and presidential candidates\endnote{Though the filtering out of titles and given names collapses the distinction between Bushes and Clintons, we can still reasonably infer which was being spoken about at which, and doubt can be eliminated by concordancing}~(Figure~\ref{fig:a})
+    \item The First Persian Gulf War (Figure~\ref{fig:b})                   
+    \item The Iraq Wars (Figure~\ref{fig:b})
+    \item September 11 and the War in Afghanistan (Figure~\ref{fig:b})   
+    \item The beginning of the 2014 Crimean crisis (Figure~\ref{fig:b})       
+    \item The Asian financial crisis (Figure~\ref{fig:c})
+    \item The breakup of the Soviet Union (Figure~\ref{fig:c})
+    \item The Eurozone crisis (Figure~\ref{fig:c})
+    \item The Space Shuttle Colombia Disaster (Figure~\ref{fig:d})
+    \item The collapse of Enron (Figure~\ref{fig:e})
+    \item The U.S. subprime mortgage crisis  (Figure~\ref{fig:e})
+    \item The U.S. outbreak of HIV and the AIDS crisis (Figure~\ref{fig:f})
+    \item The recall of Vioxx (Figure~\ref{fig:f})
+    \end{enumerate}
+    %
+    This area of our investigation is by far the most promising as a means of connecting risk language to particular people and events. Spatial considerations have precluded a full treatment of the charting of risk language to specific events, despite the fact that enough data exists for detailed analyses of any number of potential foci. Future research that centres on detailed exploration of health domains (including the Vioxx recall) is planned.
 
+    It should also be noted that the kinds of tasks needed for analysis of proper nouns in particular (selecting particular tokens or thematic clusters of tokens, merging results, zooming in to particular spans of time, etc.) are key components of the corpus analysis toolkit and IPython Notebook interface (\url{https://github.com/interrogator/risk}). Exploration using the purpose-built interface reveals that many topics are present in the data, but are hidden by the frequency of the very prominent examples charted here. Searching for \emph{Yugoslavia}, \emph{Bosnia}, \emph{Kosovo}, \emph{Serbia}, \emph{Mil{\u o}sevi{\'c}}, \emph{\textsc{NATO}}, (etc.), reveal expected peaks at different stages of the 1990s, despite falling outside of the range of the visualisations presented here. Given that the dataset and toolkit are open-sourced, we encourage researchers to conduct further, more specific analysis of risk language and either particular people, places and events, or risk language and topics such as health, politics, economics or sport.
+
+  \noindent\colorbox{yellow!20}{%
+  \parbox{1\textwidth}{%
+  \textsc{\textbf{Finding N:}} TEXT.}}
+
+  \section{Summary of key findings}
+
+  We found that the behaviour of risk words has changed longitudinally in a number of key respects.
+
+  \begin{enumerate}
+  	\item 
+  	\item 
+  	\item 
+  	\item 
+  	\item 
+  \end{enumerate}
+
+  As will be discussed in Chapter \ref{chap:discussion}, many of these shifts appear to be a part of a broader discourse-semantic trend of implicitness and inarguability of risk. 
+
+  % In the following chapter, interrogations used here are applied to subcorpora of Economics, Politics and Health articles.
 
 %\bibliography{../references/libwin}
 
