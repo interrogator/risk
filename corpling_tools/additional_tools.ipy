@@ -102,32 +102,36 @@ def quickview(lst, n = 50, topics = False):
 
 def topix_search(topic_subcorpora, options, query, **kwargs):
     """Interrogates each topic subcorpus."""
+    fullqueries = []
     results = [] # make empty list of results and totals
     totals = []
     for topic in topic_subcorpora: # for topic name
-        print "Doing " + topic + " ..."
-        topic_subcorpora_path = os.path.join(path,topic) # get topic path
-        # interrogate with any arguments passed in:
-        result = interrogator(topic_subcorpora_path, options, query, **kwargs)
-        results.append(result.results) # add to results
+        result = interrogator(topic, options, query, **kwargs)
+        fullqueries.append(result.query)
+        try:
+            results.append(result.results) # add to results
+        except:
+            results.append([])
         totals.append(result.totals)
     # now we should have 3x results and 3x totals, and a query
-    outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
-    query_options = [query, options] 
-    output = outputnames(query_options, results, totals)
-    return results
+    outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals']) 
+    output = outputnames(fullqueries, results, totals)
+    return output
 
 def topix_plot(title, results, fract_of = False, **kwargs):
     """Plots results from subcorpus interrogation."""
-    for topic in topic_subcorpora:
+    topic_subcorpora = ['economics', 'health', 'politics']
+    for index, topic in enumerate(topic_subcorpora):
         newtitle = title + ' in ' + str(topic) + ' articles' # semi-automatic titles (!)
         if not fract_of: # if counting ratios/percentages, 
-            plotter(newtitle, results.results[topic_subcorpora.index(topic)], **kwargs)
+            plotter(newtitle, results[index], **kwargs)
         else:
-            plotter(newtitle, results[topic_subcorpora.index(topic)], 
-                fract_of = fract_of.totals[topic_subcorpora.index(topic)], **kwargs)
+            plotter(newtitle, results[index], 
+                fract_of = fract_of[index], **kwargs)
 
-def conc(corpus, query, random = False, window = 50, trees = False, csvmake = False): 
+
+
+def conc(corpus, query, n = 100, random = False, window = 50, trees = False, csvmake = False): 
     """A concordancer for Tregex queries"""
     # add sorting?
     from random import randint
@@ -271,25 +275,28 @@ def conc(corpus, query, random = False, window = 50, trees = False, csvmake = Fa
     for index, row in enumerate(output):
         formatted_output.append(" ".join(row))
         #if noprint is False:
-        print '% 4d' % index, " ".join(row)
+        if not random:
+            if index < n:
+                print '% 4d' % index, " ".join(row)
     if csvmake:
         csvmaker(csvdata, sentences, csvmake)
     if not random:
         return formatted_output
     if random:
-        outnum = len(formatted_output)
-        if random > outnum:
-            random = outnum
+        outnum = len(output)
+        if n > outnum:
+            n = outnum
         rand_out = []
-        while len(rand_out) < random:
+        while len(rand_out) < n:
             randomnum = randint(0,outnum - 1)
-            possible = formatted_output[randomnum]
+            possible = output[randomnum]
             if possible not in rand_out:
                 rand_out.append(possible)
+        formatted_random_output = []
         for index, row in enumerate(rand_out):
-            formatted_output.append(" ".join(row))
+            formatted_random_output.append(" ".join(row))
             print '% 4d' % index, " ".join(row)
-        return rand_out
+        return formatted_random_output
 
 def tally(lst, indices):
     """Display total occurrences of a result"""
@@ -492,8 +499,10 @@ def datareader(data):
         # if it's a dir, conc()
         elif os.path.isdir(data):
             # why did root appear as key???
-            tregex_command = "sh ./tregex.sh -o -w -t '/ROOT/ < __' %s 2>/dev/null | grep -vP '^\s*$'" % data
+            tregex_command = "sh ./tregex.sh -o -w -t '__ !> __' %s 2>/dev/null | grep -vP '^\s*$'" % data
             trees = !$tregex_command
+            #remove root!?
+            trees = [tree for tree in trees if tree is not 'root']
             good = '\n'.join(trees)
             if len(trees) == 0:
                 # assuming data isn't trees, so 

@@ -228,7 +228,7 @@ def interrogator(path, options, query, lemmatise = False, titlefilter = False, l
     main_totals.append([u'Total', total])
     #make results into named tuple
     outputnames = collections.namedtuple('interrogation', ['query', 'results', 'totals'])
-    query_options = [query, options] 
+    query_options = [path, query, options] 
     output = outputnames(query_options, list_words, main_totals)
     if have_ipython:
         clear_output()
