@@ -1,4 +1,4 @@
-## Discourse-semantics of risk in the *New York Times*, 1963&mdash;2014: a corpus linguistic approach
+## Discourse-semantics of risk in the *New York Times*, 1963&ndash;2014: a corpus linguistic approach
 
 This repository contains much of what was created for our longitudinal analysis of risk language in the *New York Times*. The investigation involves systematic analysis of over 150,000 NYT paragraphs containing a risk token (*risk*, *risking*, *at-risk*, *risk-to-reward*, *risk-laden*, etc), though the tools and functions could easily be used with other datasets. These paragraphs have been parsed with *Stanford CoreNLP*, and are interrogated using [`corpkit`](https://github.com/interrogator/corpkit), which was developed for this project.
 
@@ -6,24 +6,30 @@ Our *IPython Notebook* presents the code used in our analysis side-by-side with 
 
 Theoretically, our interest is in empirically examining sociological claims about risk made by (e.g.) Beck, Giddens and Luhmann. To do this, we rely on *Systemic Functional Linguistics* (e.g. Halliday & Matthiessen, 2004), with particular focus on experiential meaning. Our report, which contextualises and elaborates on these results, is available [as PDF](https://raw.githubusercontent.com/interrogator/risk/master/report/risk_report.pdf) and (bleeding-edge) [.tex source](https://github.com/interrogator/risk/blob/master/report/risk_report.tex).
 
-If you want to interrogate the corpus yourself, read on.
+If you want to download and interrogate the corpus yourself, read on.
 
-## `corpkit`
+## Getting the data and Notebook
 
-First, you need `corpkit`, which contains all the functions needed to manipulate the corpus. The quickest way to get it is:
+Once you've got [IPython](http://ipython.org/install.html), it only takes a second to run the `risk.ipynb` notebook.
+
+Either download and unzip via 'Download ZIP', or clone the repository with:
 
 ```shell
-# might need sudo:
-pip install corpkit
+git clone https://github.com/interrogator/risk.git
 ```
 
-Alternatively, head over to [https://github.com/interrogator/corpkit](https://github.com/interrogator/corpkit) and follow the instructions there.
+Then, change into the project directory and start the IPython Notebook:
 
-## Running the `risk.ipynb` notebook:
+```shell
+cd risk
+# or, cd risk-master if you downloaded the .zip
+ipython notebook risk.ipynb
+```
 
-The best way to 
+The first few cells in the notebook will then help you:
 
-
+1. install and import `corpkit`
+2. unzip corpus data
 
 ## IPython Notebook usability
 

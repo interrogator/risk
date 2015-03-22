@@ -11,15 +11,34 @@
 # > **SUMMARY:** This *IPython Notebook* demonstrates the findings from our investigation of *risk* in the NYT, as well as the code used to generate these findings. If you have the necessary dependencies installed, you can also use this notebook to interrogate and visualise the corpus yourself. 
 
 # <headingcell level=2>
+# Setup
+
+# <markdowncell>
+# The first things we need to do are **install corpkit** and **unzip our corpus**.
+
+# <codecell>
+# install corpkit with either pip or easy_install
+try:
+    import pip
+    pip.main(['install', 'corpkit'])
+except ImportError:
+    import easy_install
+    easy_install.main(["-U","corpkit"])
+
+# <codecell>
+# unzip and untar our data
+! gzip -dc data/nyt.tar.gz | tar -xf - -C data
+
+# <headingcell level=2>
 # Orientation
 
 # <markdowncell>
-# First, let's import the functions we'll be using to investigate the corpus. These functions are designed for this interrogation, but also have more general use in mind, so you can likely use them on your own corpora.
+#  Let's import the functions we'll be using to investigate the corpus. These functions are designed for this interrogation, but also have more general use in mind, so you can likely use them on your own corpora.
 
 # | **Function name** | Purpose                            | |
 # | ----------------- | ---------------------------------- | |
 # | `interrogator()`  | interrogate parsed corpora         | |
-# | `dependencies()`  | interrogate parsed corpora for dependency info (presented later)         | |
+# | `dependencies()`  | interrogate parsed corpora for dependency info (presented later)  | |
 # | `plotter()`       | visualise `interrogator()` results | |
 # | `table()`          | return plotter() results as table | |
 # | `quickview()`     | view `interrogator()` results      | |
@@ -34,18 +53,21 @@
 
 # <codecell>
 import os # for joining paths
-from IPython.display import display, clear_output
-# import functions to be used here:
-for func in [f for f in os.listdir('../corpling_tools') if f.endswith(".ipy")]:
-    %run ../corpling_tools/$func
-! rm *.csv # remove old csv output (temporary code)
+import corpkit
+from corpkit import (
+    interrogator, plotter, table, quickview, 
+    tally, surgeon, merger, conc, keywords, 
+    collocates, multiquery, report_display 
+                    )
+# show figures in browser
+% matplotlib inline
 
 # <markdowncell>
 # Next, let's set the path to our corpus. If you were using this interface for your own corpora, you would change this to the path to your data.
 
 # <codecell>
-annual_trees = 'data/nyt/trees/years' # corpus of every article, with annual 
-# subcorpora folders
+# corpus of every article, with annual subcorpora
+annual_trees = 'data/nyt/years' 
 
 # <headingcell level=3>
 # The report
@@ -264,7 +286,6 @@ plotter('Relative frequencies of risk words', [ riskwords.results[i] for i in in
 # If you want to quickly table the results of a csv file, you can use `table()`. Its only main argument is the path to the csv file as string. There are two optional arguments. First, you can set *allresults* to *True* to table all results, rather than just the plotted results. When this option is set to true, you may get *way* too many results. To cope with this, there is a *maxresults* argument, whose value by default is 50. You can overwrite this default to table more or fewer results.
 
 # <codecell>
-
 table('riskwords.csv')
 
 # <codecell>
