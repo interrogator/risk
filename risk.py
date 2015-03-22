@@ -8,10 +8,7 @@
 # <markdowncell>
 # <br>
 
-# > **SUMMARY:** This *IPython Notebook* demonstrates the findings from our investigation of *risk* in the NYT, as well as the code used to generate these findings. If you have the necessary dependencies installed, you can also use this notebook to interrogate and visualise the corpus yourself. Run the cell below if you need installation and dependencies info.
-
-# <codecell>
-%load installation.ipy
+# > **SUMMARY:** This *IPython Notebook* demonstrates the findings from our investigation of *risk* in the NYT, as well as the code used to generate these findings. If you have the necessary dependencies installed, you can also use this notebook to interrogate and visualise the corpus yourself. 
 
 # <headingcell level=2>
 # Orientation
@@ -37,11 +34,10 @@
 
 # <codecell>
 import os # for joining paths
-import collections # for making named tuples
 from IPython.display import display, clear_output
 # import functions to be used here:
-for func in [f for f in os.listdir('corpling_tools') if f.endswith(".ipy")]:
-    %run corpling_tools/$func
+for func in [f for f in os.listdir('../corpling_tools') if f.endswith(".ipy")]:
+    %run ../corpling_tools/$func
 ! rm *.csv # remove old csv output (temporary code)
 
 # <markdowncell>
@@ -440,7 +436,14 @@ lines = conc('data/nyt/trees/years/2005', r'/JJ.?/ < /(?i).?\brisk.?/ > (NP <<# 
 # Keywords, ngrams and collocates
 
 # <markdowncell>
-# There are also functions for keywording, ngramming and collocation. Currently, these work with csv output from `conc()`. `keywords()` produces both keywords and ngrams. It relies on code from the [Spindle](http://openspires.oucs.ox.ac.uk/spindle/) project.
+# There are also functions for keywording, ngramming and collocation. Each can take a number of kinds of input data:
+
+# 1. a path to a subcorpus (of either parse trees or raw text)
+# 2. a path to a csv file generated with `conc()`
+# 3. a string of text
+# 4. a list of strings (i.e. output from `conc()`) 
+
+ `keywords()` produces both keywords and ngrams. It relies on code from the [Spindle](http://openspires.oucs.ox.ac.uk/spindle/) project.
 
 # <codecell>
 keys, ngrams = keywords('concordances.csv')
