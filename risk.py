@@ -1,5 +1,5 @@
 # <markdowncell>
-# Discourse-semantics of *risk* in the *New York Times*, 1963-2014
+# Discourse-semantics of *risk* in the *New York Times*, 1963&ndash;2014
 # ==========================================
 
 # <markdowncell>
@@ -10,11 +10,11 @@
 
 # > **SUMMARY:** This *IPython Notebook* demonstrates the findings from our investigation of *risk* in the NYT, as well as the code used to generate these findings. If you have the necessary dependencies installed, you can also use this notebook to interrogate and visualise the corpus yourself. 
 
-# <headingcell level=2>
-# Setup
+# <markdowncell>
+# ### Setup
 
 # <markdowncell>
-# The first things we need to do are **install corpkit** and **unzip our corpus**.
+# If you haven't already done so, the first things we need to do are **install corpkit**, download data for NLTK's tokeniser, and **unzip our corpus**.
 
 # <codecell>
 # install corpkit with either pip or easy_install
@@ -26,11 +26,19 @@ except ImportError:
     easy_install.main(["-U","corpkit"])
 
 # <codecell>
-# unzip and untar our data
-! gzip -dc data/nyt.tar.gz | tar -xf - -C data
+# download nltk tokeniser data
+import nltk
+nltk.download('punkt')
 
-# <headingcell level=2>
-# Orientation
+# <codecell>
+# unzip and untar our data
+! gzip -dc data/bipolar.tar.gz | tar -xf - -C data
+
+# <markdowncell>
+# Great! Now we have everything we need to start.
+
+# <markdowncell>
+# ### Orientation
 
 # <markdowncell>
 #  Let's import the functions we'll be using to investigate the corpus. These functions are designed for this interrogation, but also have more general use in mind, so you can likely use them on your own corpora.
@@ -69,8 +77,8 @@ from corpkit import (
 # corpus of every article, with annual subcorpora
 annual_trees = 'data/nyt/years' 
 
-# <headingcell level=3>
-# The report
+# <markdowncell>
+# ### The report
 
 # <markdowncell>
 # The focus of this notebook is our methodology and findings. These parts of the project are contextualised and elaborated upon in our written report of the project. Depending on your browser's capabilities/settings, the following will download or display our report:
@@ -78,8 +86,8 @@ annual_trees = 'data/nyt/years'
 # <codecell>
 # report_display()
 
-# <headingcell level=3>
-# The data
+# <markdowncell>
+# ### The data
 
 # <markdowncell>
 
@@ -88,15 +96,15 @@ annual_trees = 'data/nyt/years'
 # The data comes from a number of sources.
 
 # * 1963 editions were downloaded from ProQuest Newsstand as PDFs. Optical character recognition and manual processing was used to create a set of 1200 risk sentences.
-# * The 1987--2006 editions were taken from the *NYT Annotated Corpus*.
-# * 2007--2014 editions were downloaded from *ProQuest Newsstand* as HTML.
+# * The 1987&ndash;2006 editions were taken from the *NYT Annotated Corpus*.
+# * 2007&ndash;2014 editions were downloaded from *ProQuest Newsstand* as HTML.
 
 # In total, 149,504 documents were processed. The corpus from which the risk corpus was made is over 150 million words in length!
 
 # The texts have been parsed for part of speech and grammatical structure by [`Stanford CoreNLP*](http://nlp.stanford.edu/software/corenlp.shtml). In this Notebook, we are only working with the parsed versions of the texts. We rely on [*Tregex*](http://nlp.stanford.edu/~manning/courses/ling289/Tregex.html) to interrogate the corpora. Tregex allows very complex searching of parsed trees, in combination with [Java Regular Expressions](http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html). It's definitely worthwhile to learn the Tregex syntax, but in case you're time-poor, at the end of this notebook are a series of Tregex queries that you can copy and paste into *interrogator()` and `conc()` queries.
 
-# <headingcell level=3>
-# Interrogating the corpus
+# <markdowncell>
+# ### Interrogating the corpus
 
 # <markdowncell>
 # So, let's start by generating some general information about this corpus. First, let's define a query to find every word in the corpus. Run the cell below to define the *allwords_query* variable as the Tregex query to its right.
@@ -138,8 +146,8 @@ print allwords.totals
 # <codecell>
 print allwords.query
 
-# <headingcell level=3>
-# Plotting results
+# <markdowncell>
+# ### Plotting results
 
 # <markdowncell>
 # Lists of years and totals are pretty dry. Luckily, we can use the `plotter()` function to visualise our results. At minimum, `plotter()` needs two arguments:
@@ -156,8 +164,8 @@ plotter('Word counts in each subcorpus (projected)', allwords.totals, projection
 # <markdowncell>
 # Great! So, we can see that the number of words per year varies quite a lot. That's worth keeping in mind.
 
-# <headingcell level=3>
-# Frequency of risk words in the NYT
+# <markdowncell>
+# ### Frequency of risk words in the NYT
 
 # <markdowncell>
 # Next, let's count the total number of risk words. Notice that we are using the '-o' flag, instead of the **-C** flag.
@@ -213,8 +221,8 @@ plotter('Risk word / all words', riskwords.results,
     fract_of = allwords.totals)
 
 
-# <headingcell level=3>
-# Customising visualisations
+# <markdowncell>
+# ### Customising visualisations
 
 # <markdowncell>
 # By default, `plotter()` plots the seven most frequent results, including 1963 and projecting 1963 and 2014.
@@ -253,7 +261,8 @@ plotter('Relative frequencies of risk words', riskwords.results, fract_of = allw
 # and to delete it:
 #!rm 'riskwords.csv'
 
-# Use *yearspan* or *justyears* to specify years of interest:
+# <markdowncell>
+# Use *yearspan* to specify years of interest:
 
 # <codecell>
 plotter('Relative frequencies of risk words', riskwords.results, fract_of = allwords.totals,
@@ -279,8 +288,8 @@ indices_we_want = [32,30,40]
 plotter('Relative frequencies of risk words', [ riskwords.results[i] for i in indices_we_want], 
         num_to_plot = 5, skip63 = True, projection = True, proj63 = 5)
 
-# <headingcell level=3>
-# table()
+# <markdowncell>
+# ### table()
 
 # <markdowncell>
 # If you want to quickly table the results of a csv file, you can use `table()`. Its only main argument is the path to the csv file as string. There are two optional arguments. First, you can set *allresults* to *True* to table all results, rather than just the plotted results. When this option is set to true, you may get *way* too many results. To cope with this, there is a *maxresults* argument, whose value by default is 50. You can overwrite this default to table more or fewer results.
@@ -291,8 +300,8 @@ table('riskwords.csv')
 # <codecell>
 table('riskwords.csv', allresults = True, maxresults = 30)
 
-# <headingcell level=3>
-# quickview()
+# <markdowncell>
+# ### quickview()
 
 # <markdowncell>
 # `quickview()` is a function that quickly shows the n most frequent items in a list. Its arguments are:
@@ -306,8 +315,8 @@ quickview(riskwords.results, n = 25)
 # <markdowncell>
 # The number shown next to the item is its index. You can use this number to refer to an entry when editing results.
 
-# <headingcell level=3>
-# tally()
+# <markdowncell>
+# ### tally()
 
 # <markdowncell>
 # `tally()` simply displays the total occurrences of results. Its first argument is the list you want tallies from. For its second argument, you can use:
@@ -326,8 +335,8 @@ tally(riskwords.results[:10], 'all')
 # <markdowncell>
 # The Regular Expression option is useful for merging results (see below).
 
-# <headingcell level=3>
-# surgeon()
+# <markdowncell>
+# ### surgeon()
 
 # <markdowncell>
 # Results lists can be edited quickly with `surgeon()`. `surgeon()`'s arguments are:
@@ -357,8 +366,8 @@ plotter('Verbal risk words', verbalrisks, fract_of = allwords.totals,
 # <markdowncell>
 # Note the warning you'll receive if you specify an interrogation, rather than a results list.
 
-# <headingcell level=3>
-# merger()
+# <markdowncell>
+# ### merger()
 
 # <markdowncell>
 # `merger()` is for merging items in a list. Like `surgeon()`, it duplicates the old list. Its arguments are:
@@ -377,8 +386,8 @@ plotter('Low and high risks', low_high_combined.results)
 # <markdowncell>
 
 
-# <headingcell level=4>
-# Diversity of risk words
+# <markdowncell>
+# ### Diversity of risk words
 
 # <markdowncell>
 # It's important to note that the kind of results we generate are hackable. Using some straight Python, combined with `merger()`, we can figure out how unique risk words appear in the NYT each year.
@@ -409,8 +418,8 @@ plotter('Diversity of risk words', mergedresults.totals,
 # <markdowncell>
 # So, we can see a generally upward trajectory, with more risk words constantly being used. Many of these results appear once, however, and many are nonwords. *Can you figure out how to remove words that appear only once per year?*
 
-# <headingcell level=3>
-# conc()
+# <markdowncell>
+# ### conc()
 
 # <markdowncell>
 # `conc()` produces concordances of a subcorpus based on a Tregex query. Its main arguments are:
@@ -421,31 +430,31 @@ plotter('Diversity of risk words', mergedresults.totals,
 # <codecell>
 # here, we use a subcorpus of politics articles,
 # rather than the total annual editions.
-lines = conc('data/nyt/trees/politics/1999', r'/JJ.?/ << /(?i).?\brisk.?\b/') # adj containing a risk word
+lines = conc('data/nyt/politics/1999', r'/JJ.?/ << /(?i).?\brisk.?\b/') # adj containing a risk word
 
 # <markdowncell>
-# You can set `conc()` to print *n* random concordances with the *random = n* parameter. You can also store the output to a variable for further searching.
+# You can set `conc()` to print only the first ten examples with `n = 10`, or ten random these with the `n = 15, random = True` parameter.
 
 # <codecell>
-lines = randoms = conc('data/nyt/trees/years/2007', r'/VB.?/ < /(?i).?\brisk.?\b/', random = 25)
+lines = conc('data/nyt/years/2007', r'/VB.?/ < /(?i).?\brisk.?\b/', n = 15, random = True)
 
 # <markdowncell>
 # `conc()` takes another argument, window, which alters the amount of co-text appearing either side of the match. The default is 50 characters
 
 # <codecell>
-lines = conc('data/nyt/trees/health/2013', r'/VB.?/ << /(?i).?\brisk.?\b/', random = 25, window = 20)
+lines = conc('data/nyt/health/2013', r'/VB.?/ << /(?i).?\brisk.?\b/', n = 15, random = True, window = 20)
 
 # <markdowncell>
 # `conc()` also allows you to view parse trees. By default, it's false:
 
 # <codecell>
-lines = conc('data/nyt/trees/years/2013', r'/VB.?/ < /(?i)\btrad.?/', trees = True)
+lines = conc('data/nyt/years/2013', r'/VB.?/ < /(?i)\btrad.?/', trees = True)
 
 # <markdowncell>
 # The final `conc()` argument is a *csv = 'filename'*, which will produce a tab-separated spreadsheet with the results of your query. You can copy and paste this data into Excel.
 
 # <codecell>
-lines = conc('data/nyt/trees/years/2005', r'/JJ.?/ < /(?i).?\brisk.?/ > (NP <<# /(?i)invest.?/)',
+lines = conc('data/nyt/years/2005', r'/JJ.?/ < /(?i).?\brisk.?/ > (NP <<# /(?i)invest.?/)',
     window = 30, trees = False, csvmake = 'concordances.csv')
 
 # <codecell>
@@ -453,8 +462,8 @@ lines = conc('data/nyt/trees/years/2005', r'/JJ.?/ < /(?i).?\brisk.?/ > (NP <<# 
 # and to delete it:
 # !rm 'concordances.txt'
 
-# <headingcell level=3>
-# Keywords, ngrams and collocates
+# <markdowncell>
+# ### Keywords, ngrams and collocates
 
 # <markdowncell>
 # There are also functions for keywording, ngramming and collocation. Each can take a number of kinds of input data:
@@ -486,8 +495,8 @@ colls = collocates('concordances.csv', window = 2)
 for coll in colls:
     print coll
 
-# <headingcell level=3>
-# quicktree() and searchtree()
+# <markdowncell>
+# ### quicktree() and searchtree()
 
 # <markdowncell>
 # The two functions are useful for visualising and searching individual syntax trees. They have proven useful as a way to practice your Tregex queries.
@@ -511,8 +520,8 @@ print searchtree(tree, r'NP')
 # Now you're familiar with the corpus and functions. Before we start our corpus interrogation, we'll also present a *very* brief explanation of *Systemic Functional Linguistics*&mdash;the theory of language that underlies our analytical approach.
 
 
-# <headingcell level=2>
-# Functional linguistics
+# <markdowncell>
+# ### Functional linguistics
 
 # <markdowncell>
 # *Functional linguistics* is a research area concerned with how *realised language* (lexis and grammar) work to achieve meaningful social functions. One functional linguistic theory is *Systemic Functional Linguistics*, developed by Michael Halliday.
@@ -566,8 +575,8 @@ HTML('<iframe src=http://en.mobile.wikipedia.org/wiki/Michael_Halliday?useformat
 
 # > **Note**: SFL argues that through *grammatical metaphor*, one linguistic feature can stand in for another. *Would you please shut the door?* is an interrogative, but it functions as a command. *invitation* is a nominalisation of a process, *invite*. We don't have time to deal with these kinds of realisations, unfortunately.
 
-# <headingcell level=2>
-# Functional roles of *risk* in the NYT
+# <markdowncell>
+# ### Functional roles of *risk* in the NYT
 
 # <markdowncell>
 # > *A discourse analysis that is not based on grammar is not an analysis at all, but simply a running commentary on a text.* - [M.A.K. Halliday, 1994]()
@@ -633,8 +642,8 @@ plotter('Risk as participant, process and modifier', functional_role.results, fr
 # Perhaps you want to see the result without 1963?
 plotter('Risk as participant, process and modifier', functional_role.results, fract_of = allwords.totals, skip63 = True)
 
-# <headingcell level=3>
-# Risk as participant
+# <markdowncell>
+# ### Risk as participant
 
 # <markdowncell>
 #
@@ -642,8 +651,8 @@ plotter('Risk as participant, process and modifier', functional_role.results, fr
 #
 # Functionally, *risk* is most commonly a participant in the NYT. This gives us a lot of potential areas of interest. We'll go through a few here, but there are plenty of other things that we have to leave out for reasons of space.
 
-# <headingcell level=4>
-# Process types for participant risk
+# <markdowncell>
+# ### Process types for participant risk
 
 # <markdowncell>
 # Here, we need to import verbose regular expressions that match any relational, verbal or mental process.
@@ -662,14 +671,14 @@ query = r'/VB.?/ ># (VP ( < (NP <<# /(?i).?\brisk.?/) | >+(/.P$/) (VP $ (NP <<# 
 proc_w_risk_part = interrogator(annual_trees, '-C', query)
 
 
-# <headingcell level=5>
-# Relational processes with risk participant
+# <markdowncell>
+# ### Relational processes with risk participant
 
 # <codecell>
 # relational
 # subj_query = r'/VB.?/ < %s ># (VP >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/)))' % processes.relational
 # obj_query = r'/VB.?/ < %s ># (VP < (NP <<# /(?i).?\brisk.?/))'  % processes.relational
-query = r'/VB.?/ < %s ># (VP ( < (NP <<# /(?i).?\brisk.?/) | >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/))))' % processes.relational
+query = r'/VB.?/ < /%s/ ># (VP ( < (NP <<# /(?i).?\brisk.?/) | >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/))))' % processes.relational
 relationals = interrogator(annual_trees, '-t', query, lemmatise = True)
 
 # <codecell>
@@ -679,39 +688,49 @@ plotter('Relational processes', relationals.results, fract_of = proc_w_risk_part
 # We can also use relational processes to find out the things to which risk is related:
 
 # <codecell>
-query = r'/JJ.?/ ># (ADJP > (VP <<# %s >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/))))' % processes.relational
+query = r'/JJ.?/ ># (ADJP > (VP <<# /%s/ >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/))))' % processes.relational
 adj_vals = interrogator(annual_trees, '-t', query, lemmatise = True)
 
 # <codecell>
-query = r'/NN.?/ ># (NP > (VP <<# %s >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/))))' % processes.relational
+query = r'/NN.?/ ># (NP > (VP <<# /%s/ >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/))))' % processes.relational
 noun_vals = interrogator(annual_trees, '-t', query, lemmatise = True)
 
 # <codecell>
 plotter('Adjectival risk values', adj_vals, fract_of = adj_vals.totals)
 plotter('Nominal risk values', noun_vals, fract_of = noun_vals.totals)
 
-# <headingcell level=5>
-# Mental processes with risk participant
+# <markdowncell>
+# ### Mental processes with risk participant
 
 # <codecell>
 # mental
-query = r'/VB.?/ < %s ># (VP ( < (NP <<# /(?i).?\brisk.?/) | >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/))))' % processes.mental
+query = r'/VB.?/ < /%s/ ># (VP ( < (NP <<# /(?i).?\brisk.?/) | >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/))))' % processes.mental
 mentals = interrogator(annual_trees, '-t', query, lemmatise = True)
 
 # <codecell>
 plotter('mental processes', mentals.results, fract_of = proc_w_risk_part.totals)
 
-# <headingcell level=5>
-# Verbal processes with risk participant
+# <markdowncell>
+# ### Verbal processes with risk participant
 
 # <codecell>
 #verbal
-query = r'/VB.?/ < %s ># (VP ( < (NP <<# /(?i).?\brisk.?/) | >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/))))' % processes.verbal
+query = r'/VB.?/ < /%s/ ># (VP ( < (NP <<# /(?i).?\brisk.?/) | >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/))))' % processes.verbal
 verbals = interrogator(annual_trees, '-t', query, lemmatise = True)
 
 # <codecell>
-plotter('verbal processes', verbals.results, fract_of = proc_w_risk_part.totals)
+plotter('Verbal processes', verbals.results, fract_of = proc_w_risk_part.totals)
 
+# <markdowncell>
+# ### Material processes with risk participant
+
+# <codecell>
+# material: none of the others
+query = r'/VB.?/ !< /%s/ !< /%s/ !< /%s/ ># (VP ( < (NP <<# /(?i).?\brisk.?/) | >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/))))' % (processes.relational, processes.verbal, processes.mental)
+materials = interrogator(annual_trees, '-t', query, lemmatise = True)
+
+# <codecell>
+plotter('Material processes', materials.results, fract_of = proc_w_risk_part.totals)
 
 # <markdowncell>
 # The final thing we can do is calculate the relative frequency of each process type:
@@ -729,8 +748,8 @@ plotter('Distribution of three process types', proc_types, fract_of = proc_w_ris
 # <codecell>
 
 
-# <headingcell level=4>
-# Adjectives modifying risk
+# <markdowncell>
+# ### Adjectives modifying risk
 
 # <markdowncell>
 # First, we can look at adjectives that modify a participant risk.
@@ -776,16 +795,16 @@ plotter('Adjectives modifying nominal risk (lemmatised)', select_adjs,
 ### old query: r'/JJ.?/ > (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
 calculated_risk = r'/JJ.?/ < /(?i)calculated/> (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
 # remove '( > VP | $ VP)' from the line above to get more instances
-conc('data/nyt/trees/years/1963', calculated_risk)
+conc('data/nyt/years/1963', calculated_risk)
 
-# <headingcell level=4>
-# Risk of ... ?
+# <markdowncell>
+# ### Risk of ... ?
 
 # <markdowncell>
 # Next, we'll look at risk of (noun) constructions, as in:
 
 # <codecell>
-lines = conc('data/nyt/trees/years/1988', r'/NN.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))')
+lines = conc('data/nyt/years/1988', r'/NN.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))')
 for line in lines[:20]:
     print line
 
@@ -807,8 +826,8 @@ risk_of = interrogator(annual_trees, '-t', query, lemmatise = True)
 plotter('Risk of (noun)', risk_of.results, fract_of = risk_of.totals)
 plotter('Risk of (noun)', risk_of.results, fract_of = risk_of.totals, yearspan = [1999,2013])
 
-# <headingcell level=5>
-# A cautionary tale ...
+# <markdowncell>
+# ### A cautionary tale ...
 
 # <markdowncell>
 # At one point in our investigation, we looked specifically for military risks. From these results, we saw that *risk of attack* and *risk of war* were common. So, we plotted them:
@@ -825,7 +844,7 @@ plotter('Risk of (noun)', military, fract_of = risk_of.totals)
 
 # <codecell>
 attackrisk = r'/NN.?/ < /(?i)attack.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'
-conc('data/nyt/trees/years/2004', attackrisk, random = 30, window = 30) 
+conc('data/nyt/years/2004', attackrisk, n = 15, random = True, window = 30) 
 
 # <markdowncell>
 # Whoops. We were wrong. Almost all occurrences actually referred to *heart attack*!
@@ -852,8 +871,8 @@ plotter('Risk of heart and terror* attack', heart_terror.results, skip63 = True)
 
 # > ... *why did heart attacks become a big deal in 2004, you ask? Stay tuned ...*
 
-# <headingcell level=4>
-# Processes in which risk is subject/object
+# <markdowncell>
+# ### Processes in which risk is subject/object
 
 # <markdowncell>
 # Here, we look at the kinds of predicators that occur when risk subject or object. Note that we remove *run/take/pose risk*, as these are actually verbal risks (see below).
@@ -885,8 +904,8 @@ fract_of = predicators.totals, num_to_plot = 5, skip63 = False)
 # <markdowncell>
 # Interesting! 
 
-# <headingcell level=3>
-# Risk as process
+# <markdowncell>
+# ### Risk as process
 
 # <markdowncell>
 # When *risk* is the main verb in a clause (e.g. *don't risk it*), it is the process. There are other kinds of risk processes, however: when risk occurs as the first object argument of certain nouns, it may be classified as a *process-range configuration* (an SFL term). Searching the data reveals four other main kinds of risk process:
@@ -938,10 +957,10 @@ plotter('Process as risked thing', risk_verbing.results,
 # In this kind of risk process, the risker is typically a powerful member of society. While this is rather explicit in some cases (it's hard to image that a mechanic would risk alienating his\slash her apprentice), we can observe that this is the case for less obvious examples, like *to risk becoming*:
 
 # <codecell>
-conc('data/nyt/trees/years/2013', r'VBG < /(?i)becom/ >># (VP > (S > (VP <<# (/VB.?/ < /(?i).?\brisk.?/))))', window = 50, random = 20)
+conc('data/nyt/years/2013', r'VBG < /(?i)becom/ >># (VP > (S > (VP <<# (/VB.?/ < /(?i).?\brisk.?/))))', window = 50, n = 15, random = True)
 
-# <headingcell level=4>
-# Objects of risk processes
+# <markdowncell>
+# ### Objects of risk processes
 
 # <markdowncell>
 # We can locate the most common objects of risk processes:
@@ -974,8 +993,8 @@ plotter('Potential harm', riskedthings, num_to_plot = 7, skip63 = False)
 # <markdowncell>
 # It's interesting how powerful people risk losing and alienating electorates, fanbases or contracts, while less powerful people risk their jobs and safety, or their life or neck.
 
-# <headingcell level=3>
-# Risk as modifier
+# <markdowncell>
+# ### Risk as modifier
 
 # <markdowncell>
 # Risk words can serve as modifiers in a number of ways. We divided risk as modifier into five main types.
@@ -1060,8 +1079,8 @@ plotter('At-risk thing or thing at risk', n_atrisk_n.results, num_to_plot = 7, s
 # <markdowncell>
 # Vulnerable human populations are the main theme of this category: indeed, it's difficult to imagine *at-risk corporations* or *at-risk leaders*.
 
-# <headingcell level=3>
-# Proper nouns and risk sentences
+# <markdowncell>
+# ### Proper nouns and risk sentences
 
 # <markdowncell>
 # We searched to find the most common proper noun strings.
@@ -1159,8 +1178,8 @@ plotter('Merck and Vioxx', vioxx, fract_of = propernouns.totals, yearspan = [199
 # Vioxx was removed from shelves following the discovery that it increased the risk of heart attack. It's interesting how even though terrorism and war may come to mind when thinking of *risk* in the past 15 years, this health topic is easily more prominent in the data.
 
 
-# <headingcell level=3>
-# Arguability
+# <markdowncell>
+# ### Arguability
 
 # <markdowncell>
 # In terms of interpersonal meanings, we were interested in the *arguability* of risk: that is, the extent to which risk words are a core or peripheral part of the meaning being negotiated by writer and reader.
@@ -1189,8 +1208,8 @@ plotter('Merck and Vioxx', vioxx, fract_of = propernouns.totals, yearspan = [199
 # | Complement              | Low      |
 # | Adjunct                 | Very low         |
 
-# <headingcell level=4>
-# Arguability of risk
+# <markdowncell>
+# ### Arguability of risk
 
 # <markdowncell>
 # We were interested in whether there are any longitudinal changes in the proportion of risk words in each mood role. 
@@ -1217,8 +1236,8 @@ plotter('Merck and Vioxx', vioxx, fract_of = propernouns.totals, yearspan = [199
 
 # With regard to (4): though the *collapsed-cc-dependencies* are perhaps the most commonly used, we use basic dependencies here, as this assisted the lemmatisation process (see the report for more information).
 
-# <headingcell level=5>
-# Functional role of risk in dependency parses
+# <markdowncell>
+# ### Functional role of risk in dependency parses
 
 # <codecell>
 # set path to dependency parses
@@ -1285,8 +1304,8 @@ mr_sorted = sorted(list(merged_role), key=itemgetter(1), reverse = True)
 # <codecell>
 plotter('Functional role using dependency parses', merged_role, fract_of = risk_functions.totals)
 
-# <headingcell level=5>
-# Role and governor of risk
+# <markdowncell>
+# ### Role and governor of risk
 
 # <codecell>
 role_and_gov = dependencies(annual_deps, 'govrole', r'(?i)\brisk', dep_type = 'basic-dependencies', lemmatise = True)
@@ -1300,8 +1319,8 @@ plotter('Governors of risk and their roles', role_and_gov.results, fract_of = ro
 # <codecell>
 
 
-# <headingcell level=5>
-# Dependency index
+# <markdowncell>
+# ### Dependency index
 
 # <markdowncell>
 # In a dependency parse, smaller indices will be given to words close to the root of the dependency string. These correspond (roughly) with more arguable roles in SFL. Large indices are more dependent, and are generally less arguable.
@@ -1319,8 +1338,8 @@ risk_indices = dependencies(annual_deps, 'depnum', r'(?i)\brisk', dep_type = 'ba
 # <codecell>
 plotter()
 
-# <headingcell level=2>
-# Risk in economics, health and politics articles
+# <markdowncell>
+# ### Risk in economics, health and politics articles
 
 # <markdowncell>
 # We used article metadata features in the NYT annotated corpus to build corpora of economics, health and politics articles.
@@ -1372,7 +1391,7 @@ import pprint # nice looking results
 year_of_interest = '2002'
 for topic in topic_trees:
     lines = conc(os.path.join(trees,topic,year_of_interest), 
-        r'PP < (NP <# (/NN.?/ < /(?i).?\brisk.?\b/))', random = 20)
+        r'PP < (NP <# (/NN.?/ < /(?i).?\brisk.?\b/))', n = 15, random = True)
     for line in lines:
         print line
 
@@ -1381,13 +1400,13 @@ topic = 'economics'
 # note that years here are strings (in quotation marks), rather than integers.
 years = ['1989', '1990', '1991']
 for year in years:
-    lines = conc(os.path.join(trees,topic,year), r'/(?i)risky/', random = 20, window = 50)
+    lines = conc(os.path.join(trees,topic,year), r'/(?i)risky/', n = 15, random = True, window = 50)
     for line in lines:
         from line
 
 
-# <headingcell level=3>
-# Proper noun phrases
+# <markdowncell>
+# ### Proper noun phrases
 
 # <codecell>
 query = r'NP <# NNP >> (ROOT << /(?i).?\brisk.?\b/)'
@@ -1415,8 +1434,8 @@ polpeople = surgeon(propnounphrases.results,
 #topix_plot('Proper noun phrases', results)
 plotter('Politicians in sentences containing a risk word', polpeople)
 
-# <headingcell level=3>
-# Adjectives modifying participant risk
+# <markdowncell>
+# ### Adjectives modifying participant risk
 
 # <codecell>
 query = r'/JJ.?/ > (NP <<# /(?i).?\brisk.?/ ( > VP | $ VP))'
@@ -1425,8 +1444,8 @@ topics_adjmod = topix_search(topic_trees, '-t', query)
 # <codecell>    
 topix_plot('Adjectives modifying participant risk', topics_adjmod)
 
-# <headingcell level=3>
-# Risk of (noun)
+# <markdowncell>
+# ### Risk of (noun)
 
 # <codecell>
 query = r'/NN.?/ >># (NP > (PP <<# /(?i)of/ > (NP <<# (/NN.?/ < /(?i).?\brisk.?/))))'
@@ -1435,14 +1454,14 @@ topics_riskof = topix_search(topic_trees, '-t', query)
 # <codecell>
 topix_plot('Risk of (noun)', topics_riskof)
 
-# <headingcell level=3>
-# Arguability in topic subcorpora
+# <markdowncell>
+# ### Arguability in topic subcorpora
 
 # <markdowncell>
 # We can also look for arguability information using dependency-parsed versions of our topic subcorpora.
 
-# <headingcell level=2>
-# General queries
+# <markdowncell>
+# ### General queries
 
 # <markdowncell>
 # We also performed some basic querying of all parsed data. Though not discussed in our report, these findings may be interesting in their own right.
@@ -1486,8 +1505,8 @@ plotter('Open/closed word classes', opencount.totals, fract_of = closedcount.tot
 plotter('Noun/verb ratio', nouncount.totals, fract_of = verbcount.totals, 
             y_label = 'Noun/verb ratio', multiplier = 1, skip63 = True)
 
-# <headingcell level=3>
-# General dependency queries
+# <markdowncell>
+# ### General dependency queries
 
 # <markdowncell>
 # Our final area of investigation was general dependency. This is identical to our investigation of risk dependencies, excepyt that we change our token definition from any risk word to any word.
@@ -1516,8 +1535,8 @@ merged_role = surgeon(merged_role, [])
 
 plotter('Functional role using dependency parses', merged_role, fract_of = all_functions.totals)
 
-# <headingcell level=5>
-# Role and governor
+# <markdowncell>
+# ### Role and governor
 
 # <codecell>
 all_role_and_gov = dependencies(annual_deps, 'govrole', r'(?i)[a-z0-9]', 
@@ -1527,8 +1546,8 @@ all_role_and_gov = dependencies(annual_deps, 'govrole', r'(?i)[a-z0-9]',
 plotter('Most common dependencies for risk words', all_role_and_gov.results, 
     fract_of = all_role_and_gov.totals)
 
-# <headingcell level=5>
-# Dependency index
+# <markdowncell>
+# ### Dependency index
 
 # <markdowncell>
 # We were interested in whether the changes in risk dependency indices were part of a more general trend.
@@ -1553,11 +1572,11 @@ plotter('Dependency indices for all words', sorted_indices, fract_of = all_indic
 
 # Due to limitations in available computational resources, our investigation did not involve parsing the full collection of NYT articles: we only used paragraphs containing a risk word. Longitudinal changes in the examples above are interesting in their own right. We hope in a further project to be able to expand the size of our corpus dramatically in order to determine the causes of these more general changes.
 
-# <headingcell level=2>
-# Discussion
+# <markdowncell>
+# ### Discussion
 
-# <headingcell level=3>
-# Limitations
+# <markdowncell>
+# ### Limitations
 
 # <markdowncell>
 # A key challenge accounting for the diverse ways in which a semantic meaning can be made in lexis and grammar. If we are interested in how often *money* is the risked thing, we have to design searches that find: 
@@ -1581,8 +1600,8 @@ plotter('Dependency indices for all words', sorted_indices, fract_of = all_indic
 
 # Should these results be counted or excluded? Why?
 
-# <headingcell level=2>
-# interrogator()
+# <markdowncell>
+# ### interrogator()
 
 # <markdowncell>
 # `interrogator()` is our main method for interrogating the annotated corpus. It takes any corpus with numerically named subcorpora as input. Tregex is used to query the corpus, and NLTK's WordNet Lemmatiser can optionally be called.
@@ -1590,8 +1609,8 @@ plotter('Dependency indices for all words', sorted_indices, fract_of = all_indic
 # <codecell>
 %load corpling_tools/interrogator.ipy
 
-# <headingcell level=2>
-# plotter()
+# <markdowncell>
+# ### plotter()
 
 # <markdowncell>
 # `plotter()` visualises results using `matplotlib*. It is designed to work with results generated by *interrogator()`. *IPython Magic* allows the inline display of generated images.
@@ -1599,8 +1618,8 @@ plotter('Dependency indices for all words', sorted_indices, fract_of = all_indic
 # <codecell>
 %load corpling_tools/plotter.ipy
 
-# <headingcell level=2>
-# Other functions
+# <markdowncell>
+# ### Other functions
 
 # <markdowncell>
 # Here you can see the code that comprises the other functions used in this Notebook.
@@ -1608,8 +1627,8 @@ plotter('Dependency indices for all words', sorted_indices, fract_of = all_indic
 # <codecell>
 %load corpling_tools/additional_tools.ipy
 
-# <headingcell level=2>
-# Copy-and-paste Tregex queries
+# <markdowncell>
+# ### Copy-and-paste Tregex queries
 
 # <markdowncell>
 # | Query | Gloss | Example  |
@@ -1627,8 +1646,8 @@ plotter('Dependency indices for all words', sorted_indices, fract_of = all_indic
 # | k  |   |   |
 # | l |  |   |
 
-# <headingcell level=2>
-# References
+# <markdowncell>
+# ### References
 
 # <markdowncell>
 # <a id="eggins"></a>
@@ -1641,8 +1660,8 @@ plotter('Dependency indices for all words', sorted_indices, fract_of = all_indic
 # Halliday, M., & Matthiessen, C. (2004). An Introduction to Functional Grammar. Routledge.
 #
 
-# <headingcell level=2>
-# To do:
+# <markdowncell>
+# ### To do:
 
 # <markdowncell>
 # * dependency parsing with nltk
