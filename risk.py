@@ -32,7 +32,7 @@ nltk.download('punkt')
 
 # <codecell>
 # unzip and untar our data
-! gzip -dc data/bipolar.tar.gz | tar -xf - -C data
+! gzip -dc data/nyt.tar.gz | tar -xf - -C data
 
 # <markdowncell>
 # Great! Now we have everything we need to start.
@@ -121,10 +121,10 @@ allwords_query = r'/[A-Za-z0-9]/ !< __'
 # 1. **path to corpus**
 #
 # 2. Tregex **options**:
-#   * **'-t'**: return only words
-#   * **'-C'**: return a count of matches
-#   * **'-u'**: return only the tag
-#   * **'-o'**: return tag and word together
+#   * **'t/w/words'**: return only words
+#   * **'c/count'**: return a count of matches
+#   * **'p/pos'**: return only the tag
+#   * **'b/both'**: return tag and word together
 #
 # 3. the **Tregex query**
 
@@ -201,7 +201,7 @@ plotter('Relative frequency of risk words', riskwords.totals,
     fract_of = allwords.totals, skip63 = True)
 
 # <markdowncell>
-# Perhaps we're interested in not only the frequency of risk words, but the frequency of different `kinds* of risk words. We actually already collected this data during our last *interrogator()` query.
+# Perhaps we're interested in not only the frequency of risk words, but the frequency of different *kinds* of risk words. We actually already collected this data during our last `interrogator()` query.
 
 # We can print just the first three entries of the results list, rather than the totals list:
 
@@ -287,6 +287,22 @@ plotter('Relative frequencies of risk words', riskwords.results[2:], fract_of = 
 indices_we_want = [32,30,40]
 plotter('Relative frequencies of risk words', [ riskwords.results[i] for i in indices_we_want], 
         num_to_plot = 5, skip63 = True, projection = True, proj63 = 5)
+
+# <markdowncell>
+# Another neat thing you can do is save the results of an interrogation, so they don't have to be run the next time you load this notebook:
+
+# <codecell>
+# specify what to save, and a name for the file.
+from corpkit import save_result, load_result
+save_result(allwords, 'allwords')
+
+# <markdowncell>
+# You can then load these results:
+
+# <codecell>
+fromfile_allwords = load_result('allwords')
+fromfile_allwords.totals
+
 
 # <markdowncell>
 # ### table()
@@ -407,8 +423,7 @@ We can then use `merger()` to merge every entry. This will tell use how many uni
 
 # <codecell>
 # this generates heaps of output, so let's clear it
-mergedresults = merger(all_ones.results, r'.*', newname = 'Different risk words')
-clear_output()
+mergedresults = merger(all_ones, r'.*', newname = 'Different risk words')
 
 # <codecell>
 # you could also use mergedresults.results[0]
@@ -544,7 +559,7 @@ HTML('<iframe src=http://en.mobile.wikipedia.org/wiki/Michael_Halliday?useformat
 # Here's one visualisation of it. We're concerned with the two left-hand columns. Each level is an abstraction of the one below it.
 
 # <br>
-# <img style="float:left" src="https://raw.githubusercontent.com/interrogator/sfl_corpling/master/cmc-2014/images/egginsfixed.jpg" alt="SFL metafunctions"  height="500" width="500" />
+# <img style="float:left" src="https://raw.githubusercontent.com/interrogator/risk/master/images/egginsfixed.jpg" alt="SFL metafunctions"  height="500" width="800" />
 # <br>
 
 # <markdowncell>
@@ -562,7 +577,7 @@ HTML('<iframe src=http://en.mobile.wikipedia.org/wiki/Michael_Halliday?useformat
 
 # Lexical density is usually a good indicator of the general tone of texts. The language of academia, for example, often has a huge number of nouns to verbs. We can approximate an academic tone simply by making nominally dense clauses: 
 
-#       The consideration of interest is the potential for a participant of a certain demographic to be in Group A or Group B*.
+#       The consideration of interest is the potential for a participant of a certain demographic to be in Group A or Group B.
 
 # Notice how not only are there many nouns (*consideration*, *interest*, *potential*, etc.), but that the verbs are very simple (*is*, *to be*).
 
@@ -607,9 +622,7 @@ HTML('<iframe src=http://en.mobile.wikipedia.org/wiki/Michael_Halliday?useformat
 # * *risky business*
 # * *they riskily arranged to meet*
 
-# To find the distributions of these, we define three (very long and complicated) Tregex queries as sublists of titles and patterns under *query*. We then loop through each entry in *query* to perform an interrogation.
-
-# We then run `interrogator()` for each query and plot the results:
+# To find the distributions of these, we define three (very long and complicated) Tregex queries as sublists of titles and patterns under *query*. We then use `multiquery()` to search for each query in turn.
 
 # <codecell>
 query = (['Participant', r'/(?i).?\brisk.?/ > (/NN.?/ >># (NP !> PP !> (VP <<# (/VB.?/ < '
@@ -621,17 +634,10 @@ query = (['Participant', r'/(?i).?\brisk.?/ > (/NN.?/ >># (NP !> PP !> (VP <<# (
         '/(?i)\b(take|takes|taking|took|taken|run|runs|running|ran|pose|poses|posed|posing)\b/)))) & !>># '
         '(ADJP > VP) & !> (/VB.?/ >># VP) & !> (/NN.?/ >># (NP > (VP <<# (/VB.?/ < /(?i)\b('
             'take|takes|taking|took|taken|run|runs|running|ran|pose|poses|posed|posing)\b/))))'])
-results = []
-for name, pattern in query:
-    result = interrogator(annual_trees, '-C', pattern)
-    result.totals[0] = name # rename count
-    results.append(result.totals)
-outputnames = collections.namedtuple('functional_role', ['query', 'results'])
-functional_role = outputnames(query, results)
+functional_role = multiquery(annual_trees, query)
 
 # <codecell>
 plotter('Risk as participant, process and modifier', functional_role.results, fract_of = allwords.totals)
-
 # uncomment the line below to project 1963 by 5, rather than 4.
 #plotter('Risk as participant, process and modifier', functional_role.results, proj63 = 5)
 
@@ -658,7 +664,7 @@ plotter('Risk as participant, process and modifier', functional_role.results, fr
 # Here, we need to import verbose regular expressions that match any relational, verbal or mental process.
 
 # <codecell>
-from data.dictionaries.process_types import processes
+from dictionaries.process_types import processes
 print processes.relational
 print processes.verbal
 
@@ -675,7 +681,6 @@ proc_w_risk_part = interrogator(annual_trees, '-C', query)
 # ### Relational processes with risk participant
 
 # <codecell>
-# relational
 # subj_query = r'/VB.?/ < %s ># (VP >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/)))' % processes.relational
 # obj_query = r'/VB.?/ < %s ># (VP < (NP <<# /(?i).?\brisk.?/))'  % processes.relational
 query = r'/VB.?/ < /%s/ ># (VP ( < (NP <<# /(?i).?\brisk.?/) | >+(/.P$/) (VP $ (NP <<# /(?i).?\brisk.?/))))' % processes.relational
@@ -983,7 +988,7 @@ quickview(risk_objects.results, n = 100)
 
 # <codecell>
 riskobject_regex = (r'(?i)^\b(life|everything|money|career|health|reputation|capital|future|'
-    r'job|safety|possibility|anything|return|neck|nothing|lot|)$\b')
+    r'job|safety|possibility|anything|return|neck|nothing|lot)$\b')
 riskedthings = surgeon(risk_objects.results, riskobject_regex, remove = True)
 potentialharm = surgeon(risk_objects.results, riskobject_regex)
 plotter('Risked things', potentialharm, num_to_plot = 7, skip63 = False)
@@ -1661,16 +1666,60 @@ plotter('Dependency indices for all words', sorted_indices, fract_of = all_indic
 #
 
 # <markdowncell>
-# ### To do:
+# It's also possible to interrogate the corpus for keywords and/or ngrams:
+
+# <codecell>
+kwds = interrogator(annual_trees, 't', 'keywords', lemmatise = True)
+ngms =  interrogator(annual_trees, 't', 'ngrams', lemmatise = True)
+# <codecell>
+ngms =  interrogator(annual_trees, 't', 'ngrams', lemmatise = True)
 
 # <markdowncell>
-# * dependency parsing with nltk
-# * corpus building and parsing guide
-# * keywording, collocation, etc.
-# * more NLTK ...
+# Let's sort these, based on those increasing/decreasing frequency:
 
 # <markdowncell>
+# Let's make some thematic categories by looping through the results with surgeon, and renaming 'Totals' to the name of the category. Be sure that later categories don't include earlier categories!
+
+# <codecell>
+regexes = [(r'\b(legislature|medicaid|republican|democrat|federal|council)\b', 'Government organisations'),
+(r'\b(empire|merck|commerical)\b', 'Companies'),
+(r'\b(athlete|policyholder|patient|yorkers|worker|infant|woman|man|child|children|individual|person)\b', 'People, everyday'),
+(r'\b(marrow|blood|lung|ovarian|breast|heart|hormone|testosterone|estrogen|pregnancy|prostate|cardiovascular)\b', 'The body'),
+(r'\b(reagan|clinton|obama|koch|slaney|starzl)\b', 'Specific people'),
+(r'\b(implant|ect|procedure|abortion|radiation|hormone|vaccine|medication)\b', 'Treatment'),
+(r'\b(addiction|medication|drug|statin|vioxx)\b', 'Drugs'),
+(r'\b(addiction|coronary|aneurysm|mutation|injury|fracture|cholesterol|obesity|cardiovascular|seizure|suicide)\b', 'Symptom'),
+(r'\b(worker|physician|doctor|midwife|dentist)\b', 'Healthcare professional'),
+(r'\b(transmission|infected|hepatitis|virus|hiv|lung|aids|asbestos|malaria|rabies)\b', 'Infectious disease'),
+(r'\b(huntington|lung|prostate|breast|heart|obesity)\b', 'Non-infectious disease'), 
+(r'\b(policyholder|reinsurance|applicant|capitation|insured|insurer|insurance|uninsured)\b', 'Finance'),
+(r'\b(experiment|council|journal|research|university|researcher|clinical)\b', 'Research')]
+
+# <codecell>
+themed_keys = []
+for regex, name in regexes:
+    tmp = surgeon(kwds.results, regex, remove = False)
+    tmp.totals[0] = name
+    themed_keys.append(tmp.totals)
+# here, we are generating a totals branch
+themed_keys = surgeon(themed_keys, r'.*', remove = False)
+
+themed_ngrams = []
+for regex, name in regexes:
+    tmp = surgeon(ngms.results, regex, remove = False)
+    tmp.totals[0] = name
+    themed_ngrams.append(tmp.totals)
+themed_ngrams = surgeon(themed_ngrams, r'.*', remove = False)
+
+# <codecell>
 # 
 
+# <codecell>
+inc_keys = resorter(themed_keys.results, sort_by = increase)
+dec_keys = resorter(themed_keys.results, sort_by = decrease)
 
+# <codecell>
+inc_n = resorter(themed_ngms.results, sort_by = increase)
+dec_n = resorter(themed_ngms.results, sort_by = decrease)
 
+# <codecell>
