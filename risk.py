@@ -1723,3 +1723,25 @@ inc_n = resorter(themed_ngms.results, sort_by = increase)
 dec_n = resorter(themed_ngms.results, sort_by = decrease)
 
 # <codecell>
+
+
+
+
+# <markdowncell>
+# We used the following code to count the number of articles per topic:
+
+import os
+output = []
+base = 'data/nyt/ts'
+for d in os.listdir(base):
+    datum = []
+    datum.append(d.title())
+    tot = 0
+    for sub in os.listdir(os.path.join(base, d)):
+        count = len(os.listdir(os.path.join(base, d, sub)))
+        tot += count
+        datum.append([int(sub), count])
+    datum.append(['Total', tot])
+    output.append(datum)
+
+plotter('Number of articles in each subcorpus', output, y_label = 'Number of articles', legend_totals = True)

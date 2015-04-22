@@ -1,77 +1,77 @@
 \documentclass{report}
-	\usepackage{blindtext}
-	%\addtokomafont{disposition}{\rmfamily}
-	\usepackage[T1]{fontenc}
-	\usepackage[a4paper]{geometry}
-	\usepackage{comment}
-	\usepackage{xcolor}
+    \usepackage{blindtext}
+    %\addtokomafont{disposition}{\rmfamily}
+    \usepackage[T1]{fontenc}
+    \usepackage[a4paper]{geometry}
+    \usepackage{comment}
+    \usepackage{xcolor}
     \usepackage{wrapfig}
-	\usepackage{tcolorbox}
-	\usepackage{fullpage}
+    \usepackage{tcolorbox}
+    \usepackage{fullpage}
     \usepackage{minted}
     \usepackage{pdflscape}
-	\usepackage[doublespacing]{setspace}
-	\usepackage{enotez}
+    \usepackage[doublespacing]{setspace}
+    \usepackage{enotez}
     \usepackage{subcaption}
-	%\usepackage[singlelinecheck=off]{caption}
-	\usepackage{url}
-	\usepackage{verbatimbox}
-	\usepackage{listings}
-	\usepackage{todonotes}
-	\usepackage[raggedright]{titlesec}
-	\titlelabel{\thetitle.\quad} % dot after section number
-	\usepackage{array,multirow,graphicx}
-	\usepackage{multicol}
-	\usepackage[hidelinks]{hyperref}
-	\usepackage{tocloft} 
-	\usepackage[english]{babel}
-	\usepackage{graphicx}
-	\usepackage{enumitem}
-	\usepackage[section]{placeins}
-	\makeatletter
-	\AtBeginDocument{%
-	\expandafter\renewcommand\expandafter\section\expandafter{%
-	\expandafter\@fb@secFB\section
-	}%
-	}
-	\makeatother
-	\usepackage[notocbib]{apacite}
-	\setcounter{tocdepth}{4}
-	\usepackage{tabularx}
-	\renewcommand\thesection{\arabic{section}}
-	\raggedbottom
-	\newcolumntype{L}[1]{>{\hsize=#1\hsize\raggedright\arraybackslash}X}%
-	\newcolumntype{R}[1]{>{\hsize=#1\hsize\raggedleft\arraybackslash}X}%
-	\newcolumntype{C}[2]{>{\hsize=#1\hsize\columncolor{#2}\centering\arraybackslash}X}%
-	\renewcommand{\APACrefatitle}[2]{#1}
-	\renewcommand{\APACrefbtitle}[2]{#1}
-	\renewcommand{\APACrefbtitle}[2]{\Bem{#1}}
-	\renewcommand{\APACrefaetitle}[2]{[#2]}
-	\renewcommand{\APACrefbetitle}[2]{[#2]}
-	\newcommand{\citepos}[1]{\citeauthor{#1}'s \citeyear{#1}}
-	 % this one is important for italics and stuff. 
-	%from memory another may be needed. you mess with a b and c, and the 1 and 2 ... it can be done
-	%\title{\emph{I am not my bipolar}: a corpus-driven discourse analysis of an online support group}
-	\title{Discourse-semantics of risk in the \emph{New York Times}, 1963--2014: \\ a corpus linguistic approach}
-	\author{
-	Jens Zinn\\
-	\texttt{jzinn@unimelb.edu.au}
-	\and
-	Daniel McDonald\\
-	\texttt{mcdonaldd@unimelb.edu.au}\\
-	%\multicolumn{1}{p{.7\textwidth}}{\centering\emph{University of Melbourne, Australia}}
-	}
+    %\usepackage[singlelinecheck=off]{caption}
+    \usepackage{url}
+    \usepackage{verbatimbox}
+    \usepackage{listings}
+    \usepackage{todonotes}
+    \usepackage[raggedright]{titlesec}
+    \titlelabel{\thetitle.\quad} % dot after section number
+    \usepackage{array,multirow,graphicx}
+    \usepackage{multicol}
+    \usepackage[hidelinks]{hyperref}
+    \usepackage{tocloft} 
+    \usepackage[english]{babel}
+    \usepackage{graphicx}
+    \usepackage{enumitem}
+    \usepackage[section]{placeins}
+    \makeatletter
+    \AtBeginDocument{%
+    \expandafter\renewcommand\expandafter\section\expandafter{%
+    \expandafter\@fb@secFB\section
+    }%
+    }
+    \makeatother
+    \usepackage[notocbib]{apacite}
+    \setcounter{tocdepth}{4}
+    \usepackage{tabularx}
+    \renewcommand\thesection{\arabic{section}}
+    \raggedbottom
+    \newcolumntype{L}[1]{>{\hsize=#1\hsize\raggedright\arraybackslash}X}%
+    \newcolumntype{R}[1]{>{\hsize=#1\hsize\raggedleft\arraybackslash}X}%
+    \newcolumntype{C}[2]{>{\hsize=#1\hsize\columncolor{#2}\centering\arraybackslash}X}%
+    \renewcommand{\APACrefatitle}[2]{#1}
+    \renewcommand{\APACrefbtitle}[2]{#1}
+    \renewcommand{\APACrefbtitle}[2]{\Bem{#1}}
+    \renewcommand{\APACrefaetitle}[2]{[#2]}
+    \renewcommand{\APACrefbetitle}[2]{[#2]}
+    \newcommand{\citepos}[1]{\citeauthor{#1}'s \citeyear{#1}}
+     % this one is important for italics and stuff. 
+    %from memory another may be needed. you mess with a b and c, and the 1 and 2 ... it can be done
+    %\title{\emph{I am not my bipolar}: a corpus-driven discourse analysis of an online support group}
+    \title{Discourse-semantics of risk in the \emph{New York Times}, 1963--2014: \\ a corpus linguistic approach}
+    \author{
+    Jens Zinn\\
+    \texttt{jzinn@unimelb.edu.au}
+    \and
+    Daniel McDonald\\
+    \texttt{mcdonaldd@unimelb.edu.au}\\
+    %\multicolumn{1}{p{.7\textwidth}}{\centering\emph{University of Melbourne, Australia}}
+    }
 
-	\date{University of Melbourne, Australia\\
-	~\\
-	\today}
-	\begin{document}
-		
-	\hyphenation{under-lying language forums socia-bility dis-cur-sive pred-icator conc-ord-ancing Lee-uwen object-ivity lexico-grammar lexico-gramm-atical meta-function}
+    \date{University of Melbourne, Australia\\
+    ~\\
+    \today}
+    \begin{document}
+        
+    \hyphenation{under-lying language forums socia-bility dis-cur-sive pred-icator conc-ord-ancing Lee-uwen object-ivity lexico-grammar lexico-gramm-atical meta-function}
 
-	\renewcommand{\abstractname}{Abstract}
+    \renewcommand{\abstractname}{Abstract}
 
-	\maketitle
+    \maketitle
 
 \begin{abstract}
 
@@ -79,27 +79,258 @@
 
     % We will address this deficit by examining a number of claims made by different sociological risk approaches in more detail. We will utilise a corpus based approach to examine in detail how the institutional and sociocultural shift towards risk has manifested linguistically.
 
-	To address this defecit, we conduct a corpus-based investigation of risk words in The New York Times between 1963 and mid-2014. The investigation involves the creation of an annotated corpus of over 150,000 risk tokens and their co-text. Purpose-built functions for manipulating this dataset and visualising results were created and used to investigate the corpus according to a systemic-functional conceptualisation of the transitivity system.
-
-    Following the corpus interrogation, we use functional linguistics and sociological risk theory in tandem to analyse the findings. First, SFL is used to link lexicogrammatical phenomena to discourse-semantic meaning of the texts. Longitudinal changes in risk language are then mapped to key events, as well as broader social movements.
+    To address this defecit, we conduct a corpus-based investigation of risk words in \emph{The New York Times between} 1963 and mid-2014. The investigation involves the creation of an annotated corpus of over 150,000 risk tokens and their co-text. Purpose-built functions for manipulating this dataset and visualising results were created and used to investigate the corpus according to a systemic-functional conceptualisation of the transitivity and mood systems of language. Following the corpus interrogation, we use functional linguistics and sociological risk theory in tandem to analyse the findings. First, systemic-functional linguistics is used to link lexicogrammatical phenomena to discourse-semantic meaning of the texts. Longitudinal changes in risk language are then mapped to key events, as well as broader social movements.
 
     This report is accompanied by an interactive \emph{IPython Notebook} interface to our corpus and developed computational tools. Key findings from this report are stored there, as well as additional information (e.g. concordance lines, keywords, collocations), that could not be included in this report due to spatial considerations. It is available for both interactive and static viewing at \url{https://github.com/interrogator/risk}.
 
-	\end{abstract}
-	\cleardoublepage
-	\pagenumbering{roman}
-	%\setlength{\cftbeforetoctitleskip}{-3em}
-	\singlespacing
-	\tableofcontents
-	\onehalfspacing
-	\cleardoublepage
-	\pagenumbering{arabic}
+    \end{abstract}
+    \cleardoublepage
+    \pagenumbering{roman}
+    %\setlength{\cftbeforetoctitleskip}{-3em}
+    \singlespacing
+    \tableofcontents
+    \onehalfspacing
+    \cleardoublepage
+    \pagenumbering{arabic}
 
-\include{chapters/chapter_01} % Introduction
+\chapter{Context} %: history of \emph{risk} and risk theory}
+
+Since World War II, the term \emph{risk} has become pervasive in scholarly work and public discourse in Europe and elsewhere in the developed world (e.g. Skolbekken 1995; Zinn 2010, p. 115). Following the common assumption that societal changes and changes in language are closely linked (e.g. Luhmann 1993), the presented research contributes to a better understanding of the shift towards \emph{risk} in the media in the US. It uses The New York Times (NYT) as a case study to reconstruct the growing usage of the term \emph{risk} from 1987 to 2014 (Zinn 2010) and will examine how it is linked to institutional and socio-cultural changes as well as socially relevant events (e.g. crises and disasters). It will use a sample of 1963 articles to contrast our results with much earlier ways of risk reporting. 
+
+There is a wealth of literature and several sociological approaches which offer different explanations for the shift towards \emph{risk} and its connection to social change. Yet, to date there has been no attempt to empirically examine their relative ability to explain this change in the communication of possible harm. We address this deficit by examining a number of claims made by different sociological risk approaches in more detail. We utilise a corpus based approach to examine in detail how the institutional and sociocultural shift towards risk has manifested linguistically.
+
+This study aims to prove the value of the used methodology, the applicability of a corpus approach for the analysis of long term social change and the fruitfulness of combining linguistic and sociological approaches in a research design. The data and the research tools we have generated opened much more opportunities for further detailed research that we could pursue with the given resources. We will complement our study with further research in the coming years to advance our tools and refine our analysis when combining quantitative and qualitative research strategies and complement them by institutional analysis.
+
+\section{Approaches to \emph{risk}}
+
+Interdisciplinary risk research had been dominated by technological and psychological approaches examining public understanding and acceptance of risk. Since the 1980s social science approaches have become more influential focusing on the social shaping and construction of risk. Seminal work of Mary Douglas introduced a \emph{sociocultural approach} focussing on the social values which would determine what risks are selected and which responses are considered appropriate. Ulrich Beck introduced the most influential risk society perspective with a focus on the impact of new risks which accompany the modernisation successes such as technological advancement, increases in average wealth and health. He also showed how individualisation processes would transform a society stabilised by traditions into social forms characterised by individual decisions. Following Michel Foucault's work, a number of scholars understand risk as characterising a new way of governing societies on the basis of normative discourses of individual responsibility and improvement on the one hand and calculative technologies such as statistics and probability theory on the other. These mainstream approaches are complemented by Steven Lyng's work on \emph{edgework} as a particular form of voluntary risk taking and Niklas Luhmann's \emph{systems theory} emphasising the new ways how social complexity is managed and its impact on society.
+
+All approaches conceptualise the link between the social representation of risks (e.g. how they are communicated, understood, and responded to) and the reality and materiality of risk. Since we do mainly only know about risk because it is communicated (whether face-to-face or different kind of print or visual media) the communication of risk is central for its social existence. But the communication of risk is only loosely coupled to its social, natural and material reality.
+
+Since risk is future-oriented, it is always to a degree uncertain and virtual. This means it addresses a more or less known future. The tension between the uncertain possibility and the reality of risk is the build-in tension which drives debates about risk. However, this tension has been expressed in different ways. Social science theorists claim on the basis of historical analysis that the risk semantic developed and changed during long term historical processes characterised as modernisation (Bernstein, Luhmann, Giddens, Beck).
+
+Luhmann suggests that it is a result of a new experience that is that particular gains can only be achieved when something is put at risk. He also claims that compared to societies where harm is caused by forces beyond human existence modern societies frame risks mainly as decision based. As a result, the risk semantic would become much more common while danger would lose influence since the world is increasingly considered as determined by human activities and decisions. This view is supported by Max Weber's characterisation of the modernisation processes as one of increasing rationalisation characterised by a worldview that emphasises that rational calculation rather than non-rational belief, faith (etc.) characterised the modernisation process. Not absolute knowledge but the belief in the rational manageability of the world.
+
+Additionally, Beck and Giddens emphasise that the modern world is characterised by risks which are increasingly produced by humanity itself rather than exposed to us by the environment. That means we are observing two developments, the belief that it is mainly up to us to deal with the risks and uncertainties of our world and the reality of increasingly self-produced risks (`manufactured risks'). As a result our view of nature and environment has shifted as well, from something what has a relatively independent existence to something that is increasingly shaped by humanity (e.g. climate change).
+
+In the \emph{governmentality perspective}, risk is not so much about the reality of risk but a specific form to manage societies. In this perspective, risk is a result of a particular way how societies govern themselves utilising calculative technologies and normative discourses of individual self-improvement and responsibility. In this perspective framing the world in terms of risk is an expression of a new form of discursive power in late modern societies. Risk is a particular discourse which informs social practices considering the future governable. Statistic probabilistic technologies are only part of these discourses though an important one.
+
+There is little doubt that the claims about social change brought forward by different social science manifest in changing discursive practices and semantic changes. However, sociological analysis relied by now mainly on more or less anecdotal analysis of historical and semantic change. Outstanding historical work such as by Norbert Elias building on historical changes in `books of manners' is one of the most outstanding exceptions. 
+
+Claims about historical social change made by Ulrich Beck with the most famous risk society thesis were based on general observations rather than sound empirical work. How the change towards a risk society after WW2 developed more concretely is not yet well examined.
+
+Systematic historical studies on risk are mainly provided by researchers from the governmentality perspective (Ewald 1986; Hacking 1991; Valverde 1998; but compare: Strydom 2002; Gamson 1989). They produce valuable knowledge on the prerequisites for, and impact of, the introduction of statistics and probability calculation, and how they contribute to the governing of societies. These studies are convincing in the reconstruction of changes in institutional risk practices by specific area- or case-studies. They contribute less, however, to our understanding of how these developments compete with or complement others, and how they combine to influence a general shift in the communication, comprehension and semantics of risk in the media. 
+
+Many theorists claim that the media are particularly influential in social risk discourse (Beck 1992), though conceptualisations like \emph{risk society} are criticized for being undifferentiated and ignoring current trends in media research (Kitzinger \& Reilly 1997, Kitzinger 1999). Media-oriented risk research mainly examines specific events or debates, such as Mad Cow Disease (BSE), genetically modified food, or international terrorism, and how news and risks are produced by the media (e.g. Allan, Adam \& Carter 2000). It does not reconstruct how \emph{risk} enters the media and how the understanding and usage of the term may have changed over time. Even the most recent special issue `Media and Risk' in the Journal of Risk Research (vol.13, no.1) ignores this important aspect. One exception is Mairal (2008). He has reconstructed how risk discourses developed over time in Spain and showed how earlier experiences and symbolical representation of risk influenced later discourses; but he did not examine semantic changes of the term \emph{risk}. 
+
+There are strong streams of risk research on technological risk and risk assessment, health, social work and insurance. Authors such as Strydom (2002) claim that the nuclear power debates and technological risk analysis has been the major drivers for increasing concerns about risk. Similarly Beck (2009) focuses on new technologies as the driver for the growing anxiety about our future. This might underpin the different conceptualisation of risk as unexpected harm, part of statistic probabilistic calculation, or a conscious decision. Differing from Beck, first analyses have shown that in media discourses the \emph{risk} semantic is less used in articles describing new risks. Instead, a majority of articles are on health and illness and economics (Zinn 2010, p.111f.).
+
+Many linguists are interested in overcoming the strong focus on language in discourse analysis and in incorporating social dimensions (e.g. Van Dijk 1997, Wodak \& Meyer 2001). In general, this stream of research has contributed little to the reconstruction of the historical development of discourses (Brinton 2001; Harding 2006; Carabine 2001) although many cognitive linguists examine long term semantic changes (e.g. Nerlich \& Clarke 1988, 1992, 2000; Traugott \& Dasher 2002). Regarding risk, corpus linguists have shown that sociologists' assumptions about the usage of risk are often informed by everyday life knowledge rather than systematic empirical analysis of how the term risk is actually used (Hamilton et al. 2007). \emph{Frame Semantics} has provided a detailed analysis of the available risk-frames (Fillmore \& Atkins 1992); but neither approach examines historical changes of the usage and notion of risk.
+
+In interdisciplinary risk research there is a long-standing body of research focusing on risk communication between decision-makers and the public (e.g. Kasperson \& Stallen 1991). This research has produced valuable knowledge about how to improve the communication of risk, while media coverage is discussed from the point of view of the public's risk perception (Bennett \& Calman 1999; Slovic 2000). Some typical patterns of risk reporting are identified as well as factors which amplify and attenuate the communication of risk (Kasperson et al. 1988; Pidgeon et al. 2003; Flynn et al. 2001). However, this research contributes little to a historical perspective of how the risk semantic became pervasive in daily newspapers. 
+
+% above reference to newspapers is quite sudden...
+
+For risk research, the phase after WW2 has been identified as particularly crucial in the establishment of increasing debates about risk and the success of the risk semantic. Other semantics such as `threat' had its establishing phase between WW1 and WW2 during which it established as a most common term in New York Times' newspaper coverage which remains relatively stable after WW2 (Zinn XX).
+
+The triumphal procession of risk took off before iconic events such as the Chernobyl disaster or the 9\slash 11 terrorist attacks took place. A more systematic analysis of the dynamics of the usage of the risk semantic would allow a detailed understanding of how our framing of the future in terms of risk was influenced by different forces and events. 
+
+Originally, social science debates had been dominated by the introduction of nuclear power and the social controversies accompanying them (Douglas, Beck, Luhmann). However, the debates about DDT-based insecticides had driven the debates much earlier. The publication `The silent spring' did not impact on social science risk debates and did not stand out in the early debates of Mary Douglas and later of Niklas Luhmann and Ulrich Beck on risk. One reason might be that the semantic grounding of a risk framework had not been established at the time. 
+
+However, there are clear indications that the risk semantic and related discourses using a risk frame became increasingly dominant during the 1980s. With our study we wanted to examine in more detail how institutional social change manifests in language. We assumed that fundamental changes such as towards a society increasingly concerned with self-produced risk would manifest in linguistic patterns even in a single genre such as print news media (similar to the Books of Manners in Norbert Elias' study). Building on an exploratory study that only counted the numbers of articles where a risk token was used at least once, Zinn 2011 provided evidence that even during a relatively short period of 1987 to 2014 we should be able to identify relatively short-term social changes within language. 
+
+
+% rapid change in topic ...
+
+% ~\ \todo[inline,color=green!40]{\noindent The following part seems a bit out of place, and repeats itself a bit.}
+
+%\subsection{Affordances of technological innovations for risk research}
+
+\section{Linguistic approaches to risk}
+
+% could write this first bit in more depth if need be ...
+
+Recently, with rapid technological developments in the digitisation of historical newspaper archives and the computational analysis of text data, it has become possible to examine long term changes in media reporting and using the media as a source for analysis of long term societal changes. Accordingly, our research takes advantage of sophisticated linguistic tools for the analysis of long-term social change---a research agenda with roots not only within the media but in the larger (social) world which effects and shifts the lexis and grammar used when reporting risk.
+
+%Linguistic approaches to risk research to date have been from two major paradigms. First, Frame Semantics has been used to characterise risk as one or more cognitive frames\slash schemata involving a number of possible components, such as \emph{risker}, \emph{risked thing}, \emph{chance}, and \emph{positive\slash negative outcomes. This theory has then been put to use within \emph{corpus linguistic} approaches to risk, which have used large digitised datasets to understand how the risk frame(s) are typically constructed. Despite successes within this approach, it remains limited by the fact that corpora seldom provide researchers with opportunities to confirm cognitive hypotheses regarding the intentions of the writer, or the comprehension of the reader. A second key limitation is that corpus linguistic research into risk language have not been geared toward locating longitudinal change.
+
+Central to any well-considered study of language use is a theory of language, which may either implicitly or explicitly inform the kinds of analyses being done. A number of frameworks exist for connecting lexis and grammar to functional meanings. Notable within risk research has been frame semantics, which has been used to characterise risk as one or more cognitive frames\slash schemata involving a number of possible components, such as \emph{risker}, \emph{risked thing}, \emph{chance}, and \emph{positive\slash negative outcomes}. This theory has then been put to use within \emph{corpus linguistic} approaches to risk, which have used large digitised datasets to understand how the risk frame(s) are typically constructed. Despite successes within this approach, it remains limited by the fact that corpora seldom provide researchers with opportunities to confirm cognitive hypotheses regarding the intentions of the writer, or the comprehension of the reader \cite{fillmore_toward_1992}. 
+
+Another popular functional linguistic framework is \emph{systemic functional linguistics} \cite<see>{halliday_introduction_2004}, which conceptualises language as a \emph{sign system} that is employed by users in order to achieve \emph{social functions}. While sharing a functional view of language (as opposed to formalist views proposed by (e.g.) \citeA{chomsky_aspects_1965}), SFL is a functional-semantic theory, rather than a cognitive-semantic one. While the remarkable achievement of frame semantics is its mapping out of cognitive frames, we are largely unable to operationalise these with our dataset, as we have little information regarding the specific interactants (writers and readers) of the original texts. Moreover, cognitive understandings of text are complicated in situations where the text's author is producing the text within an institutional context, for a readership. Without downplaying the potential importance of cognitivist accounts of risk, we have instead opted here to focus on risk words as \emph{instantiations of parts of the linguistic system for the purposes of meaning-making}, rather than as a \emph{representation of the cognitive schemata that underlie our behaviour}.
+
+A second benefit of SFL for our purposes is that it provides the most detailed functional grammar of English \cite{eggins_analysing:_2004}: when compared with frame semantics, it provides a more rigorous description of how risk can behave \emph{lexicogrammatically}---that is, in relation to both other words and grammatical features---within a clause. This makes it possible to search parsed texts in nuanced ways.
+
+The third benefit of SFL is that it provides not only a grammar, but a a conceptualisation of the relationship between text and context. A foundational tenet of SFL, and a point of departure from other linguistic theories, is the notion that we can create a description of context based \emph{solely} on the lexicogrammatical content of the text. This is particularly suitable for us, given that our texts arrived to us abstracted from their original contexts. This context was then further obscured through the parsing process. As such, SFL provides an ability to account for discourse-semantics using corpora that other theories cannot.
+
+In many respects, the major challenge of this project has been to find ways how to combine a linguistic analysis that goes beyond tallying the co-occurrence of lexical and grammatical features with the sociological understanding and analysis of long-term social change. As a linguistic theory that provides a taxonomy of both language and context, SFL practitioners have to date been reluctant to engage with conceptualisations of context from other traditions within the Humanities and Social Sciences. This is disappointing, especially when considering that the most common criticism of SFL is that its theory of context is heavily influenced by its theory of grammar: in SFL, context is divided into three major dimensions (Tenor, Field and Mode), which are essentially projections of a language's major grammatical systems (Mood, Transitivity, Theme).
+
+% structure of the report?
+
+\subsection{Aim and scope of our investigation}
+
+Our investigation begins with a linguistic analysis of risk language in the NYT, exploring lexical and grammatical phenomena, and moving freely between different levels of abstraction (from frequency counting to concordancing of linguistic phenomena, for example). Findings from this lexicogrammatical exploration are then abstracted, according to SFL theory, to form a description of the changing discourse-semantics of risk in the NYT. This description is linked to key sociological questions, as well as discussions concerning the extent the linguistic observations can help and inform these social changes. 
+
+We followed two major lines of analysis:
+
+\begin{enumerate}
+\item We were looking for different ways in which risk is instantiated, and how these have changed longitudinally.
+\item We also looked for specific claims made by some approaches to find out whether is any indication that they are correct or require specification. 
+\end{enumerate}
+%
+Given the vast array of changes in the behaviour of risk words uncovered, as well as limitations of time and scope, our analysis is at this stage oriented more toward a longitudinal account of language, rather than sociological theory. We outline a number of promising leads for sociological analysis, developing links between linguistic and sociological reasoning that create pathways for further research and research strategies to answer key sociological questions about social change.
+
+\subsection{Central research questions}
+
+There is good evidence that the risk semantic has become more common in societal practices. A direct count of articles which contain a risk token at least once showed how the dynamic of risk developed in the NYT from 1853 until today (Zinn 2011). It clearly shows how risk is mainly a phenomenon that developed a particular dynamic after WW2 while it shows at the same time that the risk semantic had been around for quite a while without a clear dynamic. This is interesting and invites more long term investigations in particular in the degrees of the usage of other terms such as `danger' and the establishment of the notion of `threat' between WW1 and WW2.
+
+With the current study we wanted to examine in much more detail whether during a historical relatively short period from 1987 to 2014 (we used a sample of the 1963 volume to contrast with the later years) significant shifts can be observed using much more sophisticated research strategies than used in earlier corpus based approaches on the risk semantic (e.g. Hamilton et al.**).
+
+%There are a number of social changes we were able to explore on the basis of our text corpus which are central for sociological approaches to risk. 
+
+%\subsection{Cultural and institutional manifestation of `risk thinking'}
+
+The most general question for our analyses may be formulated as:
+
+\begin{quotation}
+How does the institutionalisation of new societal practices manifest linguistically in the change of risk discourses and the use of risk language? 
+\end{quotation}
+
+%When institutions which deal with risk have become more common we would have more occurrences of risk institutions in media coverage. This means we would have more talk about risk management or risk assessment rather than assessing risk or managing risk since we have now the institutions of risk management or risk assessment which is a general phrase for complex but institutionalised processes of how society deals with risk.
+
+%If knowledge about risk becomes more common it has no longer to be explained. We would no longer require explaining what the risks are. The riskiness in more implicit and less contested. It does need less support.
+
+%When risk becomes a more common way of thinking we would expect that even when risks are low or very low, risk would still be the dominant point of reference to characterise the situation. We would report about `low risks' to characterise a situation rather than to other qualities since risk has become a dominant point of reference.
+
+%(Obviously this paragraph could be developed a bit further but should focus on the issues we can actually measure\slash show in our analysis)
+
+\section{Case study: \emph{The New York Times}}
+
+We selected the NYT as a case study after careful consideration of other available resources. We aimed to find a resource that allows longitudinal analysis of long term social change with a limited number of intervening factors. We were looking for a paper which provided a high quality digitised archive and a central news institution over the centuries. 
+
+The (London) Times and the NYT seem suitable because of their important social role within a society. They also fulfil further selection criteria such as wide circulation (not just regional), good accessibility and high data quality. However the NYT has been finally selected because of the central role of the US in the world and the prestige and clout of the NYT. The NYT is a historically central institution of media coverage (Chapman 2005) with a continuously high status and standard of coverage. It is influential, highly circulated and publicly acknowledged news media. It contains extensive coverage of both national and international developments, its digital archive covers all years since WWII and is relatively easy to access.
+
+Available Australian Newspapers such as \emph{The Australian} or \emph{The Age} offer similar digitised archives only for recent decades and at higher cost. Long term historical analyses are much more complicated and will be pursued when we have proven our methodology.
+
+% something missing here
+
+The project concentrates on a single newspaper and follows a reproduction logic (Yin 1989) for four reasons: 
+
+\begin{enumerate}
+\item The `historical change of concepts' (Koselleck 2002) is so general that it can be identified even in specific newspapers though newspaper specific factors have to be considered. 
+\item A detailed analysis of available newspapers archives by the CI has found that, in the US, only the Washington Post provides a comparable archive. While both show no significant differences in the general increase of the usage of the risk semantic (Zinn 2010, p. 115), access and data management has proven easier and more reliable with the NYT. 
+\item The case study allows a more detailed analysis of how the change of the newspaper might have influenced the use of \emph{risk}. A collection of newspapers, as in many linguistic text corpuses would not lead to representative results but would create uncontrolled biases. Instead, the case study of a specific newspaper allows a much more detailed analysis of how change of the newspaper itself, such as a change in leadership or style of news reporting, might have influenced the use of \emph{risk}.
+\item The study limits the amount of data and restricts costs without losing significant outcomes.
+Originally we wanted to compare the volumes 1963, 1988, 2013 of The New York Times. We soon found out about the availability of a high quality data resource, The New York Times Annotated Corpus (\url{http://catalog.ldc.upenn.edu/LDC2008T1}9) which covers all articles published from 1987---mid-2007 and includes substantial metadata and contains 1,130,621,175 words. We complemented this data set with articles from the NYT online archive up to 2013\slash 14.
+\end{enumerate}
+%
+In order to further validate our results, future research has been planned that will compare our results with more recent data from other US newspapers. Though in the US many newspapers are digitised the main issue is that some papers are strictly PDF while some of these PDFs have the plain text version also available. We identified major newspapers which are suitable for comparative purposes in future research. %(see below). However, we will focus on the following in a complementary study to control for newspaper-specific effects: More regional papers: St Petersburg Times\slash Tampa Bay Times (left), Denver Post (moderate), Chicago Tribune (conservative), Los Angeles Times (liberal); National oriented papers: The Wall Street Journal, Washington Post, USA Today.
+
+\subsection{Methodology}
+
+Given the novelty of Big Data and Big Data methods, investigations such as ours involve the development of theoretical frameworks for linking instantiated language to discourse-semantics. In our case, this involved a thorough investigation of the lexicogrammar of risk language in news journalism. In this report, we map out strategies for engaging with the systemic functional notion of experiential meaning primarily through complex querying of constituency parses. In terms of the systemic functional conceptualisation of the Mood system as a resource for making interpersonal meanings, as well as the notion of \emph{arguability}, we demonstrate novel strategies of exploiting dependency parsing provided by the Stanford CoreNLP toolkit. Though existing automated parsing generally cannot provide the level of depth necessary for full systemic annotation of language, the partial account that can be provided still proves sufficient for connecting lexicogrammar to discourse-semantics in a rigorous and systematic fashion.
+
+As these new methods involve automated analysis via computer programming, our project also contributes to methodology via a repository of code for manipulating large and complex linguistic datasets. This repository, though designed for our particular investigation, is readily reusable by other researchers interested in how language is used as a meaning-making resource. Our methodological work is available open source at \url{https://github.com/interrogator/risk}. Documentation and code used to build and annotate the NYT corpus is also freely available there.
+
+\subsection{Communicating results}
+
+Emerging digital tools make it possible to display results of academic research in novel, sophisticated ways. This is crucial in Big Data studies, which may involve so much data that only a tiny fraction can be qualitatively analysed by individual (or even teams of) researchers. For risk research, the ability to package and share tools for exploring the NYT dataset allows researchers to engage in data-driven studies, which can empirically test the claims of key authors in the field.
+
+For our investigation, we produced an \emph{IPython Notebook}, through which researchers can easily either cross-check or build upon the kinds of queries we use in our project. This goes well beyond the capacity of traditional written reports, and radically expands the potential for reproducible and transparent humanities research. In this way, our research does not stop with the publication with results: the creation of a stable database and toolkit for analysing this database is a result in and of itself. Our study is thus best considered both an investigation of risk language in the NYT and an addition to the burgeoning research area of Digital Humanities, both in terms of method for investigating data and methods for presenting results.
+
+\section{Structure of this report}
+
+\begin{enumerate}
+\item In this chapter, we have outlined key tenets of sociological risk theory, as well as our study.
+\item In the next chapter, we discuss key hypothesis in risk research in detail NYT articles.
+\item In Chapter 3, we describe the process of building a text corpus from NYT articles.
+\item Chapter 4 outlines the theory of language and methods used in our linguistic analysis
+\item Chapter 5 details our findings from the investigation of annual subcorpora.
+\item Chapter 6 details our findings from the investigation of economics, health and politics articles, with a particular emphasis on health.
+\item Chapter 7 discusses these findings and relates them to sociological claims
+\item Chapter 8 provides a brief research agenda and concludes.
+\end{enumerate}
+
+
+%!TEX root = ../risk_report.tex
+
+\chapter{Theoretical foundations}
+
+In this chapter, we discuss key tenets of sociological risk theory, and their relational to linguistic accounts of risk.
+
+\section{Central hypotheses in risk studies}
+
+\subsection*{From calculative technology to uncertain potentiality}
+
+Governmentality considers risk as a calculative technology which is used to manage potential harm. Similarly in the risk society perspective insurance and science are characterised by risk calculation to minimise risk. In the risk society perspective the calculability of risk characterises early modern experience (M. Weber: definition of rationalization\slash modernization). If risks are not directly controllable by science\slash knowledge we still have the opportunity to manage them by insurance or example. However, both governmentality theorists as such as risk society researchers have emphasised that uncertainties and non-knowledge would increase and we would observe a shift from the calculability of risk to the potentiality of harm. If this is correct it is more likely to find phrases which indicate the calculability of risk compared to the pure potentiality of risk. 
+
+\subsection*{From positive risk taking to exposure to risk}
+
+The risk literature about societal changes has also emphasised that the experience of risk has started to change during modernisation on another dimension. The positive side of risk as risk-taking would lose influence (Douglas, Lupton). Risk would mainly mean harm or danger. If this is correct we would expect an overall clear and significant decrease in verbal risk forms which indicate an active engagement into risk for a gain. As a result we would expect a decrease in verbal forms involving an active decision to take a risk for something positive. We might even observe within the verbal forms a shift from positive risk taking to a pure exposure to risk where the possible gain disappears. For example, the notion of taking a risk or running a risk might increasingly be supplanted by notions of exposure to risk.
+
+\subsection*{Expected risk taking but lacking control}
+
+Governmentality theorists have claimed in recent decades that a neo-liberal agenda has become more dominant that shifts responsibility to individuals and the expectation that individuals actively make decisions and take risks. If this is correct we would expect more individualised phrases which express more active risk taking. 
+
+However, Beck claimed that in recent decades one has to understand and act as an individualised planning office exactly at times where knowledge and control of the future is limited. That means an active risk taking citizen is expected at a time where it is even more unlikely that an individual can control outcomes. For such a contradictory situation we would expect less the communication of self-confident decision making and risk taking but an individualised suffering of all kinds of risk. 
+
+This would support the suggestion of social policy researchers that risk is increasingly shifted from organisations and institutions to individuals (Hacker: risk shift). It is important to see that this happens as a legitimate shift not something what happens against public resistance. At least in a country such as the US where individual action is highly valued we would expect that this shift takes place legitimately and deeply rooted in the societal institutions. Rather than as a surprise it would be a consequent development following an already prepared path. As a result we would expect not only as a rational of consequent media reporting that individual stories are but to sell to the public but that more generally the individual exposure to risk rather than individual agency would be emphasised. 
+
+\subsection*{The increasing salience of at-risk status in risk reporting}
+
+Ulrich Beck claimed in the chapter Beyond Class and Status in his famous book the Risk Society that social inequalities and disadvantage would increasingly be framed in individualised terms. That means that risk is no longer attributed to social class or status but to social groups which are at-risk because of their particular behaviour rather than class affiliation. 
+This would be supported by claims of researchers examining shifts in public\slash social policy and social work claiming that social institutions would increasingly use practices that identify social groups at-risk on the basis of particular indicators which then characterise particular groups such as drug users, homeless, fatherlessness etc. as at-risk groups which require regulation, support, encouragement or protection. If Kemshall and others are correct that risk thinking has become a common societal practice this should be reflected in media coverage.
+
+We would expect that groups reported on in the media are identified and reported about using their at-risk status rather than social class affiliation or general socio-structural conditions which influence their behaviour or shape their living conditions. Such generalised factors would be rather silenced or made invisible. We would expect that it is increasingly likely that we find groups characterised by attributed risk status.
+
+\subsection*{Individualisation winners and losers---risk-takers versus at-risk groups}
+
+There is also a tension in the debates about risk in the literature. Relative powerful middle class people are assumed to be individualisation winners, that means they have agency and can make decisions while more disadvantaged people lack agency and are approached by the state, encouraged or more broadly managed. They have a more intrinsic quality of being at-risk. For example, drug users might be a population at-risk by social definition. We would expect finding a clear distinction between powerful risk takers and powerless at-risk or vulnerable groups identified and characterised by a specific variable or characteristic.
+
+%Interesting to see which groups are represented in the NYT. Obviously powerful politicans. But also on a lower level, individual investors. Where are patients positioned? Differences? At risk or risk takers?
+
+\section{Our research approach}
+
+The social sense-making processes of risk depends on risks being communicated. Though people experience risk when they manifest personally, since risks are usually expectations towards the future, the social process that shape these expectations are crucial. Even when we make personal experiences it depends on broader social processes whether we interpret a hot summer as an indication for climate warming or just a normal variation.
+
+Communication is mediated through language, and language is by no means restricted to a neutral communication of knowledge or information about events and happenings in the world. Language may shape what seems possible as much as what seems appropriate or inappropriate. It both constructs and responds to all kinds of information about the context in which it has been generated, the values underpinning it, the power structures it reproduces or is structured by (sociolects; gendered language, etc.). Since language is such a rich resource for communicating information about social reality, it is also data that can be used to examine social change (e.g. Norbert Elias' historical analysis of the books of manners to examine the civilisation process). 
+
+The media plays an important role in communicating social life. It not only influences but also reflects what is considered important at a historical point in time not only in the form of selecting particular content but how it is presented. A careful analysis of linguistic change therefore requires not only investigation of what has been communicated through language, but how it has been communicated and how both lexis and grammar have changed over time in the communication of issues such as risk.
+
+Sociology, linguistics and media studies provide slightly different concepts of both `context' and of the forces that influence the selection and communication of social issues such as risk. Sociology is interested in wider and long term social changes. In a historical perspective, the focus is on how institutional and sociocultural social changes are reflected in the use of language. Sociologists are well aware of that the use of language is, for example, influenced of the social milieu a person is part of (e.g. working class, middle class) and such a context manifests not only in the content but also the form and the use of grammar of language. For sociologists, contexts and events within contexts are not necessarily socially triggered or caused. But how they are dealt with is mediated through language. The suppression of women in a society might be openly debated or not talked about. It might even be engraved in a language, where masculine nouns and\slash or pronouns have historically also been used to refer to general populations (e.g. \emph{A giant leap for mankind}) or singular entities whose gender is unknown.
+
+% with regard to the above, of course linguists are attuned to class, etc, and naturally, moreso, when what is being considered is dialectal variation.
+
+In many branches of functional linguistics, the understanding of context focusses on text. A particular text can be analysed regarding its form and structure and its origin. Through linguistic features of texts alone, genre can often be clearly determined. Whether a text is a newspaper article or a university lecture, a talk of a party leader to party members or a general public, can often be determined simply through an analysis of the lexis and grammar in a text, as well as the way in which stages of the text are ordered. The larger social conditions and how these might have influenced the content and use of language are less commonly examined. Despite increasing awareness and sensitivity to context in functional linguistics, context is more commonly operationalised as observable constellations of variables of a given interaction (speaker demographics, spoken\slash written, formality, etc), rather than as a set of broader social movements, ideas and values. Even researchers within systemic functional linguistics (SFL), which at one time explicitly attempted to delineate the relationship between realised language and social class and ideology, have revised the conceptualisation of context to exclude ideology as the greatest level of observable abstraction. Long-term historical analyses remain centred on language, and empirically driven attempts to connect language change to broader social change are exceptionally rare.
+
+This is not to say that there is no value of linguistic theory and methods for the purposes of understanding the changing status of risk in society. In fact, the opposite is the case: linguistics (in our case, SFL) provides a framework for delineating the \emph{kinds} of changes that risk language undergoes. For example, in order to understand how risk language has changed, we must first distinguish between risk as a participant within a communication about the world (\emph{The risk was serious}) and risk as a process (\emph{Lives were risked}). Our addition to more standard linguistic methods is not that we abstract the significance of linguistic changes---as this is a common task within linguistic discourse analysis---but rather that following from an abstracted discourse-semantic analysis of risk, we abstract again, to consider the influence of factors beyond what is captured within linguistic taxonomies of context.
+
+Media studies are positioned in between sociological and linguistic approaches. Discourse analyses using media or print media often focus on content and the positive or negative representation of issues. These studies do often not go into further detail regarding long term linguistic changes. They tend to focus on short term ways of representation of issues such as climate change. However, media studies have also raised awareness of the organisational and social context that shapes how news are produced (e.g. free press or more or less controlled press; economic pressure; political bias). Research has examined the production process of news and how this process follows an own logic of newsworthiness that influences which issues enter the media and which not. There is also awareness that there are events and dimensions of change which are not reported in the media. Not everything is newsworthy and what is selected follows the own media production logic of news. In this respect media reporting is selective and it is difficult take stock of the aspects which have not been reported without looking beyond the media. These issues must be identified and approached differently. For example, it is important for linguistic research of texts alone to acknowledge that such approaches may not be able to consider what drives the media agenda and which kinds of texts might be systematically included\slash excluded as a result of unobserved institutional and contextual factors.
+
+% point conceded, above.
+
+However, since the media are part of social change, it reflects as much as influences social changes, and, accordingly, can be used to examine long term social change. Since many risk issues are newsworthy, we can expect to find a lot risk communication, which allows us to examine the changing practice of risk reporting and the use of the risk semantic. Broad changes in the relationship between news institutions and risk communication (e.g. which risks are considered, how they are reported, etc.) are so general and part of more generally changing discourses and linguistic practice that they will affect newspapers as well since they have to appeal to the public.
+
+\subsection{Summary}
+
+We adopt an interdisciplinary approach to risk research. For this reason, a key component of our project was developing and applying a novel methodology that combines systemic functional linguistics, corpus linguistics, and sociological theory concerning risk.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%\include{chapters/chapter_01} % Introduction
 
 %\include{chapters/chapter_02} % Sociological conceptualisation of risk
-
-%\include{chapters/chapter_03} % Limitations in sociological literature
 
 \include{chapters/chapter_04} % Case study
 
@@ -107,24 +338,96 @@
 
 \include{chapters/chapter_06} % Findings: annual
 
-%\include{chapters/chapter_07} % economics, health, politics
+\include{chapters/chapter_07} % economics, health, politics
 
-\include{chapters/chapter_08} % discourse semantics in NYT
+\include{chapters/chapter_08} % Discourse semantics in NYT
 
-\include{chapters/chapter_09} % Limitations
+\include{chapters/chapter_09} % Limitations, research agenda, conclusions
 
 % \include{chapters/chapter_10} % research agenda, conclusions
 
 %end matter
 
-	\cleardoublepage
-	\singlespacing
-	%\footnotesize
-	\printendnotes
-	\cleardoublepage
-	\singlespacing
-	\bibliographystyle{apacite}
-	\bibliography{references/refs}
-	\cleardoublepage
+    \cleardoublepage
+    \singlespacing
+    %\footnotesize
+    \printendnotes
+    \cleardoublepage
+    \singlespacing
+    \bibliographystyle{apacite}
+    \bibliography{references/references}
+    \cleardoublepage
 
-	\end{document}
+    \end{document}
+
+
+\section{New approaches to risk research}
+
+Our methodology involves combining \emph{corpus assisted discourse studies} with \emph{systemic functional linguistics} in order to understand how risk words are used in the NYT, and how usage has changed within the sampled period.
+
+\subsection{Corpus-assisted discourse studies}
+
+Text corpora---that is, large bodies of digitised, well-structured text---are not unknown to risk researchers.
+
+Since their work, however, enormous strides have been taken in the field of corpus-assisted discourse studies, as well as in computational fields such as natural language processing, which provide means of annotating language with grammatical information, and querying the annotated texts in complex ways.
+
+It is also more and more feasible to build particular corpora for particular investigations, rather than relying on general corpora, comprised of diverse kinds of texts.
+
+\subsection{Functional linguistics}
+
+    Central to any well-considered study of language use is a theory of language, which may either implicitly or explicitly inform the kinds of analyses being done. A number of frameworks exist for connecting lexis and grammar to functional meanings. Notable within risk research has been frame semantics, which has been used to categorise different risk frames and their constituents \cite{fillmore_toward_1992}. One such framework is \emph{systemic functional linguistics} \cite<see>{halliday_introduction_2004}, which conceptualises language as a \emph{sign system} that is employed by users in order to achieve \emph{social functions}. This theory explicitly underlies our investigation.
+
+    We use SFL for three main reasons. First, it is the most detailed functional grammar \cite{eggins_analysing:_2004}: when compared with frame semantics, it provides a more rigorous description of how risk can behave \emph{lexicogrammatically}---that is, in relation to both other words and grammatical features---within a clause. This makes it possible to search parsed texts in nuanced ways. Second, it is a functional-semantic theory, rather than a cognitive-semantic one. While the remarkable achievement of frame semantics is its mapping out of cognitive frames, we are largely unable to operationalise these with our dataset, as we have little information regarding the specific interactants (writers and readers) of the original texts. Moreover, cognitive understandings of text are complicated in situations where the text's author is producing the text within an institutional context, for a readership. Without downplaying the potential importance of cognitivist accounts of risk, we have instead opted here to focus on risk words as \emph{instantiations of parts of the linguistic system for the purposes of meaning-making}, rather than as a \emph{representation of the cognitive schemata that underlie our behaviour}.
+
+    The third benefit of SFL is that it provides not only a grammar, but a a conceptualisation of the relationship between text and context. A foundational tenet of SFL, and a point of departure from other linguistic theories, is the notion that we can create a description of context based \emph{solely} on the lexicogrammatical content of the text. This is particularly suitable for us, given that our texts arrived to us abstracted from their original contexts. This context was then further obscured through the parsing process. As such, SFL provides an ability to account for discourse-semantics using corpora that other theories cannot.
+
+
+%\section{Outcomes of the study}
+
+%Our project makes significant contributions to both sociological theory and digital humanities methodology.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+\section{Reconciling sociological and systemic-functional conceptions of text and context}
+
+	
+    ~\ \todo[inline,color=green!40]{\noindent This part is still mostly just ideas. I think we need to discuss it so that we can agree on it, as it's quite lofty stuff.}
+    
+
+    Functional linguistic theories such as SFL not only provide a grammar, but also a conceptualisation of the relationship between text and context. In the case of SFL more specifically, the argument is that context is contained within text. Compelling evidence of this is that understanding of the more abstract genre\slash context from which a text is taken can be gained through exposure to lexicogrammar only.
+
+            At issue for sociologists is that this argument rests on a particular operationalisation of the idea of context. The definition according to SFL (though indeed inspired by scholars with significant in sociology, e.g. Malinowski) remains deeply concerned with language. In reality, it is a projection of grammatical phenomena (mood, transitivity, theme) onto the situations and cultures in which texts are produced. Though this has proven a useful heuristic within (critical) discourse analysis, it is in many ways alien to sociological theory, where texts tend to be considered with respect to political, historical and social events and movements, rather than with respect to communicative systems.
+
+	The systemic-functional description of the context of culture contains no references to the effects of current events on language production. While SFL has demonstrated its usefulness without such considerations, this usefulness has been for linguistics. Corpus linguistic applications of SFL have seldom traced the influence of real-world events.
+
+            It is not hard to imagine scenarios where important meanings can be made through absence of references to certain things. In seldom considering both cognitive elements of language production and the influence of specific events, SFL has remained largely unable to conceptualise the notion of meaning made through omission. ...
+
+            Naturally, a current event can influence the likelihood of certain parts of lexicogrammar (the most banal example is in proper nouns, where the appearance of a politician is certain to influence the likelihood of his or her mention in texts).  SFL is predictive in the sense that it can predict that different genres will be more or less likely to involve certain speaker choices. So far, it has not been able to ...
+
+	Like SFL, sociology aims in part to provide a link between text and context. Context, however, is generally not treated as simply a Malinowskian constellation of field, tenor and mode, but also a backdrop of current and past events that inform and shape discourse at the time of its production.
+
+	With these issues in mind, we propose that SFL and general sociological theory are useful partners. SFL provides a means of relating lexicogrammar of texts to discourse-semantic meanings. It can then 
+
+            Key sociological ideas such as reflexive modernity or neoliberalism can be expected to exert influence over texts produced during these movements. Though earlier SFL treats ideology as the most abstract stratum affecting the production of texts, this conceptualisation has been abandoned by a number of current SF linguists.
+
+            Earlier SFL indeed devoted significant energy to exploring the ways in which ideologies such as capitalism are manifested in the content strata of language.
+
+	What often goes unsaid in SF theory is that an additional usefulness of SFL is in its ability to draw a line between the kinds of context (field, tenor and mode) that are embedded within the lexicogrammar of a text and the kinds of context that leave no immediately identifiable trace.
+
+	At this point, sociological theory can fill in the missing parts of the picture. 
+
+	At a level of greater abstraction, functional linguistics and sociological theory can be combined to flesh out the text\slash context relationship. Functional linguistics is concerned with language as a tool to make things happen in the world; sociology can add to the understanding of how culture informs our motivations for making these things happen, for presenting ideas in certain ways, etc.
