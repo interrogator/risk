@@ -1,9 +1,10 @@
-\documentclass{report}
+\documentclass[draft]{report}
     \usepackage{blindtext}
     %\addtokomafont{disposition}{\rmfamily}
     \usepackage[T1]{fontenc}
     \usepackage[a4paper]{geometry}
     \usepackage{comment}
+    \usepackage{afterpage}
     \usepackage{xcolor}
     \usepackage{wrapfig}
     \usepackage{tcolorbox}
@@ -93,7 +94,7 @@
     \cleardoublepage
     \pagenumbering{arabic}
 
-\chapter{Context} %: history of \emph{risk} and risk theory}
+\chapter{Context}
 
 Since World War II, the term \emph{risk} has become pervasive in scholarly work and public discourse in Europe and elsewhere in the developed world (e.g. Skolbekken 1995; Zinn 2010, p. 115). Following the common assumption that societal changes and changes in language are closely linked (e.g. Luhmann 1993), the presented research contributes to a better understanding of the shift towards \emph{risk} in the media in the US. It uses The New York Times (NYT) as a case study to reconstruct the growing usage of the term \emph{risk} from 1987 to 2014 (Zinn 2010) and will examine how it is linked to institutional and socio-cultural changes as well as socially relevant events (e.g. crises and disasters). It will use a sample of 1963 articles to contrast our results with much earlier ways of risk reporting. 
 
@@ -139,7 +140,6 @@ Originally, social science debates had been dominated by the introduction of nuc
 
 However, there are clear indications that the risk semantic and related discourses using a risk frame became increasingly dominant during the 1980s. With our study we wanted to examine in more detail how institutional social change manifests in language. We assumed that fundamental changes such as towards a society increasingly concerned with self-produced risk would manifest in linguistic patterns even in a single genre such as print news media (similar to the Books of Manners in Norbert Elias' study). Building on an exploratory study that only counted the numbers of articles where a risk token was used at least once, Zinn 2011 provided evidence that even during a relatively short period of 1987 to 2014 we should be able to identify relatively short-term social changes within language. 
 
-
 % rapid change in topic ...
 
 % ~\ \todo[inline,color=green!40]{\noindent The following part seems a bit out of place, and repeats itself a bit.}
@@ -158,7 +158,7 @@ Central to any well-considered study of language use is a theory of language, wh
 
 Another popular functional linguistic framework is \emph{systemic functional linguistics} \cite<see>{halliday_introduction_2004}, which conceptualises language as a \emph{sign system} that is employed by users in order to achieve \emph{social functions}. While sharing a functional view of language (as opposed to formalist views proposed by (e.g.) \citeA{chomsky_aspects_1965}), SFL is a functional-semantic theory, rather than a cognitive-semantic one. While the remarkable achievement of frame semantics is its mapping out of cognitive frames, we are largely unable to operationalise these with our dataset, as we have little information regarding the specific interactants (writers and readers) of the original texts. Moreover, cognitive understandings of text are complicated in situations where the text's author is producing the text within an institutional context, for a readership. Without downplaying the potential importance of cognitivist accounts of risk, we have instead opted here to focus on risk words as \emph{instantiations of parts of the linguistic system for the purposes of meaning-making}, rather than as a \emph{representation of the cognitive schemata that underlie our behaviour}.
 
-A second benefit of SFL for our purposes is that it provides the most detailed functional grammar of English \cite{eggins_analysing:_2004}: when compared with frame semantics, it provides a more rigorous description of how risk can behave \emph{lexicogrammatically}---that is, in relation to both other words and grammatical features---within a clause. This makes it possible to search parsed texts in nuanced ways.
+A second benefit of SFL for our purposes is that it provides the most detailed functional grammar of English \cite{eggins_analysing_2004}: when compared with frame semantics, it provides a more rigorous description of how risk can behave \emph{lexicogrammatically}---that is, in relation to both other words and grammatical features---within a clause. This makes it possible to search parsed texts in nuanced ways.
 
 The third benefit of SFL is that it provides not only a grammar, but a a conceptualisation of the relationship between text and context. A foundational tenet of SFL, and a point of departure from other linguistic theories, is the notion that we can create a description of context based \emph{solely} on the lexicogrammatical content of the text. This is particularly suitable for us, given that our texts arrived to us abstracted from their original contexts. This context was then further obscured through the parsing process. As such, SFL provides an ability to account for discourse-semantics using corpora that other theories cannot.
 
@@ -251,7 +251,19 @@ For our investigation, we produced an \emph{IPython Notebook}, through which res
 \end{enumerate}
 
 
-%!TEX root = ../risk_report.tex
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \chapter{Theoretical foundations}
 
@@ -328,6 +340,14 @@ We adopt an interdisciplinary approach to risk research. For this reason, a key 
 
 
 
+
+
+
+
+
+
+
+
 %\include{chapters/chapter_01} % Introduction
 
 %\include{chapters/chapter_02} % Sociological conceptualisation of risk
@@ -377,7 +397,7 @@ It is also more and more feasible to build particular corpora for particular inv
 
     Central to any well-considered study of language use is a theory of language, which may either implicitly or explicitly inform the kinds of analyses being done. A number of frameworks exist for connecting lexis and grammar to functional meanings. Notable within risk research has been frame semantics, which has been used to categorise different risk frames and their constituents \cite{fillmore_toward_1992}. One such framework is \emph{systemic functional linguistics} \cite<see>{halliday_introduction_2004}, which conceptualises language as a \emph{sign system} that is employed by users in order to achieve \emph{social functions}. This theory explicitly underlies our investigation.
 
-    We use SFL for three main reasons. First, it is the most detailed functional grammar \cite{eggins_analysing:_2004}: when compared with frame semantics, it provides a more rigorous description of how risk can behave \emph{lexicogrammatically}---that is, in relation to both other words and grammatical features---within a clause. This makes it possible to search parsed texts in nuanced ways. Second, it is a functional-semantic theory, rather than a cognitive-semantic one. While the remarkable achievement of frame semantics is its mapping out of cognitive frames, we are largely unable to operationalise these with our dataset, as we have little information regarding the specific interactants (writers and readers) of the original texts. Moreover, cognitive understandings of text are complicated in situations where the text's author is producing the text within an institutional context, for a readership. Without downplaying the potential importance of cognitivist accounts of risk, we have instead opted here to focus on risk words as \emph{instantiations of parts of the linguistic system for the purposes of meaning-making}, rather than as a \emph{representation of the cognitive schemata that underlie our behaviour}.
+    We use SFL for three main reasons. First, it is the most detailed functional grammar \cite{eggins_analysing_2004}: when compared with frame semantics, it provides a more rigorous description of how risk can behave \emph{lexicogrammatically}---that is, in relation to both other words and grammatical features---within a clause. This makes it possible to search parsed texts in nuanced ways. Second, it is a functional-semantic theory, rather than a cognitive-semantic one. While the remarkable achievement of frame semantics is its mapping out of cognitive frames, we are largely unable to operationalise these with our dataset, as we have little information regarding the specific interactants (writers and readers) of the original texts. Moreover, cognitive understandings of text are complicated in situations where the text's author is producing the text within an institutional context, for a readership. Without downplaying the potential importance of cognitivist accounts of risk, we have instead opted here to focus on risk words as \emph{instantiations of parts of the linguistic system for the purposes of meaning-making}, rather than as a \emph{representation of the cognitive schemata that underlie our behaviour}.
 
     The third benefit of SFL is that it provides not only a grammar, but a a conceptualisation of the relationship between text and context. A foundational tenet of SFL, and a point of departure from other linguistic theories, is the notion that we can create a description of context based \emph{solely} on the lexicogrammatical content of the text. This is particularly suitable for us, given that our texts arrived to us abstracted from their original contexts. This context was then further obscured through the parsing process. As such, SFL provides an ability to account for discourse-semantics using corpora that other theories cannot.
 
