@@ -5,6 +5,10 @@
 
 Broadly, our project synthesised \emph{corpus assisted discourse studies} as a \textbf{methodology}, \emph{systemic functional linguistics} as a \textbf{theory of language}, and \emph{sociological accounts of risk} as \textbf{a set of related assumptions about risk}. Our overarching aim is to combine the theories and methods of these areas to provide an empirical account of the ways in the discourse-semantics of risk have undergone longitudinal change.
 
+% ?
+
+Methodologically, our study has demonstrated the potential for large annotated corpora from a single source to provide empirical evidence for key claims in sociological literature. Though ours is not the first study of discourse using linguistic corpora, it is novel in two key respects. First, by creating a corpus comprised of annual subcorpora, and by interrogating each subcorpus in turn, we can learn not only about how language is used to communicate risk, but also how risk language has changed longitudinally. Second, our study takes advantage of major developments within computational linguistics\slash natural language processing. Most obvious is the use of constituency and dependency parsing, but also in this category is the development of an IPython interface for manipulating the corpus and visualising the output of queries. These characteristics both allow far more nuanced kinds of investigation than the practices generally seen in CADS (keywording, collocation, concordancing, etc.), and assist in creating reproducible, transparent, open-source humanities\slash social science research.
+
 \section{Limitations of scope}
 
 In order to fulfill these aims, we necessarily limited our investigation's scope. The first main issue of scope was our choice of print news data from a single publication. The advantages of this kind of text are many: the NYT is a widely read, well-known, and influential publication. The homogeneity of its language and its consistent structure in many ways facilitate longitudinal and quantitative analysis. The drawback of this kind of data, however, is that we can say little about how risk language works within other kinds of communication. Accordingly, we have made no effort to measure the importance or weight of print journalism against other text types in which risk language occurs, such as film and television, various online media or casual spoken\slash written conversation.
@@ -12,7 +16,6 @@ In order to fulfill these aims, we necessarily limited our investigation's scope
 There were also import constraints imposed both by our chosen theory of language. Though SFL has proven useful as a framework for analysing how language is drawn upon as a resource for making particular kinds of meanings, it is also a theory which has little to say about language and cognition. This was suitable for our particular investigation, as we cannot possibly determine either the authors' intent behind, nor the readers' interpretations of, the thousands of articles being analysed. Accordingly, we did not attempt to draw links between risk language in the NYT and the ways in which risk is cognitively understood by writers or readers. We suggest that the various strengths of different functional accounts of language can work in tandem, however, and thus welcome future insights from cognitive approaches to risk.
 
 A third and final constraint is our selection of linguistic phenomena for detailed analysis. Primarily, we focus on the experiential and interpersonal dimensions of risk language. The third key component of language is its textual dimension: how language is reflexively organised into meaningful, coherent units. Though our decisions here were guided by the fact that risk as a word does not tend to play important roles in building cohesion and coherence in narratives, we readily admit that more detailed analysis of the role of risk within this dimension may yield important insights that we have not uncovered. Tracking whether risk words shift longitudinally within the textual dimension (between given and new information within a clause, for example) may also be able to show us the extent to which people are aquainted with the notion of risk itself.
-
 
 \section{Shortcomings in natural language processing tools}
 
@@ -59,7 +62,31 @@ A third and final constraint is our selection of linguistic phenomena for detail
 
 \section{Research agendas}
 
+
+The tools and methods here could easily be operationalised with new datasets, allowing for research into changes in risk semantics at differnet points in time, or into regional\slash multilingual differences.
+
+Of course, further studies need not be
+
+Though we limited our analysis to risk words and their co-text, resources such as The New York Times Annotated Corpus present the possibility of analysis of any other lexical items and\slash or grammatical structures. Sociological hypotheses concerning the relationship between risk and close synonyms, such as danger or threat, or between risk and key events, such as terrorism, could be studied with a great deal of specificity with a larger corpus. Such a resource could also serve as a more authoritative reference corpus.
+
+Our ability to understand changes in risk semantics in the three topic subcorpora was limited by the size of these datasets. Expanding these datasets to include all articles, rather than just those contaning a risk word, would allow more 
+
 %It should also be noted that the kinds of tasks needed for analysis of proper nouns in particular (selecting particular tokens or thematic clusters of tokens, merging results, zooming in to particular spans of time, etc.) are key components of the corpus analysis toolkit and IPython Notebook interface (\url{https://github.com/interrogator/risk}). Exploration using the purpose-built interface reveals that many topics are present in the data, but are hidden by the frequency of the very prominent examples charted here. Searching for \emph{Yugoslavia}, \emph{Bosnia}, \emph{Kosovo}, \emph{Serbia}, \emph{Mil{\u o}sevi{\'c}}, \emph{\textsc{NATO}}, (etc.), reveal expected peaks at different stages of the 1990s, despite falling outside of the range of the visualisations presented here. Given that the dataset and toolkit are open-sourced, we encourage researchers to conduct further, more specific analysis of risk language and either particular people, places and events, or risk language and topics such as health, politics, economics or sport.
+
+We can identify three major methodological 
+that would increase the ability to form reliable conclusions about risk language in news journalism
+
+\begin{enumerate}
+    \item Create a larger corpus (from more sources, points in time, etc.)
+    \item Utilise entire articles, rather than only those matching criteria
+    \item Explore scientific technological innovations (e.g. in Python modules for Time Series Analysis, new kinds of parsers, etc.)
+\end{enumerate}
+
+Theoretically, there are far more avenues
+
+Key sociological claims need to be addressed in detail.
+
+The increasing synonymy of risk and threat cannot be accurately measured in a corpus constructed of risk words and their co-text.
 
 \section{Conclusions}
 
