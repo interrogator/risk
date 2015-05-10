@@ -10,9 +10,7 @@ If you want to download and interrogate the corpus yourself, read on.
 
 ## Getting the data and Notebook
 
-Once you've got [IPython](http://ipython.org/install.html), it only takes a second to run the `risk.ipynb` notebook.
-
-Either download and unzip via 'Download ZIP', or clone the repository with:
+Once you've got [IPython](http://ipython.org/install.html) (`pip install ipython` should do it for non-Windows users), you should downlad the contents of this repository. Either download and unzip via 'Download ZIP', or clone the repository with:
 
 ```shell
 git clone https://github.com/interrogator/risk.git
@@ -31,6 +29,8 @@ The first few cells in the notebook will then help you:
 1. install and import `corpkit`
 2. unzip corpus data
 
+The remainder of the notebook demonstrates our methods and findings, which you can freely manipulate if you like.
+
 ## IPython Notebook usability
 
 When running the Notebook locally, a couple of IPython extensions come in very handy:
@@ -42,7 +42,6 @@ More elaborate installation info, alongside code, is available once you've got `
 
 ## Forthcoming:
 
-* Host for dependency parses
-* Parse tree visualisation
+* Host for corpus dependencies
 * Code used to build corpora
 * Dedicated cloud host for data and IPython Notebook (so that you can play with the data without installing anything!)
