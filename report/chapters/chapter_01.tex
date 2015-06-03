@@ -46,7 +46,6 @@ Originally, social science debates had been dominated by the introduction of nuc
 
 However, there are clear indications that the risk semantic and related discourses using a risk frame became increasingly dominant during the 1980s. With our study we wanted to examine in more detail how institutional social change manifests in language. We assumed that fundamental changes such as towards a society increasingly concerned with self-produced risk would manifest in linguistic patterns even in a single genre such as print news media (similar to the Books of Manners in Norbert Elias' study). Building on an exploratory study that only counted the numbers of articles where a risk token was used at least once, Zinn 2011 provided evidence that even during a relatively short period of 1987 to 2014 we should be able to identify relatively short-term social changes within language. 
 
-
 % rapid change in topic ...
 
 % ~\ \todo[inline,color=green!40]{\noindent The following part seems a bit out of place, and repeats itself a bit.}
@@ -86,7 +85,7 @@ We followed two major lines of analysis:
 %
 Given the vast array of changes in the behaviour of risk words uncovered, as well as limitations of time and scope, our analysis is at this stage oriented more toward a longitudinal account of language, rather than sociological theory. We outline a number of promising leads for sociological analysis, developing links between linguistic and sociological reasoning that create pathways for further research and research strategies to answer key sociological questions about social change.
 
-\subsection{Central research questions}
+\subsection{Central research question}
 
 There is good evidence that the risk semantic has become more common in societal practices. A direct count of articles which contain a risk token at least once showed how the dynamic of risk developed in the NYT from 1853 until today (Zinn 2011). It clearly shows how risk is mainly a phenomenon that developed a particular dynamic after WW2 while it shows at the same time that the risk semantic had been around for quite a while without a clear dynamic. This is interesting and invites more long term investigations in particular in the degrees of the usage of other terms such as `danger' and the establishment of the notion of `threat' between WW1 and WW2.
 
@@ -99,7 +98,7 @@ With the current study we wanted to examine in much more detail whether during a
 The most general question for our analyses may be formulated as:
 
 \begin{quotation}
-How does the institutionalisation of new societal practices manifest linguistically in the change of risk discourses and the use of risk language? 
+How does the institutionalisation of new societal practices manifest linguistically in the change of risk discourses and the use of risk language?
 \end{quotation}
 
 %When institutions which deal with risk have become more common we would have more occurrences of risk institutions in media coverage. This means we would have more talk about risk management or risk assessment rather than assessing risk or managing risk since we have now the institutions of risk management or risk assessment which is a general phrase for complex but institutionalised processes of how society deals with risk.
@@ -133,6 +132,16 @@ Originally we wanted to compare the volumes 1963, 1988, 2013 of The New York Tim
 In order to further validate our results, future research has been planned that will compare our results with more recent data from other US newspapers. Though in the US many newspapers are digitised the main issue is that some papers are strictly PDF while some of these PDFs have the plain text version also available. We identified major newspapers which are suitable for comparative purposes in future research. %(see below). However, we will focus on the following in a complementary study to control for newspaper-specific effects: More regional papers: St Petersburg Times\slash Tampa Bay Times (left), Denver Post (moderate), Chicago Tribune (conservative), Los Angeles Times (liberal); National oriented papers: The Wall Street Journal, Washington Post, USA Today.
 
 \subsection{Methodology}
+
+Our basic methodological workflow consisted of:
+
+\begin{enumerate}
+    \item Obtaining NYT articles containing a risk word from the NYT Annotated Corpus and ProQuest.
+    \item Creating a human-readable corpus of each article, alongside metadata information.including Author's name, title, date, and topic-modelling assigned topics, keywords, ngrams, concordance lines for risk tokens, etc.
+    \item Extracting paragraphs containing one or more risk words from these articles, and parsing them for information regarding lemma forms and parts of speech of each word, as well as grammatical constituencies and dependencies using Stanford CoreNLP.
+    \item Developing \texttt{corpkit}, a small suite of tools for searching the annotated corpus
+    \item Searching the annotated corpus for changes in the way risk words behave, comparing results with sociological theory, and refining queries\slash thematic categories as necessary
+\end{enumerate}
 
 Given the novelty of Big Data and Big Data methods, investigations such as ours involve the development of theoretical frameworks for linking instantiated language to discourse-semantics. In our case, this involved a thorough investigation of the lexicogrammar of risk language in news journalism. In this report, we map out strategies for engaging with the systemic functional notion of experiential meaning primarily through complex querying of constituency parses. In terms of the systemic functional conceptualisation of the Mood system as a resource for making interpersonal meanings, as well as the notion of \emph{arguability}, we demonstrate novel strategies of exploiting dependency parsing provided by the Stanford CoreNLP toolkit. Though existing automated parsing generally cannot provide the level of depth necessary for full systemic annotation of language, the partial account that can be provided still proves sufficient for connecting lexicogrammar to discourse-semantics in a rigorous and systematic fashion.
 

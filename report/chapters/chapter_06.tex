@@ -11,7 +11,7 @@
     \end{tcolorbox}
     \vspace{5mm}
 
-    \noindent An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinney_python_2012}, as well as the code used to interrogate it and the findings we produced, is available online: \url{https://github.com/interrogator/risk}. A non-interactive version is available at \url{http://nbviewer.ipython.org/github/interrogator/risk/blob/master/risk.ipynb}. This Notebook does not suffer from spatial limitations, and thus contains additional information, including the exact Tregex queries used in interrogations, as well as complete lists of the concordance lines discussed only briefly here. Tools and results from other kinds of corpus linguistic analysis, such as keywording and collocation, are also available there, but have not been described here.
+    \noindent An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinney_python_2012}, as well as the code used to interrogate it and the findings we produced, are available online, at \url{https://github.com/interrogator/corpkit} and \url{https://github.com/interrogator/risk}. A non-interactive version is available at \url{http://nbviewer.ipython.org/github/interrogator/risk/blob/master/risk.ipynb}. This Notebook does not suffer from spatial limitations, and thus contains additional information, including the exact Tregex queries used in interrogations, as well as complete lists of the concordance lines discussed only briefly here. Tools and results from other kinds of corpus linguistic analysis, such as keywording and collocation, are also available there, but have not been described here.
 
 \section{How frequently do risk words appear?} \FloatBarrier
 
@@ -38,6 +38,15 @@
     \end{minipage}
     \end{figure}
 
+    \begin{figure}[htb!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../images/percentage-of-open-word-classes-that-are-risk-words.png}
+    \caption{Percentage of each open word class that are risk words}
+    \label{fig:eachperc}
+    \end{figure}
+
+
+
     %\begin{figure}[htb!]
     %\centering
     %\includegraphics[width=0.75\textwidth]{../images/relwordclass.png}
@@ -45,13 +54,15 @@
     %\label{fig:relwordclass}
     %\end{figure}
 
-    %FUNCTIONAL CATEGORISATION?
+    We compared this against the relative frequencies of nominal, verbal and adjectival\slash adverbial lexical items in the corpus as a whole, in order to account for any trends toward nominalisation in our dataset more generally (Figure \ref{fig:wordclasses}). This showed that even when compared to potential trends toward nominalisation generally (Figure \ref{fig:eachperc}), nominal risks are becoming more frequent in later NYT editions. 
 
-    We compared this against the relative frequencies of nominal, verbal and adjectival\slash adverbial lexical items in the corpus as a whole, in order to account for any trends toward nominalisation in our dataset more generally (Figure \ref{fig:wordclasses}). This showed that even when compared to potential trends toward nominalisation generally, nominal risks are still on an inbound trajectory.
+    This is an important preliminary finding: verbal groups form the nucleus of experiential meanings, the shift toward nominal risk is in effect a shift toward risk discourse where risk is not the central event being depicted, but is instead a player within a broader range of events. Furthermore, given that nominal risk is closer to synonymous with harm or threat, shifts toward nominal risks are indeed evidence for Lupton's argument that the semantics of risk increasingly reflect negative outcomes.
 
-    These initial findings guided the rest of the investigation: particular attention was paid to nominal risks, as these were the site of the most longitudinal change. That said, these categories provide merely a categorisation of the formal features of risk words. Functionally, things are substantially more complicated: \emph{running a risk}, for example, while featuring a nominal risk, is in reality a risk process; similarly, though risk is nominal in \emph{risk management}, risk is nominal, it functions as a modifier, rather than a participant.
+    %As nouns congruently perform the role of Participant, the shift toward nominal risks is related to the `participantification' of risk discussed in Section \ref{sect:exprole}.
 
-    A similar question is the number of unique risk words appearing per year. Figure \ref{fig:diffriskwords} demonstrates that there does appear to be a general increase in the relative number of risk words over time.\endnote{1963 is excluded from analysis here, as poor quality OCR created a number of non-word results such as \emph{risks-wnrk}, \emph{risks.North} and \emph{risks.With}.}
+    These initial findings guided the rest of the investigation: particular attention was paid to nominal risks, as these were the site of the most longitudinal change. That said, these categories provide merely a categorisation of the formal features of risk words. Functionally, things are substantially more complicated: \emph{running a risk}, for example, while featuring a nominal risk, is in reality a risk process; similarly, though risk is nominal in \emph{risk management}, it functions as a modifier, rather than a participant. Accordingly, in our analysis, functional categories are typically preferred over formal categories where possible.
+
+    A similar question is the number of unique risk words appearing per year. Figure \ref{fig:diffriskwords} demonstrates that there is a general increase in the relative number of unique risk words over time.\endnote{1963 is excluded from analysis here, as poor quality OCR created a number of non-word results such as \emph{risks-wnrk}, \emph{risks.North} and \emph{risks.With}.}
 
     \begin{figure}[htb!]
     \centering
@@ -66,11 +77,9 @@
     \end{tcolorbox}
     \vspace{5mm}
 
+\section{Which experiential roles do risk words occupy?} \label{sect:exprole} \FloatBarrier
 
-
-\section{Which experiential roles do risk words occupy?} \FloatBarrier
-
-    In a systemic-functional conceptualisation of the experiential metafunction of language, risk words may take the form of a Participant (\emph{The risk was there}), Process (\emph{I risked it}) or a Modifier (\emph{a risky encounter}). Though these pattern to some extent with word classes (e.g. \emph{participant = noun, process = verb, modifier = adjective}), word classes on the whole are a poor indication of functional role, especially in genres such as print news journalism,  which rely heavily on nominalisation and grammatical metaphor to pack large amounts of experiential information into each clause. As shown in Table \ref{tab:class_and_role}, for example, nominal risks commonly perform Modifier functions, and adjectival functions often perform Participant functions.
+    In a systemic-functional conceptualisation of the experiential metafunction of language (that is, the ways in which language is used to communicate who did what to whom), risk words may take the form of a Participant (\emph{The risk was there}), Process (\emph{I risked it}) or a Modifier (\emph{a risky encounter}). Though these pattern to some extent with word classes (e.g. \emph{participant = noun, process = verb, modifier = adjective}), word classes on the whole are a poor indication of functional role, especially in genres such as print news journalism,  which rely heavily on nominalisation and grammatical metaphor to pack large amounts of experiential information into each clause. As shown in Table \ref{tab:class_and_role}, for example, nominal risks commonly perform Modifier functions, and adjectival functions often perform Participant functions.
 
     \begin{table}
     \small
@@ -78,9 +87,9 @@
     \begin{tabular}{|l|l|l|}
     \hline
     \textbf{Example}       & \textbf{Word class}     & \textbf{Experiential role}     \\ \hline
-    It was risky  & Adjective  &  Participant   \\ \hline
-    There was a risking & Noun  &  Nominalised process   \\ \hline
-    Risk management  & Noun & Modifier   \\ \hline
+    \emph{It was risky}  & Adjective  &  Participant   \\ \hline
+    \emph{A risking of lives} & Noun  &  Nominalised process   \\ \hline
+    \emph{Risk management}  & Noun & Modifier   \\ \hline
     \end{tabular}
     \caption{Key differences between word class and experiential role}
     \label{tab:class_and_role}
@@ -88,15 +97,11 @@
 
     Using Stanford CoreNLP's dependency parses, we counted the frequency of risk words within these three functional roles (Figure \ref{fig:funcrole}). In line with the results from word-class based searching, we find that risk as a Process is declining in use. Risk as Modifier, patterning in part with adjectival risk, appears to be increasing. That said, we can also see here the affordances of a functional grammar in corpus assisted discourse research: in this case, much richer evidence of changing usage of risk can be found through an understanding of its semantic function rather than its word class alone.
 
-    % today comprises a larger proportion of risk Participants than in earlier samples. 
+    The decline of risk as a Process can be read as a shift away from the `risk frame' identified by \citeA{fillmore_toward_1992}. Their frame is essentially a mapping of the possible kinds of participants that can occur when risk is used as a process. In a very typical risk process, such as \emph{He risked everything}, \emph{He} is the Actor and everything is the \emph{Valued Object}. Risk as participant is less likely to explicitly index the major components of the risk frame: in \emph{The risk must be weighed against the benefit}, we are not given any specific information about the configuration of the risk scenario. (Risk as modifier encompasses a number of functional roles. As such, we leave this discussion for sections \ref{sect:mod_one} and \ref{sect:mod_two}.)
 
-    There is a clear trend toward using risk as a Participant.
-    Nominalisation of risk is in and of itself evidence of a greater implicitness of risk, as the core function of nominalisation is to pack more information into the clause. Nominalisation thus reflects 
+    Like with our analysis of the word classes of risk, we can also understand the shifts in the experiential roles of risk words as evidence for an increasing implicitness of risk in NYT news discourse. As mentioned earlier, in a systemic-functional conceptualisation of language, the process is the locus of experiential meaning---it selects the kinds of participants that can occur as its arguments. Modifiers and circumstances are the least consequential kinds of experiential meaning, as they provide ancillary or supplementary kinds of meaning, regarding the manners in which processes were performed, or characteristics of participants. 
 
-
-    In terms of experiential meaning
-
-    Nominalisation is also closely tied to arguability. This link is discussed in Section \ref{sect:arguability}.
+    %Nominalisation is also closely tied to arguability. This link is discussed in Section \ref{sect:arguability}.
 
     %``From studies comparing identical and fraternal twins, it is estimated that genetic factors account for 40 to 60 percent of the variation in the risk for addiction.''
 
@@ -123,7 +128,8 @@
 
 \section{Is risk more commonly in the position of experiential subject or experiential object?} \FloatBarrier
 
-    Risk as a participant may take the form of an experiential subject or an experiential object. Our first area of interest was the proportion of each, with respect to general trends in the NYT. As shown in Figure \ref{fig:bestexpsubjobj}, risk is more commonly an object than a subject. It is also apparent that risk as experiential subject is on an static trajectory, while risk as experiential object is inbound. The significance of this is discussed in more depth in Section \ref{sect:arguability}.
+    Risk as a participant may take the form of an experiential subject or an experiential object.\endnote{These are not particularly meaningful distinctions in SFL, as the role of participants depends on the process type. Though process type identification is becoming more and more feasible \cite<see>{odonnell_uam_2008}, at the time of our investigation, we lacked resources to automatically distinguish between process types, and thus relied on borrowed notions of experiential subject- and objecthood.} 
+    Our first area of interest was the proportion of each, with respect to general trends in the NYT. As shown in Figure \ref{fig:bestexpsubjobj}, risk is more commonly an object than a subject. It is also apparent that risk as experiential subject is on an static trajectory, while risk as experiential object is inbound. The significance of this is discussed in more depth in Section \ref{sect:arguability}.
 
     \begin{figure}[htb!]
     \centering
@@ -146,15 +152,11 @@
     \label{tab:subj_conc}
     \end{table}
 
-
-
     \vspace{5mm}\noindent\begin{tcolorbox}[colback=yellow!5,colframe=yellow!40!black,title=Summary: risk as experiential subject\slash object]
     \parbox{1\textwidth}{%
     Risk is more often an experiential object than an experiential subject. The gap has widened considerably over time.}
     \end{tcolorbox}
     \vspace{5mm}
-
-
 
 \section{What processes are involved when risk is a participant?} \FloatBarrier
 
@@ -227,9 +229,9 @@
     \end{minipage}}
     \end{table}
 
-    Interesting here is the dominance of processes seeking to quantify risk. Also salient is the presence of a large set of mental processes (seem, appear, assess, understand, accept). 
+    Interesting here is the dominance of processes seeking to quantify risk. Also salient is the presence of a large set of mental processes (\emph{seem, appear, assess, understand, accept}). This may be seen as evidence for an increased demand for the control of risk (see discussion in sections \ref{sect:mod_two}; contrast with section \ref{sect:highpotential})).
 
-    Future research is planned to divide processes with risk participants into the systemic functional conceptualisation of process types. Potentially, we could determine whether or not risks are shifting to or from mental to material.
+    %Future research is planned to divide processes with risk participants into the systemic functional conceptualisation of process types. Potentially, we could determine whether or not risks are shifting to or from mental to material.
 
     \vspace{5mm}\noindent\begin{tcolorbox}[colback=yellow!5,colframe=yellow!40!black,title=Summary: processes with risk participants]
     \parbox{1\textwidth}{%
@@ -237,7 +239,7 @@
     \end{tcolorbox}
     \vspace{5mm}
 
-\section{How are participant risks modified?} \FloatBarrier
+\section{How are participant risks modified?} \label{sect:highpotential} \FloatBarrier
 
     Most commonly, risk as a participant is modified through adjectival pre-head modification or post-head modification with a subordinate clause or prepositional phrase. Ignoring the distinction between subject and object risk, and collapsing pre-head and post-head kinds of modification, Tables \ref{tab:prehead} and \ref{tab:posthead} show the most common pre- and post-head modifiers of risk as a participant.
 
@@ -305,9 +307,9 @@
     \end{minipage}}
     \end{table}
 
-    Some of these modifiers are undergoing longitudinal trajectory change. As can be seen in Figure \ref{fig:reladjrisk}, \emph{calculated risk} has an outbound trajectory, decreasing steadily. The large number of occurrences projected for 1963, however, is partially the result of the 1962 Broadway play by the same name. Of course, the choice of name for the production may also serve as evidence for the salience of the construction in the earlier samples.  \emph{Potential risk}, on the other hand, is increasing in frequency. Also interesting is the spike in the \emph{high risk} construction between 2002--2004. %REDO PROJECTION FOR 1963...
+    Some of these modifiers are undergoing longitudinal trajectory change. As can be seen in Figure \ref{fig:reladjrisk}, \emph{calculated risk} has an outbound trajectory, decreasing steadily. The large number of occurrences projected for 1963, however, is partially the result of the 1962 Broadway play by the same name. Of course, the choice of name for the production may also serve as evidence for the salience of the construction in the earlier samples.  \emph{Potential risk}, on the other hand, is increasing in frequency. Also interesting is the spike in the \emph{high risk} construction between 2002--2004. Here, concordancing reveals links to particular events. \emph{High risk}, peaking in 2004, is asociated with the outbreak of the H5N1 avian flu outbreak: 
 
-    Concordancing reveals links to particular events. \emph{High risk}, peaking in 2004, is asociated with the outbreak of the H5N1 avian flu outbreak. %Interestingly, however, many concordance examples deal only with strains common in the USA:
+    %Interestingly, however, many concordance examples deal only with strains common in the USA:
 
     \begin{enumerate}   [before=\itshape,font=\normalfont] \setlength\itemsep{0em} \small
     \item Mr. Johannessen said health care providers had a moral obligation to ensure -- through direct questions and, if necessary, medical records -- that people who asked for flu shots were at high risk. 
@@ -341,7 +343,7 @@
 
     Our second area of interest within the transitivity system is risk as a process. Within the corpus, we located five distinct risk processes. First, risk alone may be a process (\emph{I won't risk it}). Second and third are \emph{running risk} and \emph{taking risk}---\emph{process--range} configurations, where the verbal component is largely shorn of meaning, and with meaning conveyed primarily in the nominal in object position \cite{halliday_introduction_2004}. Fourth is \emph{putting somebody/something at risk}, which involves an obligatory nominal object argument and a prepositional-phrase complement. Finally, we have
 
-    Other phrases sit on the cusp as recognisable risk processes: \emph{to carry risk}, for example, is frequent in the data, but we have not included it because we feel that the semantic burden of this process still lies in \emph{carry} (unlike \emph{pose} in \emph{to pose risk}).
+    Other phrases sit on the cusp as recognisable risk processes: \emph{to carry risk}, for example, is frequent in the data, but we have not included it because we feel that the semantic burden of this process still lies in \emph{carry} (unlike \emph{pose} in \emph{to pose risk}).\endnote{Further research devoting more time to which examples constitute risk processes and which constitute experiential objects of other processes seems timely.}
 
     \begin{figure}[htb!]
     \centering
@@ -352,11 +354,9 @@
     %
     Our first interest is the overall frequency of these five risk processes. 
     %From Figure \ref{fig:riskprocesses}, we concluded that risk processes generally are on an static\slash slightly outbound trajectory, with a notable decrease in frequency between the 1963--1987 samples.
-    Figure \ref{fig:riskprocesses} charts the trajectory of the five identified risk processes. Most interesting here are that the `standard' (predicatorial) risk process is steadily decreasing, in favour of the other processes, each of which seems to provide additional connodations of the agency of the risker as well as his\slash her\slash its understanding of the level of risk. 
+    Figure \ref{fig:riskprocesses} charts the trajectory of the five identified risk processes. Most interesting here are that the `standard' (i.e. predicatorial) risk process is steadily decreasing, in favour of the other processes, each of which seems to provide additional connodations of the agency of the risker as well as his\slash her\slash its understanding of the level of risk. 
 
-    The second notable finding here is that \emph{putting at risk} has overtaken \emph{running risk} in frequency.
-
-    Concordancing revealed that in 2014, \emph{putting at risk} is used in cases where the potential harm is either implicit or explicit:
+    The second notable finding here is that \emph{putting at risk} has overtaken \emph{running risk} in frequency. Concordancing revealed that in 2014, \emph{putting at risk} is used in cases where the potential harm is either implicit or explicit:
 
     \begin{enumerate}  [before=\itshape,font=\normalfont] \setlength\itemsep{0em} \small
     \item Ultimately, there is a price to pay: If you attack our soldiers, you're putting yourself at risk.
@@ -396,7 +396,7 @@
     
 \section{When risk is a process, what participants are involved?} \FloatBarrier
     
-    Clauses containing risk processes are a rich site for analysis, as the semantic roles of participants are determined by their placement with respect to the process. Experiential subjects of risk processes can be mapped to \emph{riskers}. Experiential objects are either \emph{risked things} or \emph{potential harm} (\emph{they risked their lives/death}). Table \ref{tab:riskersx} lists the most common subject and object participants of risk processes. Also of interest are clauses embedded within risk processes (e.g. \emph{she risks hurting herself/losing her life}). Table \ref{alienating} lists the (lemmatised) top twenty subordinated processes in the corpus.
+    Clauses containing risk processes are a rich site for analysis, as the semantic roles of participants are determined by their placement with respect to the process. In frame semantic terms, experiential subjects of risk processes can often be mapped to \emph{actors}.\endnote{A limitation of frame semantics is its ability to deal with other kinds of risk processes: in \emph{The site posed risks}, \emph{pose} is the experiential subject, but not the actor or risker.}~Experiential objects are either \emph{valued objects} or \emph{harm} (\emph{they risked their lives/death}). Table \ref{tab:riskersx} lists the most common subject and object participants of risk processes. Also of interest are clauses embedded within risk processes (e.g. \emph{she risks hurting herself\slash losing her life}). Table \ref{alienating} lists the (lemmatised) top twenty subordinated processes in the corpus.
 
     \begin{table}[htb!]
     \centering
@@ -467,7 +467,6 @@
 
     Riskers are most typically powerful institutions or individuals. Risked things and potential harms are generally serious and grave. A mismatch occurs here: \emph{Bush} and \emph{Obama} do not likely risk \emph{wounds}, \emph{arrest} or \emph{death}. In terms of subordinated processes, notable is the appearance of processes that are fairly uncommon: \emph{alienating}, \emph{offending}, \emph{undermining} and \emph{angering} and are three key examples, ranking amongst expected processes like \emph{being}, \emph{having}, \emph{getting}, \emph{making} and \emph{going}. Without considering longitudinal change, we can see from this that the embedded processes are often related to more powerful social actors: states, political parties and politicians risk alienating electorates; diplomats risk offending one another. Even embedded processes lacking explicit connotations of power are typically deployed in the contexts of government, industry or society. Below are concordance results for \emph{risk alienating} in 2013, which appears 14 times.
 
-
     \begin{figure}
     \footnotesize
     \begin{tabular}{rcl}
@@ -488,9 +487,30 @@
     \end{tabular}
     \caption{\emph{To risk becoming} in 2013 subcorpus}
     \end{figure}
-    
 
-    %DEPENDING ON HOW MUCH TIME THERE IS, I COULD SEARCH FOR ALL OF THE RISKERS INDIVIDUALLY...
+    \begin{figure}[htb!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../images/riskers-sorted-by-total-frequency.png}
+    \caption{Riskers, sorted by total frequency}
+    \label{fig:riskers}
+    \end{figure}
+
+    There is some evidence everyday people are less commonly riskers in later editions: if we sort the `riskers' (Figure \ref{fig:riskers}) by those that are decreasing at the fastest rate over the course of our dataset, \emph{man\slash men}, \emph{woman\slash women} and \emph{person\slash people} are all in the top seven. Conversely, when sorting by those on the most upward trajectory, the lemmas \emph{bank}, \emph{company}, \emph{firm} and \emph{agency} are in the top seven (Figure \ref{fig:increase_decrease_riskers}). Further findings in this vein are presented in more depth in Zinn \& McDonald, 2015.
+
+    \noindent
+    \begin{figure}[htb!]
+    \centering
+    \begin{minipage}{.48\textwidth}
+    \centering
+    \includegraphics[width=0.98\textwidth]{../images/riskers-increasing-in-frequency.png}
+    \end{minipage}%
+    \begin{minipage}{.48\textwidth}
+    \centering
+    \includegraphics[width=0.98\textwidth]{../images/riskers-decreasing-in-frequency.png}
+    \end{minipage}
+    \caption{Riskers, sorted by most increasing (left) and most decreasing (right)}
+    \label{fig:increase_decrease_riskers}
+    \end{figure}
 
     %Though these objects may be grammatically ambiguous, the function of the object can be disambiguated by inserting \emph{losing}.
 
@@ -509,7 +529,7 @@
     \end{tcolorbox}
     \vspace{5mm}
 
-\section{When risk is a modifier, what are the most common forms?} \label{sect:riskmod} \FloatBarrier
+\section{When risk is a modifier, what are the most common forms?} \label{sect:mod_one} \FloatBarrier
 
     \begin{table}
     \small
@@ -528,7 +548,6 @@
     \end{table}
 
     There are many different kinds of risk as modifier (see Table \ref{tab:modriskwords} for a non-exhaustive list of examples). Our first interest was in gauging the prevalence of the different forms. From this query, we noted that pre-head nominal modifiers are increasing in frequency. A good example is \emph{risk factor} (see Figure \ref{fig:riskfactor}).
-
 
     \noindent
     \begin{figure}[htb!]
@@ -565,9 +584,7 @@
     \label{fig:adjtraj}
     \end{figure}
 
-    The prevalence of high-risk in the 1980s is largely due to the AIDS epidemic: concordancing reveals that certain populations (gays, African Americans, Haitians) are at high-risk of being inflected by HIV. \emph{At-risk} is rare in earlier editions, but increases in prevalence steadily.
-
-    This shift in risk is modifier is an important one. Low, moderate and high risk comprises a gradient, or scale, while at-risk is a binary. As with the shift toward \emph{potential risk}, this indicates both an increasing pervasiveness and a decreasing calcuability of risk. %remember that low-risk is actually increasing.
+    The prevalence of \emph{high-risk} in the 1980s is largely due to the AIDS epidemic: concordancing reveals that certain populations (gays, African Americans, Haitians) are at high-risk of being inflected by HIV. \emph{At-risk} is rare in earlier editions, but increases in prevalence steadily. This shift in risk is modifier is an important one. \emph{Low-}, \emph{moderate-} and \emph{high-risk} comprises a gradient, or scale, while \emph{at-risk} is a binary. As with the shift toward \emph{potential risk}, this indicates both an increasing pervasiveness and a decreasing calcuability of risk. %remember that low-risk is actually increasing.
     
     %Of the graduated risks, low-risk is the only one on an inbound trajectory. What's the significance of this?
 
@@ -585,7 +602,7 @@
     \end{tcolorbox}
     \vspace{5mm}
 
-\section{When risk is a modifier, what is being modified?} \FloatBarrier
+\section{When risk is a modifier, what is being modified?} \label{sect:mod_two} \FloatBarrier 
 
     Risk as a modifier can be placed either before or after the noun it modifies (\emph{an at-risk person\slash a person at risk}). These two constructions are collapsed in Tables \ref{tab:riskmodified} and \ref{tab:atrisk}, which respectively list the participants most frequently modified by any risk modifier, and the participants most frequently modified by \emph{at-risk\slash at risk}. Note that while risk-modified participants generally are financial and economic in nature (\emph{investment, business, loan, asset}), the at-risk subset is mainly comprised of vulnerable populations of people (\emph{women}, \emph{children}, \emph{students}).
 
@@ -659,7 +676,7 @@
     \item The most at-risk sectors included auto components and automobile companies, which generate nearly 30 percent of their sales in Europe, as well as food and tobacco firms.
     \end{enumerate}
 
-    Note that it is difficult to reconcile the semantic meaning of \emph{at-risk} constructions with the semantic frame of risk provided by \citeA{fillmore_toward_1992}. Though elements of both the \textsc{victim} and \emph{valued object} appear to be at work, neither provides an adequate label for \emph{at-risk people, children, homeowners or nations}. Rather than being an oversight during the articulation of the risk frame (recall Figure~\ref{fig:fil_atk}), in light of the increased use of these kinds of constructions since the mid 1990s, we hypothesise that \emph{at-risk} constructions (as well as \emph{to put at risk}) are demonstrative of a broader shift in risk discourse toward general clusters of negative outcomes, rather than specific and measurable potential harms. Connection between this shift and sociological theory is made in the following chapter.
+    Note that it is difficult to reconcile the semantic meaning of \emph{at-risk} constructions with the semantic frame of risk provided by \citeA{fillmore_toward_1992}. Though elements of both the \textsc{victim} and \textsc{valued object} appear to be at work, neither provides an adequate label for \emph{at-risk people, children, homeowners or nations}. Rather than being an oversight during the articulation of the risk frame (recall Figure~\ref{fig:fil_atk}), in light of the increased use of these kinds of constructions since the mid 1990s, we hypothesise that \emph{at-risk} constructions (as well as \emph{to put at risk}) are demonstrative of a broader shift in risk discourse toward general clusters of negative outcomes, rather than specific and measurable potential harms. Connection between this shift and sociological theory is made in the following chapter.
 
     \vspace{5mm}\noindent\begin{tcolorbox}[colback=yellow!5,colframe=yellow!40!black,title=Summary: participants modified by risk]
     \parbox{1\textwidth}{%
