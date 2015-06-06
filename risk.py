@@ -80,6 +80,21 @@ pd.set_option('display.width', 1000)
 pd.set_option('expand_frame_repr', False)
 
 # <markdowncell>
+# ### Quickstart
+
+# <markdowncell>
+# Let's start off with some quick examples. By the end of this Notebook, you should be more than capable of reproducing even the most complex examples!
+
+# <markdowncell>
+# #### Interrogating the corpus (and saving the result)
+
+# <codecell>
+# <markdowncell>
+# #### Editing results
+
+
+
+# <markdowncell>
 # ### The report
 
 # <markdowncell>
