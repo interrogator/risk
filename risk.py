@@ -358,58 +358,65 @@ quickview(riskwords, n = 15)
 #  | `projection` | False    |   project smaller subcorpora   |  list of tuples: [`(subcorpus_name, projection_value)]` |
 #  | `**kwargs` | False    |   pass options to *Pandas*' `plot()` function, *Matplotlib*   |  various |
 
+# <markdowncell>
+# Let's try these out on a new interrogation. The query below will get adjectival risk words:
+
+# <codecell>
+adj = '/JJ.?/ < /(?i)\brisk/'
+adj_riskwords = interrogator(annual_trees, 'words', adj)
+
 # First, we can select specific subcorpora to keep, remove or span:
 
 # <codecell>
-editor(riskwords.results, skip_subcorpora = [1963, 1987, 1988]).results
+editor(adj_riskwords.results, skip_subcorpora = [1963, 1987, 1988]).results
 
 # <codecell>
-editor(riskwords.results, just_subcorpora = [1963, 1987, 1988]).results
+editor(adj_riskwords.results, just_subcorpora = [1963, 1987, 1988]).results
 
 # <codecell>
-editor(riskwords.results, span_subcorpora = [2000, 2010]).results
+editor(adj_riskwords.results, span_subcorpora = [2000, 2010]).results
 
 # <markdowncell>
 # We can do similar kinds of things with each *result*:
 
 # <codecell>
-quickview(riskwords.results)
+quickview(adj_riskwords.results)
 
 # <codecell>
-editor(riskwords.results, skip_entries = [2, 5, 6]).results
+editor(adj_riskwords.results, skip_entries = [2, 5, 6]).results
 
 # <codecell>
-editor(riskwords.results, just_entries = [2, 5, 6]).results
+editor(adj_riskwords.results, just_entries = [2, 5, 6]).results
 
 # <markdowncell>
 # We can also use the words themselves, rather than indices, for all of these operations:
 
 # <codecell>
-editor(riskwords.results, just_entries = ['(nn risk-management)', '(jj risk-management)']).results
+editor(adj_riskwords.results, just_entries = ['risky', 'riskier', 'riskiest']).results
 
 # <markdowncell>
 # Or, we can use Regular Expressions:
 
 # <codecell>
-# skip any verbal risk
-editor(riskwords.results, skip_entries = r'^\(v').results
+# skip any that start with 'r'
+editor(adj_riskwords.results, skip_entries = r'^r').results
 
 
 # <markdowncell>
 # We can also merge entries, and specify a new name for the merged items. In lieu of a name, we can pass an index. 
 
 # <codecell>
-editor(riskwords.results, merge_entries = [2, 5, 6], newname = 'New name').results
+editor(adj_riskwords.results, merge_entries = [2, 5, 6], newname = 'New name').results
 
 # <codecell>
-editor(riskwords.results, merge_entries = ['(nns risks)', '(nns risk-takers)', '(nns risks)'], newname = 1).results
+editor(adj_riskwords.results, merge_entries = ['risky', 'riskier', 'riskiest'], newname = 'risky').results
 
 # <markdowncell>
 # Notice how the merged result appears as the final column. To reorder the columns by total frequency, we can use `sort_by = 'total'`.
 
 # <codecell>
 # if we don't specify a new name, editor makes one for us
-generated_name = editor(riskwords.results, merge_entries = [2, 5, 6], sort_by = 'total')
+generated_name = editor(adj_riskwords.results, merge_entries = [2, 5, 6], sort_by = 'total')
 quickview(generated_name.results)
 
 # <markdowncell>
@@ -417,29 +424,29 @@ quickview(generated_name.results)
 
 # <codecell>
 # alphabetically
-editor(riskwords.results, sort_by = 'name').results
+editor(adj_riskwords.results, sort_by = 'name').results
 
 # <codecell>
 # least frequent
-editor(riskwords.results, sort_by = 'infreq').results
+editor(adj_riskwords.results, sort_by = 'infreq').results
 
 # <markdowncell>
 # Particularly cool is sorting by 'increase' or 'decrease': this calculates the trend lines of each result, and sort by the slope.
 
 # <codecell>
-editor(riskwords.results, sort_by = 'increase').results
+editor(adj_riskwords.results, sort_by = 'increase').results
 
 # <markdowncell>
 # We can use `just_totals` to output just the sum of occurrences in each subcorpus:
 
 # <codecell>
-editor(riskwords.results, just_totals = True).results
+editor(adj_riskwords.results, just_totals = True).results
 
 # <markdowncell>
 # A handy thing about working with Pandas DataFrames is that we can easily translate our results to other formats:
 
 # <codecell>
-deceasing = editor(riskwords.results, sort_by = 'decrease')
+deceasing = editor(adj_riskwords.results, sort_by = 'decrease')
 
 # <codecell>
 # tranpose with T, get just top 5 results, print as CSV
@@ -453,7 +460,7 @@ print deceasing.results.T.head().to_latex()
 # Of course, you can perform many of these operations at the same time. Problems may arise, however, especially if your options contradict.
 
 # <codecell>
-editor(riskwords.results, '%', riskwords.totals, span_subcorpora = [1990, 2000], 
+editor(adj_riskwords.results, '%', adj_riskwords.totals, span_subcorpora = [1990, 2000], 
     just_entries = r'^\(n', merge_entries = r'(nns|nnp)', newname = 'Plural/proper', sort_by = 'name').results
 
 # <markdowncell>
@@ -465,7 +472,7 @@ editor(riskwords.results, '%', riskwords.totals, span_subcorpora = [1990, 2000],
 # <codecell>
 import numpy as np
 # copy our list
-uniques = riskwords.results.copy()
+uniques = adj_riskwords.results.copy()
 # divide every result by itself
 for f in uniques:
     uniques[f] = uniques[f] / uniques[f]
@@ -608,7 +615,30 @@ quickview(inc, 15)
 quickview(dec, 15)
 
 # <markdowncell>
-# As expected, really. Defunct states and former politicans are on the way out, while newer politicans are on the way in. We can do the same with n-grams, of course:
+# As expected, really. Defunct states and former politicans are on the way out, while newer politicans are on the way in.
+
+# <markdowncell>
+# So, we can now do some pretty cool stuff in just a few lines of code. Let's concordance the top five keywords, looking at the year in which they are most key:
+
+# <codecell>
+import os
+# iterate through results
+for index, w in enumerate(list(kwds.results)[:5]):
+    # get the year with most occurrences
+    top_year = kwds.results[w].idxmax()
+    # print some info
+    print '\n%d: %s, %s' % (index + 1, w, str(top_year))
+    # get path to that subcorpus
+    top_dir = os.path.join(annual_trees, str(top_year))
+    # make a tregex query with token start and end defined
+    query = r'/(?i)^' + w + r'$/'
+    # do concordancing
+    lines = conc(top_dir, query, random = True, n = 10)
+
+# <markdowncell>
+# Neat, eh?
+
+# Anyway, next, let's do a similar thing, but getting ngrams instead:
 
 # <codecell>
 ngms = interrogator(annual_trees, 'words', 'ngrams')
