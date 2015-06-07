@@ -4,13 +4,17 @@ This repository contains much of what was created for our longitudinal analysis 
 
 Our *IPython Notebook* presents the code used in our analysis side-by-side with our results. It can be viewed via *nbviewer* [here](http://nbviewer.ipython.org/github/interrogator/risk/blob/master/risk.ipynb). Basically, we were interrogating the corpus for lexicogrammatical features of risk, and looking for sites of change. Here are a few examples, made using `corpkit`'s `interrogator()` and `plotter()` functions:
 
+
+<img style="float:left" src="https://raw.githubusercontent.com/interrogator/risk/master/images/risk_processes-2.png" />
+<br>
+
+<img style="float:left" src="https://raw.githubusercontent.com/interrogator/risk/master/images/risk-and-power-2.png" />
+<br>
+
+<img style="float:left" src="https://raw.githubusercontent.com/interrogator/risk/master/images/pie-chart-of-common-modals-in-the-nyt.png" />
+<br>
+
 <img style="float:left" src="https://raw.githubusercontent.com/interrogator/risk/master/images/types-of-risk-modifiers.png" />
-<br>
-
-<img style="float:left" src="https://raw.githubusercontent.com/interrogator/risk/master/images/risk_processes.png" />
-<br>
-
-<img style="float:left" src="https://raw.githubusercontent.com/interrogator/risk/master/images/adjectives_modifying_nominal_risk_(lemmatised).png" />
 <br>
 
 Theoretically, our interest is in empirically examining sociological claims about risk made by (e.g.) Beck, Giddens and Luhmann. To do this, we rely on *Systemic Functional Linguistics* (e.g. Halliday & Matthiessen, 2004), with particular focus on experiential meaning. Our report, which contextualises and elaborates on these results, is available [as PDF](https://raw.githubusercontent.com/interrogator/risk/master/report/risk_report.pdf) and (bleeding-edge) [.tex source](https://github.com/interrogator/risk/blob/master/report/risk_report.tex).
