@@ -8,6 +8,9 @@ Our *IPython Notebook* presents the code used in our analysis side-by-side with 
 <img style="float:left" src="https://raw.githubusercontent.com/interrogator/risk/master/images/risk_processes-2.png" />
 <br>
 
+<img style="float:left" src="https://raw.githubusercontent.com/interrogator/risk/master/images/nominalisation-of-risk-emphthe-new-york-times-19872014.png" />
+<br>
+
 <img style="float:left" src="https://raw.githubusercontent.com/interrogator/risk/master/images/risk-and-power-2.png" />
 <br>
 

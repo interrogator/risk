@@ -254,14 +254,14 @@ plotter('Risk word / all risk words', frac1.results, num_to_plot = 9)
 # If `plotter()` can't find a good spot for the legend, you can explicitly move it:
 
 # <codecell>
-plotter('Risk word / all risk words', frac1.results, num_to_plot = 9, legend = 'lower right')
-plotter('Risk word / all risk words', frac1.results, num_to_plot = 9, legend = 'outside right')
+plotter('Risk word / all risk words', frac1.results, num_to_plot = 9, legend_pos = 'lower right')
+plotter('Risk word / all risk words', frac1.results, num_to_plot = 9, legend_pos = 'outside right')
 
 # <codecell>
 frac2 = editor(riskwords.results, '%', allwords.totals)
 
 # <codecell>
-plotter('Risk word / all words', frac2.results, legend = 'outside right')
+plotter('Risk word / all words', frac2.results, legend_pos = 'outside right')
 
 # <markdowncell>
 # Another neat feature is the `.table` attribute of interrogations, which shows the most common `n` results in each subcorpus:
@@ -284,10 +284,16 @@ riskwords.table
 #  | `num_to_plot` | 7    | Number of top entries to show     |  int |
 #  | `x_label` | False    | custom label for the x-axis     |  str |
 #  | `y_label` | False    | custom label for the y-axis     |  str |
-#  | figsize | (13, 6) | set the size of the figure | tuple: `(length, width)`|
-#  | tex | `'try'` | use *TeX* to generate image text | boolean |
-#  | style | `'ggplot'` | use Matplotlib styles | str: `'dark_background'`, `'bmh'`, `'grayscale'`, `'ggplot'`, `'fivethirtyeight'`, `'matplotlib'` |
-#  | legend | `'default'` | legend position | str: `'outside right'` to move legend outside chart |
+#  | `figsize` | (13, 6) | set the size of the figure | tuple: `(length, width)`|
+#  | `tex` | `'try'` | use *TeX* to generate image text | boolean |
+#  | `style` | `'ggplot'` | use Matplotlib styles | str: `'dark_background'`, `'bmh'`, `'grayscale'`, `'ggplot'`, `'fivethirtyeight'` |
+#  | `legend_pos` | `'default'` | legend position | str: `'outside right'` to move legend outside chart |
+#  | `show_totals` | `False` | Print totals on legend or plot where possible | str: '`legend`', '`plot`', '`both`', or 'False' |
+#  | `save` | `False` | Save to file | `True`: save as `title`.png. str: save as `str` |
+#  | `colours` | `'Paired'` | plot colours | str: any of Matpltlib's colormaps |
+#  | `cumulative` | `False` | plot entries cumulatively | bool |
+#  | `**kwargs` | False | pass other options to Pandas plot/Matplotlib | `rot = 45`, `subplots = True`, `fontsize = 16`, etc. |
+
 
 # <codecell>
 plotter('Risk words', frac2.results, num_to_plot = 5, y_label = 'Percentage of all words')
@@ -300,7 +306,7 @@ plotter('Risk words', frac2.results.drop('1963'), subplots = True)
 
 # <codecell>
 # stacked bar chart
-plotter('Risk words', frac2.results.drop('1963'), kind = 'bar', stacked = True, legend = 'o r')
+plotter('Risk words', frac2.results.drop('1963'), kind = 'bar', stacked = True, legend_pos = 'o r')
 
 
 # <codecell>
@@ -308,7 +314,7 @@ plotter('Risk words', frac2.results.drop('1963'), kind = 'bar', stacked = True, 
 # not using tex for fonts
 # setting a font size
 plotter('Risk words', editor(frac2.results, just_entries= r'^\(v').results, kind = 'area', 
-        stacked = True, legend = 'o r', colours = 'Oranges', num_to_plot = 'all', fontsize = 16, tex = False)
+        stacked = True, legend_pos = 'o r', colours = 'Oranges', num_to_plot = 'all', fontsize = 16, tex = False)
 
 # <markdowncell>
 # Those already proficient with Python can use [Pandas' `plot()` function](http://pandas.pydata.org/pandas-docs/stable/visualization.html) if they like
@@ -499,7 +505,7 @@ u = uniques.T.sum()
 u.name = 'Unique risk words'
 
 # <codecell>
-plotter('Unique risk words', u.drop(['1963', '2014']), y_label = 'Number of unique risk words', legend = False)
+plotter('Unique risk words', u.drop(['1963', '2014']), y_label = 'Number of unique risk words')
 
 # <markdowncell>
 # Just for fun, let's try that again with a few chart styles:
@@ -1047,7 +1053,7 @@ query = r'/NN.?/ < /(?i)\b(heart|terror).?/ $ (/NN.?/ < /(?i)\battack.?/ >># (NP
 terror_heart = interrogator(annual_trees, 'words', query, lemmatise = True)
 
 # <codecell>
-plotter('Risk of heart and terror* attack', terror_heart.results, num_to_plot = 2, legend = 'upper left')
+plotter('Risk of heart and terror* attack', terror_heart.results, num_to_plot = 2, legend_pos = 'upper left')
 
 # <markdowncell>
 # So, we were a long way off-base. This is an ever-present danger in corpus linguistics. The decontextualisation needed to investigate the lexicogrammar of texts makes it easy to misunderstand (or worse, misrepresent) the data. Though concordancing is one of the oldest tasks in the corpus linguistic playbook, it remains a fundamental one, especially in discourse-analytic investigations.
@@ -1440,7 +1446,7 @@ for entry in theme_list:
 # plot some results
 ystring = 'Percentage of all proper noun groups'
 for name, query, data in theme_list:
-    plotter(name, data.results, y_label = ystring, legend = 'upper left')
+    plotter(name, data.results, y_label = ystring, legend_pos = 'upper left')
 
 # <markdowncell>
 # Let's compare these topics in the same chart, using Pandas to join everything together:
