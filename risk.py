@@ -53,6 +53,7 @@ nltk.download('wordnet')
 # | `searchtree()`          | search a parse tree with a Tregex query | |
 # | `save_result()`          | save a result to disk | |
 # | `load_result()`          | load a saved result | |
+# | `load_all_results()`          | load every saved result into a dict | |
 
 # <codecell>
 import corpkit
@@ -130,12 +131,23 @@ report_display()
 # 1. **path to corpus**
 #
 # 2. Tregex **options**:
-#   * **'t/w/words'**: return only words
-#   * **'c/count'**: return a count of matches
-#   * **'p/pos'**: return only the tag
-#   * **'b/both'**: return tag and word together
 #
 # 3. a **Tregex query**
+
+# | Option  | Function  |
+# | :------|:-------|
+# | `b` | get tag and word of Tregex match |
+# | `c` | count Tregex match |
+# | `d` | get dependent of regular expression match and the r/ship |
+# | `f` | get dependency function of regular expression match |
+# | `g` | get governor of regular expression match and the r/ship |
+# | `i` | get dependency index of regular expression match |
+# | `k` | Find keywords |
+# | `n` | find n-grams |
+# | `p` | get part-of-speech tag with Tregex |
+# | `r` | regular expression, for plaintext corpora |
+# | `s` | simple search string or list of strings for plaintext corpora |
+# | `w` | get word(s)returned by Tregex/keywords/ngrams |
 
 # We only need to count tokens, so we can use the `'count'` option (it's often faster than getting lists of matching tokens). The cell below will run `interrogator()` over each annual subcorpus and count the number of matches for the query.
 
@@ -270,7 +282,7 @@ plotter('Risk word / all words', frac2.results, legend_pos = 'outside right')
 riskwords.table
 
 # <markdowncell>
-# ### Customising visualisations
+# ### Customising visualisationsa
 
 # <markdowncell>
 # By default, `plotter()` plots the seven most frequent results, including 1963.
@@ -1389,8 +1401,7 @@ plotter('At-risk thing or thing at risk', n_atrisk_n.results)
 # <codecell>
 # Most common proper noun phrases
 query = r'NP <# NNP >> (ROOT << /(?i).?\brisk.?\b/)'
-propernouns = interrogator(annual_trees, 'words', query, 
-    titlefilter = True)
+propernouns = interrogator(annual_trees, 'words', query, titlefilter = True)
 
 # <codecell>
 plotter('Most common proper noun phrases', editor(propernouns.results, '%', propernouns.totals).results)
@@ -1525,3 +1536,151 @@ plotter('Merck and Vioxx', vioxx.results)
 #
 
 # <codecell>
+
+
+
+
+
+
+
+# <markdowncell>
+# ## Accurate counts for experiential roles
+
+# ### Three experiential roles
+
+# First, let's get the copula count:
+
+# <codecell>
+r = load_all_results()
+deps = r['collapsed_deps']
+copula = editor(deps.results, merge_entries = r'^cop:', newname = 'Cop').results['Cop']
+
+# <markdowncell>
+# Now, we can do a first pass over the data. Problem is, root includes Attribute/Value.
+
+# <codecell>
+govs = r['collapsed_govs_with_pos']
+exp_roles = {'Process': r'(?i)^(root:root|dobj:.*?:(run|take|pose)|prep_at:v[a-z]*:put|rcmod:.*|xcomp:.*)$',
+            'Participant': r'(?i)^(xsubj|nsubj|nsubjpass|acomp|agent|appos|dobj|iobj):.*$',
+            'Modifier': r'(?i)^((advmod|vmod|amod|nn):.*$|(prep_[a-z]*:n|prep_[a-z]*:v))'}
+for name, regex in exp_roles.items():
+    govs = editor(govs.results, merge_entries = regex, newname = name)
+
+# <markdowncell>
+# Now we need to subtract copula results, and add to participant:
+
+# <codecell>
+govs.results['Process'] = govs.results['Process'] - copula
+govs.results['Participant'] = govs.results['Participant'] + copula
+
+# <markdowncell>
+# And now get relative frequencies:
+
+# <codecell>
+govs = editor(govs.results, '%', govs.totals, skip_subcorpora = 1963, sort_by = 'total')
+plotter('Experiential role', govs.results, y_label = 'Percentage of risk words in any experiential role',
+    style = 'bmh', figsize = (10, 6), black_and_white = True)
+
+# <markdowncell>
+# ### Participant type
+
+# <codecell>
+parts = r['collapsed_govs_with_pos']
+parts = editor(parts.results, just_entries = exp_roles['Participant'], skip_subcorpora = 1963)
+
+part_roles = {'Experiential subject': r'^(nsubj|agent|xsubj):',
+              'Experiential object', r'^(nsubjpass|iobj|acomp):'}
+
+for name, regex in part_roles.items():
+    parts = editor(parts.results, merge_entries = regex, newname = name)
+
+# <markdowncell>
+# Add copula
+
+# <codecell>
+parts.results['Experiential object'] = parts.results['Experiential object'] + copula
+
+parts = editor(parts.results, '%', govs.totals, just_entries = part_roles.keys(), sort_by = 'total')
+
+plotter('Risk by participant role', parts.results, y_label = 'Percentage of risk words in any experiential role',
+        style = 'bmh', figsize = (10, 6), black_and_white = True)
+
+# <markdowncell>
+# ### Risk processes
+
+# <codecell>
+procs = r['collapsed_govs_with_pos']
+procs = editor(procs.results, just_entries = exp_roles['Process'], skip_subcorpora = 1963)
+
+proc_roles = {'to risk': r'^root:root$',
+              'to take risk', r'^dobj:v.*?:take$',
+              'to run risk', r'^dobj:v.*?:run$',
+              'to pose risk', r'^dobj:v.*?:pose$',
+              'to put at risk', r'^prep_at:v.*?:put$',
+              }
+
+for name, regex in proc_roles.items():
+    procs = editor(procs.results, merge_entries = regex, newname = name)
+
+# <markdowncell>
+# remove copula
+
+# <codecell>
+procs.results['to risk'] = parts.results['to risk'] - copula
+
+# <codecell>
+procs = editor(procs.results, '%', govs.totals, just_entries = proc_roles.keys(), sort_by = 'total')
+
+
+# <markdowncell>
+# ### Risk as modifier
+
+# <codecell>
+mods = r['collapsed_govs_with_pos']
+
+mods = editor(mods.results, skip_entries = exp_roles['Process'], skip_subcorpora = 1963)
+mods = editor(mods.results, just_entries = exp_roles['Modifier'], skip_subcorpora = 1963)
+
+mod_roles = {'Nominal pre-head': r'^nn:',
+              'Nominal post-head', r'^(prep_[a-z]*:n|vmod:)',
+              'Head of PP complement', r'^prep_[a-z]*:v)',
+              'Adverbial modifier', r'^advmod:',
+              'Adjectival modifier', r'^amod:',
+              }
+
+'Modifier': r'(?i)^((advmod|vmod|amod|nn):.*$|(prep_[a-z]*:n|prep_[a-z]*:v))'}
+
+for name, regex in mod_roles.items():
+    mods = editor(mods.results, merge_entries = regex, newname = name)
+
+# <markdowncell>
+# remove copula
+
+# <codecell>
+mods.results['to risk'] = parts.results['to risk'] - copula
+
+# <codecell>
+mods = editor(mods.results, '%', govs.totals, just_entries = mod_roles.keys(), sort_by = 'total')
+plotter('Risk by modifier type', mods.results, y_label = 'Percentage of risk words in any experiential role',
+        style = 'bmh', figsize = (10, 6), black_and_white = True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+new_govs = editor(govs.results, merge_entries = r'^(root:root|dobj:(take|run|pose))$', newname = 'Process')
+new_govs = editor(new_govs.results, merge_entries = r'^(dobj|nsubj|nsubjpass|csubj|acomp|iobj|csubjpass):', newname = 'Participant')
+new_govs = editor(new_govs.results, merge_entries = r'^(pobj|nn|amod|rcmod|vmod|tmod|npadvmod|advmod):', newname = 'Modifier')
+new_govs = editor(new_govs.results, '%', govs.totals, sort_by = 'total', just_entries = ['Participant', 'Process', 'Modifier'])
