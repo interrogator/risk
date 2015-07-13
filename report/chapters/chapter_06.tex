@@ -13,7 +13,7 @@
 
     \noindent An \emph{IPython Notebook} interface for navigating the corpus \cite<see>{mckinney_python_2012}, as well as the code used to interrogate it and the findings we produced, are available online, at \url{https://github.com/interrogator/corpkit} and \url{https://github.com/interrogator/risk}. A non-interactive version is available at \url{http://nbviewer.ipython.org/github/interrogator/risk/blob/master/risk.ipynb}. This Notebook does not suffer from spatial limitations, and thus contains additional information, including the exact Tregex queries used in interrogations, as well as complete lists of the concordance lines discussed only briefly here. Tools and results from other kinds of corpus linguistic analysis, such as keywording and collocation, are also available there, but have not been described here.
 
-\section{How frequently do risk words appear?} \FloatBarrier
+\section{How frequently do risk words appear?} \FloatBarrier \label{sect:howfreq}
 
     %We successfully located a number of lexicogrammatical sites of change within clauses containing a risk word. 
 
@@ -732,7 +732,7 @@
 
 \section{Risk words and proper nouns} \FloatBarrier
 
-    We searched for proper noun groups in parse trees containing a risk word. This is a departure from many of our earlier queries, as here we are looking only at which entities co-occur with risk language, rather than determining how risk words and non-risk words relate to other another lexicogrammatically. The result of this query was 68891 different proper noun groups. We took the 200 most common results, and merged any that denoted the same entity: \emph{F.D.A.\slash Food and Drug Administration}, or \emph{Federal Reserve and Fed}. We then grouped results into thematic categories: \emph{People}, \emph{Nations}, \emph{Geopolitical entities}, \emph{Companies}, \emph{Organisations} and \emph{Medical themes}. The results were then plotted (See Figure \ref{fig:propernouns}). 
+    We searched for proper noun groups in parse trees containing a risk word. This is a departure from many of our earlier queries, as here we are looking only at which entities co-occur with risk words, rather than determining how risk words and non-risk words relate to other another lexicogrammatically. The result of this query was 68891 unique proper noun groups. We took the 200 most common results, and merged any that denoted the same entity: \emph{F.D.A.\slash Food and Drug Administration}, or \emph{Federal Reserve and Fed}. We then grouped results into thematic categories: \emph{People}, \emph{Nations}, \emph{Geopolitical entities}, \emph{Companies}, \emph{Organisations} and \emph{Medical themes}. The results were then plotted (see Figure \ref{fig:propernouns}). 
 
     \begin{landscape}
     \centering
@@ -770,7 +770,7 @@
     \caption{Proper noun groups co-occurring with risk} \label{fig:propernouns}
     \end{figure}
     \end{landscape}
-
+    %
     A number of historical events were easily recognisable within the peaks and troughs of these charts. Key events represented through these interrogations include:
 
     \begin{enumerate} \setlength\itemsep{0em}
@@ -789,7 +789,9 @@
     \item The recall of Vioxx (Figure~\ref{fig:f})
     \end{enumerate}
     %
-    This area of our investigation is by far the most promising as a means of connecting risk language to particular people and events. Spatial considerations have precluded a full treatment of the charting of risk language to specific events, despite the fact that enough data exists for detailed analyses of any number of potential foci. Future research that centres on detailed exploration of health domains (including the Vioxx recall) is planned.
+    This area of our investigation is perhaps the most promising as a means of connecting risk language to particular people and events. 
+
+    Spatial considerations have precluded a full treatment of the charting of risk language to specific events, despite the fact that enough data exists for detailed analyses of any number of potential foci. Future research that centres on detailed exploration of health domains (including the Vioxx recall) is planned.
 
     \vspace{5mm}\noindent\begin{tcolorbox}[colback=yellow!5,colframe=yellow!40!black,title=Summary: risk and proper nouns]
     \parbox{1\textwidth}{%
@@ -801,7 +803,7 @@
 
     We found that the behaviour of risk words has changed longitudinally in a number of key respects:
 
-    \begin{enumerate}
+    \begin{enumerate} \setlength\itemsep{0em}
     \item Risk words appear to be increasing in relative frequency, with modest increases in the number of unique risk words per year.
     \item Risk as a process is declining in use, and has been overtaken in frequency by risk as a participant.
     \item Risk is more often an experiential object than an experiential subject. The gap has widened considerably over time.

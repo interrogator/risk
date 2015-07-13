@@ -74,7 +74,7 @@ annual_trees = 'data/nyt/years'
 # Let's also quickly set some options for displaying raw data:
 
 # <codecell>
-pd.set_option('display.max_rows', 20)
+pd.set_option('display.max_rows', 10)
 pd.set_option('display.max_columns', 10)
 pd.set_option('max_colwidth',70)
 pd.set_option('display.width', 1000)
@@ -242,12 +242,12 @@ plotter('Relative frequency of risk words', rel_riskwords.totals.drop('1963'))
 
 # <codecell>
 # using Pandas syntax:
-riskwords.results.head(10)
+riskwords.results[range(10)]
 
 # <codecell>
 # using quickview
 from corpkit import quickview
-quickview(riskwords.results, n = 10)
+quickview(riskwords, 10)
 
 # <markdowncell>
 # So, let's use this data to do some more serious plotting:
