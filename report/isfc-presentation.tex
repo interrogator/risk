@@ -190,48 +190,55 @@
 
 \begin{frame}
     \frametitle{Dependency parsing}
+
+    Q: Can we extract SF grammatical features from this? 
+
+    ~\\
+
     \centering
     \includegraphics[width=0.99\textwidth]{../images/depparse}
+
+    ~\\
+    
+    \raggedright
+    A: Yes, quite often.
 \end{frame}
 
 
 \begin{frame}[fragile]
     \begin{minted}[fontsize=\footnotesize,linenos=true]{python}
-# import my module
+# import module and define corpus path
 from corpkit import *
-from dictionaries.process_types import processes as p
+nyt = 'data/nyt/years'
 
-# make a query
-code
+# count every pos
+baseline = interrogator(nyt, 'pos', 'any', lemmatise = True)
 
-# search the corpus
-code
+# count pos for risk words
+riskp = interrogator(nyt, 'pos', r'__ < /(?i)\brisk/', lemmatise = True)
 
-# edit results
-code
+# list open word classes
+open_words = ['Noun', 'Verb', 'Adjective', 'Adverb']
 
-# visualise
-code
+# get relative frequencies of open word classes, skip 1963
+maths_done = editor(riskp.results, '%', baseline.results, 
+    sort_by = 'total', just_entries = open_words, 
+    skip_subcorpora = [1963])
+
+# plot
+plotter('Percentage of open word classes that are risk words', 
+    maths_done.results, legend_pos = 'lower left')
     \end{minted}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Output}
+    \frametitle{Output: nominalisation of risk}
     \centering
-    Example here
-    %\includegraphics[width=0.75\textwidth]{screenshots/code-output}
+    \includegraphics[width=0.99\textwidth]{../images/percentage-of-open-word-classes-that-are-risk-words}
 \end{frame}
 
-
 \begin{frame}
-    \frametitle{Findings: nominalisation of risk}
-    \centering
-    \includegraphics[width=0.60\textwidth]{../images/nominalisation-of-risk-emphthe-new-york-times-19872014}
-\end{frame}
-
-
-\begin{frame}
-    \frametitle{Experiential roles}
+    \frametitle{Experiential roles of risk words}
     \centering
     \includegraphics[width=0.99\textwidth]{../images/ppmfinal}
 \end{frame}
@@ -249,16 +256,16 @@ code
 \end{frame}
 
 \begin{frame}
-    \frametitle{Mood role}
+    \frametitle{Mood role of risk words}
     \centering
     \includegraphics[width=0.99\textwidth]{../images/functional_role_using_dependency_parses}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Implicitness and arguability}
-    \centering
-    \includegraphics[width=0.99\textwidth]{../images/frequency-of-risk-words-by-dependency-index.png}
-\end{frame}
+% \begin{frame}
+%     \frametitle{Implicitness and arguability}
+%     \centering
+%     \includegraphics[width=0.99\textwidth]{../images/frequency-of-risk-words-by-dependency-index.png}
+% \end{frame}
 
 \begin{frame}
     \frametitle{Summary of key findings}
