@@ -790,10 +790,12 @@ quickview(risk_pos.results)
 
 # <codecell>
 open_words = ['Noun', 'Verb', 'Adjective', 'Adverb']
-maths_done = editor(risk_pos.results, '%', baseline.results, sort_by = 'total', just_entries = open_words, skip_subcorpora = [1963])
+maths_done = editor(risk_pos.results, '%', baseline.results, 
+    sort_by = 'total', just_entries = open_words, skip_subcorpora = [1963])
 
 # <codecell>
-plotter('Percentage of open word classes that are risk words', maths_done.results, y_label = 'Percentage')
+plotter('Percentage of open word classes that are risk words', 
+    maths_done.results, y_label = 'Percentage', legend_pos = 'lower left')
 
 
 # <markdowncell>
