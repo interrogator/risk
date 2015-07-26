@@ -5,7 +5,12 @@
 \newcommand*{\saveenum}{\setcounter{savedenum}{\theenumi}}
 \newcommand*{\resume}{\setcounter{enumi}{\thesavedenum}}
 \usepackage{multienum}
+\usepackage[T1]{fontenc}
 \usepackage{minted}
+\usepackage{upquote}
+\AtBeginDocument{%
+\def\PYZsq{\textquotesingle}%
+}
 \usepackage[notocbib]{apacite}
     \renewcommand{\APACrefatitle}[2]{#1}
     \renewcommand{\APACrefbtitle}[2]{#1}
@@ -59,9 +64,33 @@
     From previous sociological and linguistic research, we know that:
 
     \begin{itemize}
-    \item Risk as concept is sociologically important (Beck, Giddens)
+    \item Risk as concept is sociologically important
+    \begin{itemize}
+        \item New global risks \cite{beck_risk_1992}
+        \item Calculative technologies \cite{dean_risk_1998,dean_governmentality:_2010}
+        \item Individualisation (Beck) and Technologies of the Self \cite{foucault_technologies_1988}
+        \item Risk-taking \cite{luhmann_risk:_1993}
+    \end{itemize}
     \item Risk as lexical item is increasingly frequent in print journalism (Zinn 2011)
-    \item \emph{Risk} as a lexical item in naturalistic text may behave contrary to expectations \cite{hamilton_meanings_2007}
+    \item Risk as a lexical item in naturalistic text may behave contrary to expectations \cite{hamilton_meanings_2007}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Data and research questions}
+
+    \begin{enumerate}
+        \item \emph{NYT Annotated Corpus}: 1.8 million articles, 1987--2007 \cite{sandhaus_new_2008}
+        \item \emph{ProQuest Newsstand} for articles containing a risk word between 2007--2014
+    \end{enumerate}
+
+    We wanted to build on these earlier findings, and take advantage of new technologies:
+
+    \begin{itemize}
+        \item What are risk words doing in the NYT?
+        \item How has the behaviour of risk words changed in the NYT between 1963 and 2014?
+        \item Can we connect these findings to sociological theories of risk?
+        \item What kinds of tools and methods can we use\slash develop to do this kind of research?
     \end{itemize}
 \end{frame}
 
@@ -72,9 +101,6 @@
     
     \begin{itemize}
     \item Digitisation of newspapers means we have large, well-structured datasets
-    \begin{itemize}
-        \item \emph{NYT Annotated Corpus}: 1.8 million articles, 1987--2007 \cite{sandhaus_new_2008}
-    \end{itemize}
     \item Automatic annotation of text makes it possible to search for lexical and grammatical features in tandem
     \item Modern programming languages facilitate:
     \begin{itemize}
@@ -87,34 +113,6 @@
 \end{frame}
 
 
-\begin{frame}
-    \frametitle{Risk theory}
-    
-    \begin{itemize}
-    \item The \emph{Risk Society} \cite{beck_risk_1992}
-    \begin{itemize}
-        \item Increased centrality of \emph{risk} in daily life in late modernity
-        \item \emph{Mega risks}
-        \item Individualisation of responsibility for managing risk
-    \end{itemize}
-    \item Technologisation: new data and tools for calculating risk and risk factors creates new functions of governments and institutions
-    \item Risk vs. danger \cite{luhmann_ecological_1989}
-    \end{itemize}
-\end{frame}
-
-
-\begin{frame}
-    \frametitle{Research questions}
-
-    We wanted to build on these earlier findings, and take advantage of new technologies:
-
-    \begin{itemize}
-        \item What are risk words doing in the NYT?
-        \item How has the behaviour of risk words changed in the NYT between 1963 and 2014?
-        \item Can we connect these findings to sociological theories of risk?
-        \item What kinds of tools and methods can we use\slash develop to do this kind of research?
-    \end{itemize}
-\end{frame}
 
 % daniel to take over here
 
@@ -131,11 +129,16 @@
     \item Problem: risk often takes less prominent experiential roles
     \begin{itemize}
         \item Is the risk frame actually invoked when the word is used?
+        \item Example:
     \end{itemize}
     \end{itemize}
 
     ~\\
+    \footnotesize
+    \begin{quote}
+    \noindent
     \texttt{Mr. Tepfer noted that Mr. Douglas, who was in the neighborhood when the body was found and was interviewed by the police at the time, `preyed on \textbf{at-risk women}, on prostitutes, and he engaged in sex and strangled them to death.' }
+    \end{quote}
 
 \end{frame}
 
@@ -240,13 +243,13 @@ plotter('Percentage of open word classes that are risk words',
 \begin{frame}
     \frametitle{Experiential roles of risk words}
     \centering
-    \includegraphics[width=0.99\textwidth]{../images/ppmfinal}
+    \includegraphics[width=0.99\textwidth]{../images/ppm_final_colour}
 \end{frame}
 
 \begin{frame}
     \frametitle{Risk as modifier}
     \centering
-    \includegraphics[width=0.99\textwidth]{../images/types-of-risk-modifiers}
+    \includegraphics[width=0.99\textwidth]{../images/risk_by_mod_type_colour}
 \end{frame}
 
 \begin{frame}
@@ -258,7 +261,7 @@ plotter('Percentage of open word classes that are risk words',
 \begin{frame}
     \frametitle{Mood role of risk words}
     \centering
-    \includegraphics[width=0.99\textwidth]{../images/functional_role_using_dependency_parses}
+    \includegraphics[width=0.99\textwidth]{../images/mood-role-of-risk-words}
 \end{frame}
 
 % \begin{frame}
@@ -271,10 +274,18 @@ plotter('Percentage of open word classes that are risk words',
     \frametitle{Summary of key findings}
     
     \begin{itemize}
-    \item Nominalisation and participantification
+    \item Nominalisation and \emph{participantification}
+    \begin{itemize}
+        \item Meaning of risk expanding beyond the \emph{risk frame}
+    \end{itemize}
     \item Risk words becoming more implicit
+    \begin{itemize}
+        \item Risk as increasingly present, but decreasingly debated
+    \end{itemize}
     \item More everyday exposure to risk, but less risking
-    \item Complicated constellations of participants and circumstances in risk processes
+    \begin{itemize}
+        \item Neoliberal conceptualisations of agency
+    \end{itemize}
     \end{itemize}
 \end{frame}
 
@@ -284,23 +295,10 @@ plotter('Percentage of open word classes that are risk words',
     \begin{itemize}
     \item SFL proves a useful means of dividing up and investigating the behaviour of a given word
     \item SFL parsing is difficult, as is converting concepts from (esp. formal) grammars
+    \item Difficult SF concepts: rank shift, grammatical metaphor, appraisal, process types \cite{yan_automatic_2014,costetchi_semantic_2013,heyvaert_nominalization_2003}
     \item That said, though theoretical orientations are different, much of the grammar (esp. at group\slash phrase levels) are similar
+
     \end{itemize}
-\end{frame}
-
-
-\begin{frame}
-    \frametitle{Sociological discussion}
-
-    There are points of convergence, as well as disparities between, our linguistic findings and influential sociological theories:
-    
-    \begin{itemize}
-    \item 
-    \item 
-    \item 
-    \item 
-    \end{itemize}
-
 \end{frame}
 
 \begin{frame}
@@ -329,12 +327,6 @@ plotter('Percentage of open word classes that are risk words',
     \item \url{http://git.io/vY0M4}
     \end{itemize}
 \end{frame}
-
-
-
-
-
-
 
 
     \begin{frame}[t,allowframebreaks]
