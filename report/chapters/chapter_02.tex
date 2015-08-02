@@ -1,64 +1,233 @@
 %!TEX root = ../risk_report.tex
 
-\chapter{Theoretical foundations}
+\chapter{Case study: The New York Times, 1963--2014}
 
-In this chapter, we discuss key tenets of sociological risk theory, and their relational to linguistic accounts of risk.
+    Our investigation centred on digitised texts from \emph{New York Times} editions in 1963 and between 1987--2014. These texts (defined here as individual, complete chunks of content) are predominantly news articles, but depending on archiving practices, also included in our corpus is text-based advertising, box scores, lists, classifieds, letters to the editor, and so on. More specifically, we were interested in any  containing at least one `risk word'---any lexical item whose root is risk (\emph{risking}, \emph{risky}, \emph{riskers}, etc.) or any adjective or adverb containing this root (e.g. \emph{at-risk}, \emph{risk-laden}, \emph{no-risk}).\endnote{This was operationalised through the case-insensitive regular expression \textbf{\textbackslash brisk.*?\textbackslash b}, where \textbf{\textbackslash b} acts as a word-boundary marker.}~
 
-\section{Central hypotheses in risk studies}
+    We relied on two sources for our data. The \emph{New York Times Annotated Corpus} \cite{sandhaus_new_2008} was used as the source for all articles published between 1987--2006. ProQuest was used to search for and download articles containing a risk word from 2007--2014, alongside some metadata, in HTML format. We also created a subcorpus of articles from NYT 1963 editions through optimal character recognition (OCR) of PDF documents archived by ProQuest as containing a risk word in either metadata (i.e. title, lede) or content. Due to the time-intensive nature of manual correction of OCR, a random sample of one-third (1218 texts) was selected, with paragraphs of texts containing a risk word being manually corrected by hand.\endnote{Efforts are underway to digitise all risk words in 1963 additions, as well as editions from years between 1963 and 1987.}
 
-\subsection*{From calculative technology to uncertain potentiality}
+    Article text and any available metadata were extracted from this unstructured source content using \emph{Python}'s \emph{Beautiful Soup} library and added to uniquely named text files in annual subfolders. The kinds of metadata available varied according to the data source: The \emph{New York Times Annotated Corpus} provides a number of potentially valuable metadata fields, such as author, newspaper section, and subject (manually added by trained archivists). These metadata fields provided both human-readable information for use during qualitative analysis of texts, and machine-readable information that could be used to restructure the corpus in future investigations.
 
-Governmentality considers risk as a calculative technology which is used to manage potential harm. Similarly in the risk society perspective insurance and science are characterised by risk calculation to minimise risk. In the risk society perspective the calculability of risk characterises early modern experience (M. Weber: definition of rationalization\slash modernization). If risks are not directly controllable by science\slash knowledge we still have the opportunity to manage them by insurance or example. However, both governmentality theorists as such as risk society researchers have emphasised that uncertainties and non-knowledge would increase and we would observe a shift from the calculability of risk to the potentiality of harm. If this is correct it is more likely to find phrases which indicate the calculability of risk compared to the pure potentiality of risk. 
+    We then value-added to this partially annotated corpus in three main ways. First, keywords and clusters for each article were calculated using \emph{Spindle} \cite<see>{puerto_spindle_2012} and added as metadata fields. Second, \emph{MALLET} \cite<see>{mccallum_mallet:_2002}, a topic modelling tool, used LDA to algorithmically assign `topics' to each article. The topics and their strengths were added as a metadata field. Finally, we used the \emph{Stanford CoreNLP suite} \cite<see>{manning_stanford_2014} to parse each risk token and its co-text for grammatical structure and dependencies.\endnote{As a part of an ongoing Australian Digital Humanities initiative, since the beginning of our analysis, we have been allocated resources for creating and cloud-hosting a much larger corpus. All 1.8 million articles from the \emph{New York Times Annotated Corpus} are currently being turned into an identically structured, though dramatically larger, cloud-hosted corpus. In planned future research, interrogation of this corpus will be used to determine whether trends in the behaviour of risk words were localised to the word itself, or to general stylistic/language change in the \emph{New York Times}. More details on this project are to be presented in Zinn and McDonald, forthcoming.}~
 
-\subsection*{From positive risk taking to exposure to risk}
+    A key strength of the methodology is that subcorpora based on article or metadata attributes can can be easily created and compared. Our interest was in creating a small set of topic-specific corpora in order to look for changes in risk word behaviour within a specific field of discourse. As a case study, we decided to focus on health articles. Librarian-added metadata concerning article topic/category (MC metadata field) was used to locate all articles tagged with the case-insensitive Regular Expression \texttt{\textbackslash~bhealth.*}.\endnote{We tried a number of strategies for collecting topic subcorpora, such as exploiting topic modeller and keyword metadata. Ultimately, however, we relied on the hand-classification. A limitation of the selected approach is that---an article collected in the health subcorpus was tagged with `Livestock health', for example. Similarly, article categories may be lacking: Figure \ref{fig:exfile} is tagged only with MENINGITIS, and thus is not included in our health subcorpus. More obviously, 1963 articles had not been classified this way, and thus do not feature in the three topic subcorpora.} 
 
-The risk literature about societal changes has also emphasised that the experience of risk has started to change during modernisation on another dimension. The positive side of risk as risk-taking would lose influence (Douglas, Lupton). Risk would mainly mean harm or danger. If this is correct we would expect an overall clear and significant decrease in verbal risk forms which indicate an active engagement into risk for a gain. As a result we would expect a decrease in verbal forms involving an active decision to take a risk for something positive. We might even observe within the verbal forms a shift from positive risk taking to a pure exposure to risk where the possible gain disappears. For example, the notion of taking a risk or running a risk might increasingly be supplanted by notions of exposure to risk.
+    %\endnote{It would also be possible to create corpora of subtopics: from the politics domain, we could quickly find articles in which Clinton, Bush or Obama are keywords and look for differences in the behaviour of risk words for each politician. Though this seems an interesting area for future research, it was beyond our scope.}~
 
-\subsection*{Expected risk taking but lacking control}
+    \begin{table}\footnotesize \centering
+    \begin{tabular}{|l|l|}
+    \hline
+    \textbf{Tag} & \textbf{Content}  \\ \hline
+    MA    & Author(s)       \\ \hline
+    MC    & Librarian-added category tags     \\ \hline
+    MD    & Date of publication        \\ \hline
+    MI    & Unique identifier       \\ \hline
+    MK   & MALLET topic        \\ \hline
+    MM    & Manually annotated topic  \\ \hline
+    MP    & Section of newspaper \\ \hline
+    MS    & Risk concordance line  \\ \hline
+    MT    & Article title        \\ \hline
+    MU    & URL for article         \\ \hline
+    MZ    & Annotator comment(s)       \\ \hline
+    \end{tabular}
+    \caption{Metadata tags and content}
+\end{table}
+    
+    We used some of the metadata fields to identify and remove listings (of best-selling books, plays, TV guides, etc.). Reasons for this were threefold. First, the jargon, abbreviations and non-clausal nature of listing language was not handled well by the parser. Second, list content was often repeated verbatim in multiple files, potentially skewing counts. Third, our two data sources archived listings in different ways. Listings were located by querying metadata fields in a number of ways. Files with titles such as \emph{Spare Times}, \emph{Best Sellers}, articles with keywords such as `theater', `listing', or days of the week. If a file contained only a listing, the file was removed. If a risk word appeared only within the list portion of an article, the file was deleted. If a file contained both a body and listing, only the listing was removed.
 
-Governmentality theorists have claimed in recent decades that a neo-liberal agenda has become more dominant that shifts responsibility to individuals and the expectation that individuals actively make decisions and take risks. If this is correct we would expect more individualised phrases which express more active risk taking. 
+    After all data processing, we had a 150 million word corpus of nearly 150,000 unique articles containing a risk word published in the NYT or \url{NYT.com} in 1963, and between 1987 and mid 2014. The corpus had 29 annual subcorpora. The health subcorpus contained a subset of these articles. A breakdown of the size and composition of each annual subcorpus is provided in Table \ref{tab:stats}. During analysis, when conducting absolute frequency analysis, frequency counts in the 1963 subcorpus were multiplied by four, to account for the smaller sample size. Frequency counts for 2014 were multiplied by 1.37 to fill in the uncaptured period between August 18--December 31.
 
-However, Beck claimed that in recent decades one has to understand and act as an individualised planning office exactly at times where knowledge and control of the future is limited. That means an active risk taking citizen is expected at a time where it is even more unlikely that an individual can control outcomes. For such a contradictory situation we would expect less the communication of self-confident decision making and risk taking but an individualised suffering of all kinds of risk. 
+    \begin{table}
+        \centering
+        \footnotesize
+    \begin{tabular}{p{1.5cm}|l|l|l|l|}
 
-This would support the suggestion of social policy researchers that risk is increasingly shifted from organisations and institutions to individuals (Hacker: risk shift). It is important to see that this happens as a legitimate shift not something what happens against public resistance. At least in a country such as the US where individual action is highly valued we would expect that this shift takes place legitimately and deeply rooted in the societal institutions. Rather than as a surprise it would be a consequent development following an already prepared path. As a result we would expect not only as a rational of consequent media reporting that individual stories are but to sell to the public but that more generally the individual exposure to risk rather than individual agency would be emphasised. 
+%\multicolumn{1}{|l}{Annual subcorpora} \\ \hline
+%multicolumn{3}{c|}{RESIDUE}
+\hline
 
-\subsection*{The increasing salience of at-risk status in risk reporting}
+\multicolumn{1}{|p{1.5cm}|}{Annual subcorpora} & \textbf{Subcorpus} & \textbf{Words} & \textbf{Articles} & \textbf{Risk words}   \\ \hline
+~ & \textbf{1963} & 83,188* & 1218 &  1,584  \\ \cline{2-5}
+~ & \textbf{1987} & 4,885,883 & 4,878 &  7,690  \\ \cline{2-5}
+~ & \textbf{1988} & 4,834,791 & 4,703 &  7,430  \\ \cline{2-5}
+~ & \textbf{1989} & 5,059,517 & 4,997 &  7,810  \\ \cline{2-5}
+~ & \textbf{1990} & 5,416,187 & 5,250 &  8,244  \\ \cline{2-5}
+~ & \textbf{1991} & 4,748,975 & 4,774 &  7,493  \\ \cline{2-5}
+~ & \textbf{1992} & 4,923,509 & 4,818 &  7,329  \\ \cline{2-5}
+~ & \textbf{1993} & 4,686,181 & 4,615 &  7,330  \\ \cline{2-5}
+~ & \textbf{1994} & 4,857,729 & 4,762 &  7,384  \\ \cline{2-5}
+~ & \textbf{1995} & 5,130,206 & 5,150 &  7,834  \\ \cline{2-5}
+~ & \textbf{1996} & 4,969,911 & 4,773 &  7,257  \\ \cline{2-5}
+~ & \textbf{1997} & 5,121,088 & 4,759 &  7,318  \\ \cline{2-5}
+~ & \textbf{1998} & 6,085,810 & 5,437 &  8,351  \\ \cline{2-5}
+~ & \textbf{1999} & 6,053,731 & 5,392 &  8,248  \\ \cline{2-5}
+~ & \textbf{2000} & 6,472,727 & 5,717 &  8,434  \\ \cline{2-5}
+~ & \textbf{2001} & 6,603,456 & 5,902 &  8,722  \\ \cline{2-5}
+~ & \textbf{2002} & 6,865,631 & 6,423 & 10,288  \\ \cline{2-5}
+~ & \textbf{2003} & 6,795,591 & 6,481 & 10,066  \\ \cline{2-5}
+~ & \textbf{2004} & 6,776,200 & 6,215 &  9,989  \\ \cline{2-5}
+~ & \textbf{2005} & 6,722,240 & 6,191 & 10,031  \\ \cline{2-5}
+~ & \textbf{2006} & 6,722,592 & 6,278 &  9,965  \\ \cline{2-5}
+~ & \textbf{2007} & 4,757,290** & 5,110 &  8,976  \\ \cline{2-5}
+~ & \textbf{2008} & 5,300,254 & 5,384 &  9,645  \\ \cline{2-5}
+~ & \textbf{2009} & 4,926,381 & 5,189 &  9,236  \\ \cline{2-5}
+~ & \textbf{2010} & 5,443,658 & 5,527 &  9,560  \\ \cline{2-5}
+~ & \textbf{2011} & 5,617,002 & 5,773 & 10,055  \\ \cline{2-5}
+~ & \textbf{2012} & 5,366,342 & 5,302 &  9,095  \\ \cline{2-5}
+~ & \textbf{2013} & 5,271,006 & 5,176 &  9,083  \\ \cline{2-5}
+~ & \textbf{2014} & 3,331,580 & 3,310 &  5,635 \\ \cline{2-5}
+~ & \textbf{Total} & \textbf{153,828,656} & \textbf{149,504} & \textbf{240,082} \\ \hline
+\multicolumn{1}{|p{1.5cm}|}{Topic \mbox{subcorpora}} & \textbf{Subcorpus} & \textbf{Words} & \textbf{Articles} & \textbf{Risk words}   \\ \hline
+% ~ & \textbf{Economics} & 10,489,137 & 8,286 & 32,448 \\ \cline{2-5}
+~ & \textbf{Health}    & 8,524,023  & 6,944 & 36,547 \\ \cline{2-5}
+% ~ & \textbf{Politics}  & 9,465,115  & 7,428 & 20,904 \\ \cline{2-5}
+%~ & \textbf{Total} & \textbf{28,478,275} & \textbf{22,658} & \textbf{89,899} \\ \cline{2-5}
+\end{tabular}
+    \caption{Subcorpora, their wordcount, file count and number of risk words}
+    \label{tab:stats}
+    \medskip % induce some separation between caption and explanatory material
+\begin{minipage}{0.9\textwidth} % choose width suitably
+{\footnotesize *~Only a small window of co-text---usually two sentences either side of the risk word---was preserved in this subcorpus, hence the smaller size of this sample.~\\
+**~The drop in word-count here coincides with the switch from NYT Annotated Corpus to ProQuest as the data-source.\par}
+\end{minipage}
+\end{table}
 
-Ulrich Beck claimed in the chapter Beyond Class and Status in his famous book the Risk Society that social inequalities and disadvantage would increasingly be framed in individualised terms. That means that risk is no longer attributed to social class or status but to social groups which are at-risk because of their particular behaviour rather than class affiliation. 
-This would be supported by claims of researchers examining shifts in public\slash social policy and social work claiming that social institutions would increasingly use practices that identify social groups at-risk on the basis of particular indicators which then characterise particular groups such as drug users, homeless, fatherlessness etc. as at-risk groups which require regulation, support, encouragement or protection. If Kemshall and others are correct that risk thinking has become a common societal practice this should be reflected in media coverage.
+            %\begin{table}
+            %\centering
+            %\small
+            %\begin{tabular}{|llll|}
+            %\hline
+            %Economics & 10489137 & 8286 & 32448 \\ \hline
+            %Health    & 8524023  & 6944 & 36547 \\ \hline
+            %Politics  & 9465115  & 7428 & 20904 \\ \hline
+            %\end{tabular}
+            %\end{table}
 
-We would expect that groups reported on in the media are identified and reported about using their at-risk status rather than social class affiliation or general socio-structural conditions which influence their behaviour or shape their living conditions. Such generalised factors would be rather silenced or made invisible. We would expect that it is increasingly likely that we find groups characterised by attributed risk status.
+\begin{figure}
+\footnotesize
+\begin{lstlisting}[breaklines]
+<MY>92 0.14 71 0.12</M>
+<MV>13 0.26 96 0.21</M>
+<MG>11 0.29 3 0.20</M>
+<MO>28 0.33 21 0.24</M>
+<MS>One family has lost a child and others may be at risk from a deadly brain inflammation, officials warned yesterday</M>
+<MJ>center: 45.444118, officials: 28.536198</M>
+<MT>New Jersey Daily Briefing;Meningitis Warning Issued</M>
+<MC>MENINGITIS</M>
+<MU>http://query.nytimes.com/gst/fullpage.html?res=9B06EFDA1239F933A05751C1A963958260</M>
+<MF>0819209.xml</M>
+<MA>KELLER, SUSAN JO</M>
+<MD>1995-12-30</M>
+One family has lost a child and others may be at risk from a deadly brain inflammation, officials warned yesterday. Bacterial meningitis recently killed a baby who attended the Center day-care program, officials say. They are urging parents and staff at the Center to contact their doctors or a hospital emergency room.
+\end{lstlisting}
+\caption{Example file: NYT-1995-12-30-10.txt}
+\label{fig:exfile}
+\end{figure}
 
-\subsection*{Individualisation winners and losers---risk-takers versus at-risk groups}
+\section{Tools and interface used for corpus interrogation}
 
-There is also a tension in the debates about risk in the literature. Relative powerful middle class people are assumed to be individualisation winners, that means they have agency and can make decisions while more disadvantaged people lack agency and are approached by the state, encouraged or more broadly managed. They have a more intrinsic quality of being at-risk. For example, drug users might be a population at-risk by social definition. We would expect finding a clear distinction between powerful risk takers and powerless at-risk or vulnerable groups identified and characterised by a specific variable or characteristic.
+Special tools needed to be developed to work with the very large dataset of both raw NYT articles and parsed paragraphs containing a risk word. Given a well-established history of use within humanities and social sciences, as well as a particular strength in working with linguistic data, we developed a Python-based toolkit for querying our data and visualising query results. Our purpose-built toolkit provided the ability to quickly search each subcorpus of our data, edit the results from our searches, perform concordancing and thematic categorisation, and generate visualisations of results. Though many parts of the toolkit were designed with more general Digital Humanities projects in mind, certain components of the toolkit were designed exclusively to aid in our particular investigation (projection of counts from 1963 and 2014; automatically stripping names and titles from U.S. politician names, etc.). The most important functions and their purpose are outlined in Table \ref{tab:pyfunc}, with a simple example of a function shown in Figure \ref{fig:code}. More detailed explanations and demonstrations are provided at \url{http://nbviewer.ipython.org/github/interrogator/risk/blob/master/risk.ipynb}; the repository of code itself is available via \emph{GitHub} (\url{https://github.com/interrogator/risk}), where it can freely be downloaded, or duplicated and modified.
 
-%Interesting to see which groups are represented in the NYT. Obviously powerful politicans. But also on a lower level, individual investors. Where are patients positioned? Differences? At risk or risk takers?
+\begin{table}[h!]
+\small
+\centering
+\begin{tabularx}{0.5\textwidth}{|l|X|} \hline
 
-\section{Our research approach}
+\textbf{Function name} &  \textbf{Purpose}     \\ \hline
+\texttt{interrogator()}  &  interrogate parse trees, find keywords, collocates, etc.    \\ \hline
+\texttt{plotter()}       &  visualise \texttt{interrogator()} results  \\ \hline
+\texttt{quickview()}     &  view \texttt{interrogator()} results       \\ \hline
+\texttt{editor()}       &  edit \texttt{interrogator()} results       \\ \hline
+\texttt{conc()}          &  complex concordancing of subcorpora  \\ \hline
+\texttt{keywords()}          &  get keywords and ngrams from corpus\slash subcorpus\slash concordance lines  \\ \hline
+\texttt{collocates()}          &  get collocates from corpus\slash subcorpus\slash concordance lines \\ \hline
+\texttt{quicktree()}          &  visually represent a parse tree  \\ \hline
+\texttt{searchtree()}          &  search a parse tree with a Tregex query  \\ \hline
+\end{tabularx}
+\caption{Python functions developed for our investigation}
+\label{tab:pyfunc}
+\end{table}
 
-The social sense-making processes of risk depends on risks being communicated. Though people experience risk when they manifest personally, since risks are usually expectations towards the future, the social process that shape these expectations are crucial. Even when we make personal experiences it depends on broader social processes whether we interpret a hot summer as an indication for climate warming or just a normal variation.
+\begin{figure}
+\centering
+\begin{minipage}[c]{.75\textwidth}
+\centering
+\begin{minted}[fontsize=\small,linenos=true]{python}
+def ngrams(data,
+           reference_corpus = 'bnc.p',
+           clear = True, 
+           printstatus = True, 
+           n = 'all',
+           **kwargs):
+    """Feed this function some data and get its keywords.
 
-Communication is mediated through language, and language is by no means restricted to a neutral communication of knowledge or information about events and happenings in the world. Language may shape what seems possible as much as what seems appropriate or inappropriate. It both constructs and responds to all kinds of information about the context in which it has been generated, the values underpinning it, the power structures it reproduces or is structured by (sociolects; gendered language, etc.). Since language is such a rich resource for communicating information about social reality, it is also data that can be used to examine social change (e.g. Norbert Elias' historical analysis of the books of manners to examine the civilisation process). 
+    You can use dictmaker() to build a new reference_corpus 
+    to serve as reference corpus, or use bnc.p
 
-The media plays an important role in communicating social life. It not only influences but also reflects what is considered important at a historical point in time not only in the form of selecting particular content but how it is presented. A careful analysis of linguistic change therefore requires not only investigation of what has been communicated through language, but how it has been communicated and how both lexis and grammar have changed over time in the communication of issues such as risk.
+    A list of what counts as data is available in the 
+    docstring of datareader().
+    """
+    
+    import re
+    import time
+    from time import localtime, strftime
+    import pandas as pd
+    try:
+        from IPython.display import display, clear_output
+    except ImportError:
+        pass
+    from corpkit.keys import keywords_and_ngrams, turn_input_into_counter
+    from corpkit.other import datareader
+    from dictionaries.stopwords import stopwords as my_stopwords
 
-Sociology, linguistics and media studies provide slightly different concepts of both `context' and of the forces that influence the selection and communication of social issues such as risk. Sociology is interested in wider and long term social changes. In a historical perspective, the focus is on how institutional and sociocultural social changes are reflected in the use of language. Sociologists are well aware of that the use of language is, for example, influenced of the social milieu a person is part of (e.g. working class, middle class) and such a context manifests not only in the content but also the form and the use of grammar of language. For sociologists, contexts and events within contexts are not necessarily socially triggered or caused. But how they are dealt with is mediated through language. The suppression of women in a society might be openly debated or not talked about. It might even be engraved in a language, where masculine nouns and\slash or pronouns have historically also been used to refer to general populations (e.g. \emph{A giant leap for mankind}) or singular entities whose gender is unknown.
+    loaded_ref_corpus = turn_input_into_counter(reference_corpus)
+    
+    time = strftime("%H:%M:%S", localtime())
+    if printstatus:
+        print "\n%s: Generating ngrams... \n" % time
+    good = datareader(data, **kwargs)
 
-% with regard to the above, of course linguists are attuned to class, etc, and naturally, moreso, when what is being considered is dialectal variation.
+    regex_nonword_filter = re.compile("[A-Za-z-\']")
+    good = [i for i in good if re.search(regex_nonword_filter, i) 
+            and i not in my_stopwords] 
 
-In many branches of functional linguistics, the understanding of context focusses on text. A particular text can be analysed regarding its form and structure and its origin. Through linguistic features of texts alone, genre can often be clearly determined. Whether a text is a newspaper article or a university lecture, a talk of a party leader to party members or a general public, can often be determined simply through an analysis of the lexis and grammar in a text, as well as the way in which stages of the text are ordered. The larger social conditions and how these might have influenced the content and use of language are less commonly examined. Despite increasing awareness and sensitivity to context in functional linguistics, context is more commonly operationalised as observable constellations of variables of a given interaction (speaker demographics, spoken\slash written, formality, etc), rather than as a set of broader social movements, ideas and values. Even researchers within systemic functional linguistics (SFL), which at one time explicitly attempted to delineate the relationship between realised language and social class and ideology, have revised the conceptualisation of context to exclude ideology as the greatest level of observable abstraction. Long-term historical analyses remain centred on language, and empirically driven attempts to connect language change to broader social change are exceptionally rare.
+    ngrams = keywords_and_ngrams(good, reference_corpus = reference_corpus, 
+                                 calc_all = calc_all, show = 'ngrams', **kwargs)
 
-This is not to say that there is no value of linguistic theory and methods for the purposes of understanding the changing status of risk in society. In fact, the opposite is the case: linguistics (in our case, SFL) provides a framework for delineating the \emph{kinds} of changes that risk language undergoes. For example, in order to understand how risk language has changed, we must first distinguish between risk as a participant within a communication about the world (\emph{The risk was serious}) and risk as a process (\emph{Lives were risked}). Our addition to more standard linguistic methods is not that we abstract the significance of linguistic changes---as this is a common task within linguistic discourse analysis---but rather that following from an abstracted discourse-semantic analysis of risk, we abstract again, to consider the influence of factors beyond what is captured within linguistic taxonomies of context.
+    out = pd.Series([s for k, s in ngrams], index = [k for k, s in ngrams])
+    out.name = 'ngrams'
 
-Media studies are positioned in between sociological and linguistic approaches. Discourse analyses using media or print media often focus on content and the positive or negative representation of issues. These studies do often not go into further detail regarding long term linguistic changes. They tend to focus on short term ways of representation of issues such as climate change. However, media studies have also raised awareness of the organisational and social context that shapes how news are produced (e.g. free press or more or less controlled press; economic pressure; political bias). Research has examined the production process of news and how this process follows an own logic of newsworthiness that influences which issues enter the media and which not. There is also awareness that there are events and dimensions of change which are not reported in the media. Not everything is newsworthy and what is selected follows the own media production logic of news. In this respect media reporting is selective and it is difficult take stock of the aspects which have not been reported without looking beyond the media. These issues must be identified and approached differently. For example, it is important for linguistic research of texts alone to acknowledge that such approaches may not be able to consider what drives the media agenda and which kinds of texts might be systematically included\slash excluded as a result of unobserved institutional and contextual factors.
+    # print and return
+    if clear:
+        clear_output()
+    if printstatus:
+        time = strftime("%H:%M:%S", localtime())
+        print '%s: Done! %d results.\n' % (time, len(list(out.index)))
+    if n  == 'all':
+        n = len(out)
+    return out[:n]
+\end{minted}
+\caption{Python function for getting n-grams from corpus data}
+\label{fig:code}
+\end{minipage}
+\end{figure}
+%
+Finally, we developed an IPython Notebook based interface for using these functions to investigate the NYT corpus (also available via our GitHub URL above). This served not only as our main platform for interrogating the dataset, but also as a means of dynamically disseminating results without being limited by considerations of space. In being open-source, and in explicitly showing the exact queries used to generate findings, the Notebook ensures both reproducibility and transparency of the entirety of our investigation. At the same time, it provides a framework for sophisticated corpus-assisted discourse analysis using cutting-edge digital research tools. Researchers are encouraged to run the Notebook in conjunction with this report, so that they can generate and manipulate our key findings as they see fit.
 
-% point conceded, above.
-
-However, since the media are part of social change, it reflects as much as influences social changes, and, accordingly, can be used to examine long term social change. Since many risk issues are newsworthy, we can expect to find a lot risk communication, which allows us to examine the changing practice of risk reporting and the use of the risk semantic. Broad changes in the relationship between news institutions and risk communication (e.g. which risks are considered, how they are reported, etc.) are so general and part of more generally changing discourses and linguistic practice that they will affect newspapers as well since they have to appeal to the public.
-
-\subsection{Summary}
-
-We adopt an interdisciplinary approach to risk research. For this reason, a key component of our project involved developing and applying a novel methodology that combines systemic functional linguistics, corpus linguistics, and sociological theory concerning risk. In the following chapters, we outline relevant linguistic theory, drawing mostly on corpus, computational and systemic-functional theory. Chapters 5--7 present and discuss the findings of the investigation, and Chapter 8 provides a research agenda and summary.
-
-
+% \begin{table}
+% \centering
+% \tiny
+% 
+% \begin{tabularx}{1.0\textwidth}{|llllllllllllllllllllllllllllll|}
+% \hline
+% 
+% \textbf{Subcorpus}          & \textbf{1963}  & \textbf{1987}    & \textbf{1988}    & \textbf{1989}    & \textbf{1990}    & \textbf{1991}    & \textbf{1992}    & \textbf{1993}    & \textbf{1994}    & \textbf{1995}    & \textbf{1996}    & \textbf{1997}    & \textbf{1998}    & \textbf{1999}    & \textbf{2000}    & \textbf{2001}    & \textbf{2002}    & \textbf{2003}    & \textbf{2004}    & \textbf{2005}    & \textbf{2006}    & \textbf{2007}    & \textbf{2008}    & \textbf{2009}    & \textbf{2010}    & \textbf{2011}    & \textbf{2012}    & \textbf{2013}    & \textbf{2014}    \\ \hline
+% \textbf{Wordcount}     & 83188 & 4885883 & 4834791 & 5059517 & 5416187 & 4748975 & 4923509 & 4686181 & 4857729 & 5130206 & 4969911 & 5121088 & 6085810 & 6053731 & 6472727 & 6603456 & 6865631 & 6795591 & 6776200 & 6722240 & 6722592 & 4757290 & 5300254 & 4926381 & 5443658 & 5617002 & 5366342 & 5271006 & 3331580 \\
+% \textbf{Article count} & 1218  & 4878    & 4703    & 4997    & 5250    & 4774    & 4818    & 4615    & 4762    & 5150    & 4773    & 4759    & 5437    & 5392    & 5717    & 5902    & 6423    & 6481    & 6215    & 6191    & 6278    & 5110    & 5384    & 5189    & 5527    & 5773    & 5302    & 5176    & 3310    \\
+% \textbf{Risk words}    & 1584  & 7690    & 7430    & 7810    & 8244    & 7493    & 7329    & 7330    & 7384    & 7834    & 7257    & 7318    & 8351    & 8248    & 8434    & 8722    & 10288   & 10066   & 9989    & 10031   & 9965    & 8976    & 9645    & 9236    & 9560    & 10055   & 9095    & 9083    & 5635    \\
+% \hline
+% \end{tabularx}
+%     \caption{Subcorpora their wordcount, file count and risk token count}
+% \end{table}
+% 
+%     %Figure charting articles, words, risk tokens by year here \label{fig:stats}

@@ -1,296 +1,90 @@
 %!TEX root = ../risk_report.tex
 
-%\chapter{A comparison of economics, health, and political risks}
+\chapter{Limitations and future directions}
 
-%In this chapter, we use subcorpora of economics, health and politics articles to understand how risk words change in specific semantic fields. Due to the smaller size of these subcorpora, as a general rule, the kinds of specific grammatical queries used in the previous chapter were not useful, as they generated very low numbers of results. Accordingly, this part of our investigation includes analyses of keywords and n-grams.
+Broadly, our project synthesised \emph{corpus assisted discourse studies} as a \textbf{methodology}, \emph{systemic functional linguistics} as a \textbf{theory of language}, and \emph{sociological accounts of risk} as \textbf{a set of related assumptions about risk}. Our overarching aim was to combine the theories and methods of these areas to provide an empirical account of the ways in the discourse-semantics of risk have undergone longitudinal change, determining in the process which kinds of methods are suitable for further corpus-driven research into risk.
 
-            %\begin{figure}[htb!]
-            %\centering
-            %\includegraphics[width=0.70\textwidth]{../images/clouds.png}
-            %\caption{Key participants in the \emph{Economics}, \emph{Health} and \emph{Politics} subcorpora}
-            %\label{fig:clouds}
-            %\end{figure}
+Methodologically, our study has demonstrated the potential for large annotated corpora from a single source to provide empirical evidence for key claims in sociological literature. Though ours is not the first study of discourse using linguistic corpora, it is novel in two key respects. First, by creating a corpus comprised of annual subcorpora, and by interrogating each subcorpus in turn, we can learn not only about how language is used to communicate risk, but also how risk language has changed longitudinally. Second, our study takes advantage of major developments within computational linguistics\slash natural language processing. Most obvious is the use of constituency and dependency parsing, but also in this category is the development of an IPython interface for manipulating the corpus and visualising the output of queries. These characteristics both allow far more nuanced kinds of investigation than the practices generally seen in CADS (keywording, collocation, concordancing, etc.), and assist in creating reproducible, transparent, open-source humanities\slash social science research.
 
-            %\begin{figure}[htb!]
-            %\centering
-            %\includegraphics[width=.70\textwidth]{../images/number-of-articles-in-each-subcorpus.png}
-            %\caption{Number of articles in each subcorpus}
-            %\label{fig:article_per_subcorpus}
-            %\end{figure}
+\section{Limitations of scope}
 
-            %%
-            %%Due to time constraints, we restricted the topic comparison to domains that had yielded interesting insights in the earlier interrogations. Further, we found that the smaller size of the subcorpora limited us to lexicogrammatical queries that outputted a large enough number of results for quantitative reliability. Thus, we focussed on the following three areas:
+In order to fulfill these aims, we necessarily limited our investigation's scope. The first main issue of scope was our choice of print news data from a single publication. The advantages of this kind of text are many: the NYT is a widely read, well-known, and influential publication. The homogeneity of its language and its consistent structure in many ways facilitate longitudinal and quantitative analysis. The drawback of this kind of data, however, is that we can say little about how risk language works within other kinds of communication. Accordingly, we have made no effort to measure the importance or weight of print journalism against other text types in which risk language occurs, such as film and television, various online media or casual spoken\slash written conversation.
 
-             %\begin{table}[htb!]
-             %\centering
-             %\small
-             %\begin{tabular}{|l|l|l|}
-                          %\hline
-                          %\textbf{Economics}   & \textbf{Health}         & \textbf{Politics}     \\ \hline
-                          %political   & high           & political    \\ \hline
-                          %big         & great          & great        \\ \hline
-                          %economic    & low            & big          \\ \hline
-                          %financial   & other          & high         \\ \hline
-                          %great       & serious        & own          \\ \hline
-                          %high        & financial      & serious      \\ \hline
-                          %more        & potential      & new          \\ \hline
-                          %real        & medical        & real         \\ \hline
-                          %systemic    & more           & considerable \\ \hline
-                          %significant & significant    & more         \\ \hline
-                          %new         & cardiovascular & other        \\ \hline
-                          %little      & political      & significant  \\ \hline
-                          %global      & possible       & economic     \\ \hline
-                          %serious     & small          & financial    \\ \hline
-                          %other       & real           & potential    \\ \hline
-                          %excessive   & such           & personal     \\ \hline
-                          %potential   & genetic        & little       \\ \hline
-                          %such        & ovarian        & such         \\ \hline
-                          %much        & same           & public       \\ \hline
-                          %own         & bad            & military     \\ \hline
-                          %\end{tabular}
-                          %\caption{Most common adjectives modifying nominal risks in the topic subcorpora}
-                          %\label{tab:echepo_adjmod}
-            % \end{table}
+There were also import constraints imposed both by our chosen theory of language. Though SFL has proven useful as a framework for analysing how language is drawn upon as a resource for making particular kinds of meanings, it is also a theory which has little to say about language and cognition, for example. This was suitable for our particular investigation, as we cannot possibly determine either the authors' intent behind, nor the readers' interpretations of, the thousands of articles being analysed. Accordingly, we did not attempt to draw links between risk language in the NYT and the ways in which risk is cognitively understood by writers or readers. We suggest that the various strengths of different functional accounts of language can work in tandem, however, and thus welcome future insights from cognitive approaches to risk.
 
-\chapter{\emph{Risk} in health articles in the NYT}
+A third and final constraint is our selection of linguistic phenomena for detailed analysis. Primarily, we focus on the experiential and interpersonal dimensions of risk language. The third key component of language is its textual dimension: how language is reflexively organised into meaningful, coherent units. Though our decisions here were guided by the fact that risk as a word does not tend to play important roles in building cohesion and coherence in narratives, we readily admit that more detailed analysis of the role of risk within this dimension may yield important insights that we have not uncovered. Tracking whether risk words shift longitudinally within the textual dimension (between given and new information within a clause, for example) may also be able to show us the extent to which people are aquainted with the notion of risk itself.
 
-    This chapter summarised the methods and results from an investigation of articles annotated as being about health topics. The work presented here is covered  in substantially more detail in our in-press chapter:  name?
+\section{Shortcomings in natural language processing tools}
 
-    \section{Methdological considerations when working with a smaller corpus}
+    A major issue in our study relates to the performance and epistemological consequences of digital tools used during the investigation. In short, available digital tools may not perform as desired. Parsers remain far from perfect, and innumerable mistakes in parsing are present in our dataset. What was missing in our results as a result of parsing problems or query design likely went unnoticed amongst the streams of text. By the conclusion of the interrogation, millions of clauses had been manipulated, and millions of features extracted and counted. Accordinglyt, oversights and mistakes are unfortunately bound to remain.
 
-    Our topic subcorpora were much smaller than our main corpus. As a result, lexicogrammatical querying did not tend to yield quantitatively reliable results. Accordingly, other kinds of corpus linguistic investigation, not as reliant on grammatical structures, were applied. 
+    A related issue is that the parser used here---\emph{Stanford CoreNLP}---relies on phrase structure and dependency grammars, rather than systemic functional grammar (for which fewer computational resources are presently available). We were thus left with the task of translating systemic-functional concepts into phrase structure grammar and dependency grammar. This process was often time-consuming and counter-intuitive, laden with currently unsolvable ambiguities, as well as theoretically difficult to reconcile.
 
-    First, we considered \emph{keywords}---that is, words that were unusually frequent within the health corpus when compared to the corpus as as a whole. Linear regression was used to determine the slope of each keyword's trajectory over the length of the x-axis. Results were then sorted into two groups, based on the steepness of the incline\slash decline of the slope. Results whose slope significance was over 0.05 were automatically excluded.
+    % In the case of topic modelling, rather than erroneous, results may simply be unhelpful. The modeller is blind to grammatical structure as well as the division of language into three metafunctions. Accordingly, MALLET groups texts based on words that are unlikely to contribute not contribute to the semantic field of the text (\emph{like, please, to, having, could}). Furthermore, MALLET's conceptualisation of topic may differ markedly from a human reader's: in one iteration of the topic modelling, MALLET grouped together articles about African American religious issues and chess, apparently based on the co-occurrence of words like \emph{black}, \emph{white}, \emph{saving} and \emph{bishop}.
 
-    \begin{figure}[htb!]
-    \centering
-    \begin{minipage}{.48\textwidth}
-    \centering
-    \includegraphics[width=.95\textwidth]{../images/keywords-increasing.png}
-    \caption{Keywords becoming more key over time}
-    \label{fig:key-inc}
-    \end{minipage}%
-    \begin{minipage}{.48\textwidth}
-    \centering
-    \includegraphics[width=.95\textwidth]{../images/keywords-decreasing.png}
-    \caption{Keywords becoming less key over time}
-    \label{fig:key-dec}
-    \end{minipage}
-    \end{figure}
-    %
-    Interestingly, words relating more closely to everyday life world concerns are increasing over time, while terms relating to healthcare institutions are decreasing.
+    The second major issue unearthed during the investigation concerned the size of the dataset, which, aside from being simply computationally intensive, was also so large that it constrained the kinds of analytical methods available to us. With 29 annual subcorpora, as well as three topic subcorpora, we struggled to simultaneously maintain a focus on minute changes in lexicogrammar and to connect change generally to events of interest to sociologists. Indeed, though instantiations of risk words may react to current events, further subdivision of the corpus into weekly/monthly subcorpora proved too unwieldy. A similar investigation could be carried out on one subcorpus alone, divided into weeks or months, in order to better assess the influence of individual events. The richness of the data also prevented direct comparison of more risk fields, with only a basic treatment of health risks given here. 
 
-    Next, we were interested in \emph{bigrams}---that is, words that occur beside each other multiple times within a corpus. Bigrams containing a stopword were excluded from analysis, as these results were generally common clusters of closed class words (\emph{in the}, \emph{of a}, \emph{one day}, etc.). Again, linear regression was used to group results into increasing and decreasing groups.
+    \section{The limits of lexicogrammatical querying}
 
-    \noindent
-    \begin{figure}[htb!]
-    \centering
-    \begin{minipage}{.42\textwidth}
-    \centering
-    \includegraphics[width=1\textwidth]{../images/ngrams-increasing.png}
-    \caption{bi-grams becoming more frequent over time}
-    \label{fig:ngram-inc}
-    \end{minipage}%
-    \begin{minipage}{.42\textwidth}
-    \centering
-    \includegraphics[width=1\textwidth]{../images/ngrams-decreasing.png}
-    \caption{bi-grams becoming less frequent over time}
-    \label{fig:ngram-dec}
-    \end{minipage}
-    \end{figure}
+        A major issue we faced during our investigation, and have yet to deal with directly, is the potential for similar discourse-semantic meanings to be made via a number of different kinds of lexicogrammatical arrangements. Consider the following invented examples:
 
-We grouped these into themes, with results entered into one or more categories. Ambiguous results were often concordanced in order to determine the main context of use: \emph{athlete}, for example, could indicate the health condition (\emph{Athlete's foot}), a chain of footwear stores, or denote athletes themselves. The latter was revealed to be by far the most common context, and athlete was thus added to \emph{People, everyday}.
+        \begin{enumerate} [before=\color{black}\ttfamily] \setlength\itemsep{0em} \small \setlength\itemsep{0em} \small
+            \item They risked their money
+            \item Risked money was lost
+            \item They risked their savings
+            \item The risk of money loss was there
+            \item She took her money from her purse and risked it.
+            \item The money, which they risked, was lost.
+            \item They had money. They risked it.
+        \end{enumerate}
+        %
+        Each of these examples communicates the same kind of semantic meaning---that money was risked---but through different grammatical strategies, ranging from the group level (Ex. 1) to the clause-complex (Ex. 7). Our analyses typically dealt with the most common, or \emph{congruent}, kinds of realisations, but at the expense of meanings made incongruently, or above the level of the clause. With great difficulty, we could perhaps construct a query that matches every one of these results, or merge the results of a number of separate queries. As the queries grow in complexity, however, undesirable results may creep in: a query matching \emph{money} in the above cases would also likely match \emph{death} in \emph{They risked death}, despite the fact that one is the risked object and one is the potential harm. Determining the proper functional role in the cases above is very simple for human coders, but the number of results in need of categorisation is often far from trivial. Limited by both the ability of current parsers and by constraints of scope, we found ourselves largely unable to devise methods for accounting for incongruence in risk language during automated querying. As a result, our analysis was restricted for the most part to meanings that were being made in the most probable, normative ways.
 
-\subsection{Nominal groups in the health subcorpus}
+        The second major issue is the exact converse scenatio: counted together in many our automatic queries are many examples with contradictory semantic meanings. Continuing our example of money loss, consider the following:
 
-We also looked at key nouns, or nominal groups. By measuring the slope of trend lines, we could ascertain which groups were becoming more or less common.
+        \begin{enumerate} [before=\color{black}\ttfamily] \setlength\itemsep{0em} \small \setlength\itemsep{0em} \small
+            \item They would have risked their money
+            \item They didn't risk their money
+            \item Risking money was a terrible idea, so they didn't do it.
+            \item Don't risk their money.
+        \end{enumerate}
+        %
+        In each of these cases, money was not necessarily lost. Lexicogrammatical querying, however, would simply count \emph{money} as the \emph{risked\slash lost thing}. Though we were careful not to conflate our abstracted results with occurrences of particular events (money loss), we did not attempt to determine whether certain things were more often either hypothetically or really risked. Our approach is not unique in its lack of engagement with incongruent meanings, hypotheticals, and the like: few corpus-based studies of discourse have attempted to distinguish between these meanings automatically. Indeed, querying of these kinds of features could uncover disparities between real and imagined sites of risk in news discourse: do politicians risk more than everyday people, or do they only \emph{potentially risk} more? Given the extensive work on meanings made by mood and modality systems in English, as well as the accuracy of automatic annotation for these kinds of lexicogrammatical features, we suggest that more constrained studies of mood features of risk could plausibly be undetaken using tools and methods developed here.
 
-    \noindent
-    \begin{figure}[htb!]
-    \centering
-    \begin{minipage}{.42\textwidth}
-    \centering
-    \includegraphics[width=1\textwidth]{../images/1.png}
-    \caption{Absolute frequency of nominal groups becoming more frequent over time}
-    \label{fig:1}
-    \end{minipage}%
-    \begin{minipage}{.42\textwidth}
-    \centering
-    \includegraphics[width=1\textwidth]{../images/2.png}
-    \caption{Relative frequency of nominal groups becoming more frequent over time}
-    \label{fig:2}
-    \end{minipage}
-    \end{figure}
-    \noindent
-    \begin{figure}[htb!]
-    \centering
-    \begin{minipage}{.42\textwidth}
-    \centering
-    \includegraphics[width=1\textwidth]{../images/3.png}
-    \caption{Relative frequency of nominal groups becoming more frequent over time}
-    \label{fig:3}
-    \end{minipage}%
-    \begin{minipage}{.42\textwidth}
-    \centering
-    \includegraphics[width=1\textwidth]{../images/4.png}
-    \caption{Relative frequency of nominal groups becoming less frequent over time}
-    \label{fig:4}
-    \end{minipage}
-    \end{figure}
+        Finally, it must also be noted that any study of text corpora necessarily involves removing text from the actuality in which it was produced. Though we can be attuned to the nature of written news journalism, we have not been able to account for meanings made multimodally (through adjacent images, advertisements, etc.). Though perhaps not a critical issue in studies of print news corpora (in comparison to television advertisements, casual conversation, etc.), it is nontheless important to acknowledge that in some sense we have been studying \emph{text}, rather than \emph{texts}. Synthesis of corpus findings with in-depth analyses of individual articles, or of the influence of the media production process, would no doubt improve our ability to generalise our results. Indeed, future research incorporating these perspectives is planned.
+
+        % Predictive applications of Big Data/corpus linguistic methods have already been discussed: \citeA{michel_quantitative_2011} and \citeA{leetaru_culturomics_2011} argue that nuanced mining of large quantities of language can potentially predict civil uprisings such as those seen in the Arab Spring, for example. It must be remembered that these studies have been criticised for their far-reaching conclusions \cite<e.g.>{zimmer_when_????}, and of course that predictive applications of corpus linguistics to date have had the benefit of hindsight. Interpreting peaks and troughs in particular kinds of language is also far from straightforward: increasing numbers of risk words before 9\slash 11 could be interpreted as either a possible predictor of the event or as evidence that the event did not itself cause an increase in the use of risk words. As such, we remain cautiously optimistic about predictive applications. More practically, it seems that such applications are feasible only when there is little delay between text production and text analysis: automated analysis of language circulated via the Web seems a much more sensible starting point for predictive work than static corpora of digitised newspapers and books.
+
+\section{Research agenda}
+
+The tools and methods here could easily be operationalised with new datasets, allowing for research into changes in risk semantics at differnet points in time, or into regional\slash multilingual differences. Of course, further studies need not be limited to \emph{risk}: though we limited our analysis to risk words and their co-text, resources such as \emph{The New York Times Annotated Corpus} \cite{sandhaus_new_2008}) present the possibility of analysis of any other lexical items and\slash or grammatical structures. Sociological hypotheses concerning the relationship between risk and close synonyms, such as danger or threat, or between risk and key events, such as terrorism, could be studied with a great deal of specificity with a larger corpus. Such a resource could also serve as a more authoritative reference corpus.
 
 
-\begin{itemize}
-\item The first major theme that emerges from this interrogation is the shift from infectious to non-infectious disease.
-\item A second point of interest is the decline in terms related to insurance. Though the prevalence of health insurance in mid 1990s articles was unexpected, as it corresponds with Hillary Clinton's efforts to increase health insurance coverage in the USA, unexpected was the lack of an upswing in insurance terms during the pushes for healthcare reform throughout the Obama administration.
-\item Also apparent is an upward trend for nominal groups related to research (\emph{study, percent, research, etc.}).This finding was of particular interest, given that the increasing contestation of academic and scientific research are core hypotheses made by Beck. Concordancing was used to look for evidence of contestation when the nominal groups related to research, researchers, studies, etc. were instantiated (see Table \ref{tab:researcher}).
-\end{itemize}
-%
-Broadly speaking, institutional social actors, political representatives and the like appear to have been displaced by individual human actors and components within their everyday life world. The exception to this rule is the domain of research, which is becoming increasingly salient in health reporting. Though further investigation into the emergence of research as a key semantic domain within risk discourse is needed, we hypothesise that the increase is the cause of both institutional factors (the time- and cost-effectiveness of reporting on science) as well as sociological changes (an increased consciousness of science, etc.) The lack of contestation of research in the NYT, however, is at least partially at odds with Beck's conceptualisation of risk in reflexive modernity. Due to the fact that our data is from only one source, we cannot 
+%It should also be noted that the kinds of tasks needed for analysis of proper nouns in particular (selecting particular tokens or thematic clusters of tokens, merging results, zooming in to particular spans of time, etc.) are key components of the corpus analysis toolkit and IPython Notebook interface (\url{https://github.com/interrogator/risk}). Exploration using the purpose-built interface reveals that many topics are present in the data, but are hidden by the frequency of the very prominent examples charted here. Searching for \emph{Yugoslavia}, \emph{Bosnia}, \emph{Kosovo}, \emph{Serbia}, \emph{Mil{\u o}sevi{\'c}}, \emph{\textsc{NATO}}, (etc.), reveal expected peaks at different stages of the 1990s, despite falling outside of the range of the visualisations presented here. Given that the dataset and toolkit are open-sourced, we encourage researchers to conduct further, more specific analysis of risk language and either particular people, places and events, or risk language and topics such as health, politics, economics or sport.
 
-If contestation of science and research happens mostly within certain communicative genres (e.g. casual conversation, Tweets, etc.) or among certain demographics, it seems prudent to suggest further research focussing on the presentation of science within different kinds of talk. This could be useful in building an empirically driven account of the genesis, mechanism and effects of contestation of mainstream science and research.
+Theoretically, there are far more avenues worthy of exploration: key sociological claims need to be addressed in detail, with sustained description and analysis. As just one example, though the increasing synonymy of risk and threat cannot be accurately measured in a corpus constructed of risk words and their co-text, examination of this link would be readily observable with a different corpus. A number of metrics exist for determining the extent to which two words are interchangeable (functionality provided by both NLTK and Sketch Engine)---this could be another fruitful method for uncovering shifting discourse-semantics of risk.
 
-\afterpage{%
-\begin{table}
-\centering
-\tiny
-\begin{tabular}{lrrl}
-1 & We know this now because                           & researchers & tested both theories , side by side , to see which \\
-2 & something the public did not : Yale University     & researchers & had tentatively concluded that PPA was linked to a \\
-3 & Instead ,                                          & researchers & say , young killers must be seen as extremely      \\
-4 & of men with E.D. , or at risk for developing it ,  & researchers & in Italy found that the men could improve their    \\
-5 & If you were an academic                            & researcher  & , you 'd have to persuade your institutional       \\
-6 & Some                                               & researchers & believe hyperthymics may be at increased risk of   \\
-7 & index , smoking and several other risk factors ,   & researchers & found that women on postmenopausal hormone therapy \\
-8 & will have public health consequences , the         & researchers & said                                               \\
-9 & Finally , and perhaps most powerfully ,            & researchers & say that a life in poverty is a life of stress     \\
-10 & Office of Protection from Research Risks said the  & researchers & altered the medical records of patients , then     \\
-11 & In their paper , the                               & researchers & noted that `` countries in which wine is the       \\
-12 & In another study , by                              & researchers & at the University of Connecticut , leg strength    \\
-13 & In an unexpected finding , the                     & researchers & reported that the women receiving goserelin also   \\
-14 & that , far from protecting the heart as many       & researchers & had assumed , the therapy may have put the women   \\
-15 & Now                                                & researchers & have found that elevated risk of psychiatric       \\
-16 & of a New York Fire Department rescue company and a & researcher  & who is exploring the psychological bases of        \\
-17 & Department of Veterans Affairs said the California & researchers & did not properly assess the safety of experimental \\
-18 & Other                                              & researchers & , working with similar kinds of data , have        \\
-19 & The                                                & researchers & concluded that the study '' provides the first     \\
-20 & On the other hand , said Dr. Susan Czajkowski , a  & researcher  & at the National Heart , Lung and Blood Institute   \\
-21 & exactly how a given AIDS patient was infected ,    & researchers & do not know exactly how much the risk of           \\
-22 & In an effort to finance debts , '' the             & researchers & said , `` ordinary people are paying the ultimate  \\
-23 & during the next 25 years of about 6 percent , the  & researchers & found                                              \\
-24 & To obtain consent ,                                & researchers & are required to explain that the experiments are   \\
-25 & slightly increasing their risks of dying earlier , & researchers & reported yesterday                                 \\
-26 & Utah                                               & researchers & have videotaped 150 couples to measure the effect  \\
-27 & blood cells -- became patients ' property ,        & researchers & taking them without detailed consent and explicit  \\
-28 & In mapping the human genome ,                      & researchers & determined that nearly 99 percent of genetic       \\
-29 & The                                                & researchers & were unable to include family history of diabetes  \\
-30 & of Internal Medicine , Dr. Solomon and other       & researchers & looked at the comparative risks posed by different \\
-31 & the perception of risk , said Pete Delaney , a     & researcher  & with the administration , adding that only about 9 \\
-32 & The                                                & researchers & conclude that irregular sleep by itself may be a   \\
-33 & Dr. Bernard H. Fox , a federal                     & researcher  & who became a pioneer in investigating the effect   \\
-34 & The                                                & researchers & said it was unclear why smoking appeared to        \\
-35 & The Stanford                                       & researchers & , who included Dr. Irving Weissman , a leading     \\
-36 & But                                                & researchers & like Dr. Monahan and Dr. McNiel are applying       \\
-37 & A study of 1,240 people by                         & researchers & at Case Western Reserve University in Cleveland    \\
-38 & that of diabetes , '' said Dr. Steven G. Deeks , a & researcher  & at the University of California , San Francisco    \\
-39 & In addition ,                                      & researchers & hope that the studies linking the disorder to      \\
-40 & night on WNBC-TV , that Cornell University         & researchers & have found a risk of alcoholism among New York     \\
-41 & , suggesting chance could play a role , but        & researchers & say the trends are credible because they are       \\
-42 & The                                                & researchers & also found that patients became significantly less \\
-43 & Over all ,                                         & researchers & found that calcium supplements did not lower the   \\
-44 & of the power AIDS activists have mustered to push  & researchers & to do experiments that many experts deem foolish   \\
-45 & The                                                & researchers & next study the extent to which medical treatment   \\
-46 & was the fourth-leading risk factor for death , the & researchers & said                                               \\
-47 & study 's author , Kathleen Miller , an addiction   & researcher  & at the University of Buffalo , says it suggests    \\
-48 & The                                                & researchers & claim that the benefits of the research -- greater \\
-49 & Some                                               & researchers & suspect genetics : Maybe thin people who develop   \\
-50 & Dr. Bishop and Dr. Varmus , along with other       & researchers & , have found that the genes can cause cancer in    \\
-51 & Finally ,                                          & researchers & at Tufts reported last month in The Journal of     \\
-52 & The lead                                           & researcher  & , Dr. Tina V. Hartert , director of the Center for \\
-53 & harmful cholesterol in the blood , even when the   & researchers & accounted for other risk factors for high          \\
-54 & on cases stemming from the Sept. 11 attacks ,      & researchers & found that the more deeply therapists were         \\
-55 & The                                                & researchers & did find an increased risk of other , less common  \\
-56 & The inquiry in Ms. Wan 's case found that          & researchers & had adequately explained the risks to her and that \\
-57 & For example , she said ,                           & researchers & are experimenting with fast-growing carp that      \\
-58 & than 23,000 Greek men and women ages 20 to 86 ,    & researchers & found that napping at least three times a week for \\
-59 & precision afforded by simple computing devices ,   & researchers & say , promise to deliver new insights on risk      \\
-60 & only two categories of risk , minimal and great ,  & researchers & were often discouraged from doing research         \\
-61 & the clear advantage of moderate drinking , the     & researchers & presented their findings with strong caveats       \\
-62 & As the genes become better understood ,            & researchers & expect to find ways to block them if they become   \\
-63 & adolescents followed over a period of nine years , & researchers & at the New York Psychiatric Institute found that   \\
-64 & Health , for example , said that 100 psychiatric   & researchers & gathered in a room would all probably agree that   \\
-65 & smoking might have damaged the fathers ' sperm ,   & researchers & said yesterday                                     \\
-66 & with 20 percent of the control group , the         & researchers & found                                              \\
-67 & The                                                & researchers & found that for each four-inch increase in height   \\
-68 & between height and cancer may help guide           & researchers & to study hormones and growth factors that          \\
-69 & Why do                                             & researchers & and willing patients test the boundaries of        \\
-70 & 's disease as those who have never smoked ,        & researchers & say , and several small studies have indicated     \\
-71 & But                                                & researchers & said they had never seen this before , either in   \\
-72 & In 2012 , British                                  & researchers & , by combining results from clinical trials that   \\
-73 & After adjusting for various health factors , the   & researchers & found that for each increase of 10 micrograms per  \\
-74 & The F.D.A. has asked                               & researchers & at Columbia to reclassify the cases of self-harm   \\
-75 & The                                                & researchers & said this was troubling , given recent studies     \\
-76 &  A large team of                                    & researchers & , led by V. Wendy Setiawan , an assistant          \\
-77 &  and violated Federal regulations because the       & researchers & had not informed patients of the risks             \\
-78 &  Yet                                                & researchers & also concluded the risk of stroke was the same as  \\
-79 &  In 2002 ,                                          & researchers & halted the largest clinical trial ever conducted   \\
-80 &  , and while they might not be surprising to        & researchers & , they were intended to inform the public as well  \\
-81 &  Many                                               & researchers & said anger-prone people could reduce the risk of   \\
-82 &  Using preserved blood samples of pregnant women ,  & researchers & have found that low vitamin D levels are           \\
-83 &  And so now                                         & researchers & have been working on new strategies : Developing   \\
-84 &  This month , Danish                                & researchers & reported on a 15-year study of 12,000 nurses       \\
-85 &  She said                                           & researchers & thought older medicine was riskier because the     \\
-86 &  Last Sunday ,                                      & researchers & released data that showed that outdoor air         \\
-87 &  But when the company and the                       & researcher  & are one and the same , he said , that check is     \\
-88 &  Huntington 's disease and cystic fibrosis , and    & researchers & say tests identifying those at high risk of heart  \\
-89 &  may increase with a father 's advancing age ,      & researchers & reported yesterday                                 \\
-90 &  Denise Juliano-Bult , a                            & researcher  & at the National Institute of Mental Health , said  \\
-91 &  those who gain fat around the hips and thighs ,    & researchers & say                                                \\
-92 &  in the British Medical Journal in August ,         & researchers & in Argentina showed that women who were given      \\
-93 &  Next ,                                             & researchers & said , they want to do a large study like one      \\
-94 &  The                                                & researchers & noted that the drinks contain high levels of       \\
-95 &  The                                                & researchers & offered some other examples of how the risks       \\
-96 &  Some other                                         & researchers & questioned the findings , and most agreed that the \\
-97 &  For purposes of comparison , the                   & researchers & also examined inherited variations in 13 genes     \\
-98 &  And the flaws are compounded , the                 & researchers & said , when journalists do n't report the context  \\
-99 &  A few years ago , Mercedes Carnethon , a diabetes  & researcher  & at the Feinberg School of Medicine at Northwestern \\
-100 &  As with beta carotene ,                            & researchers & were shocked                                       \\
-\end{tabular}
-\caption{100 random instances of \emph{researcher} in the health subcorpus}
-\label{tab:researcher}
-\end{table}
-\clearpage
-}
+\section{Conclusions}
 
-\subsubsection{Beck's notion of increasingly contested science}
+We have both provided empirical support for a number of major sociological hypotheses concerning risk, and demonstrated that novel combinations of interdisciplinary methods can offer new ideas and new kinds of evidence about risk. A number of key findings aligned with theories of neoliberalism and reflexive modernity, but at the same time, key claims within this body of literature were problematised: while we saw a dramatic increase in the extent to which science and research terms co-occur with risk, we saw little evidence that the science and research were being actively contested. Whether this reflects increasing trust and reference for scientific method, or whether it simply reflects changing journalism practices, requires further research. Indeed, we expect that contestation of science is more likely to occur in everyday discourse of ordinary citizens than in news journalism, for which science writing is a cost-effective means of generating authoritative news content.
 
-Key to Beck's notion of Reflexive Modernity is the idea that people confront and contest the science that brought about modernisation via the industrial revolution, as the negative repercussions of this science and modernisation witnessed first-hand (through pollution, etc.) \cite{ross_science_1996}. 
+Though our study has perhaps raised more questions than it has answered, it has also demonstrated the feasibility of quantitatively and empirically observing key sites of sociological change.
 
-We found strikingly little evidence for contestation of scientific\slash academic research in the NYT. As can be seen in Table \ref{tab:researcher}, research and researchers are typically presented in a neutral light, with no explicit scepticism of their methods or findings. This is interesting, given that authors of many other kinds of writing, such as academic and fiction, have embraced the critical turn of scientific method against itself, under the banner of post-structuralism. Why not print journalism?
 
-Many explanations are possible. Before we turn to them, it is important to remember that the representation of research in the NYT may be influenced by a number of independent factors. Foremost, it should be noted that print journalism centred on science is increasingly common. It is affordable, as the journalist does not need to investigate or travel in order to access the content, and much of the article body can consist of quotations from the journal article. It is also deemed reliable, having in many cases already been through peer-review. Given the rapid rise in the number of academic journals, as well as the increased ability to access these journals via the Web, increased reporting of academic research is perhaps an expected finding. 
+    %Instantiation of risk words is linked to real-world events: the beginnings of the AIDS epidemic are accompanied by a spike in health risk discourse; 9\slash 11 appears to be a catalyst for increasing discussion of risks and threats of terror and war. It remains very difficult, however, to fully disentangle the constructive-responsive relationship between real-world events and instantiation of particular concepts in language. Broader ideologies and social movements may indeed be more reliable predictors of linguistic change.
 
-Of more interest to us is the lack of scepticism. One possible explanation for this is that the NYT might not be the genre in which the contestation occurs. The absence of scepticism toward modern medicine, the pharmaceutical industry does not indicate that there is little scepticism toward these things in society in general. As reasons underlying this scepticism are often subjective and emotional, rather than empirically derived, it makes sense that such discourse would be more common in everyday conversations, for example, than in new journalism. While it is possible that such scepticism is mostly represented in Opinion and Editorial articles in the NYT, such articles comprise only a small fraction of all articles. Further research here would build corpora of different article types, and investigate how health discourse differs by the genre\slash section of the newspaper.
-
-Another possible argument is that print news and modernity have a more-or-less symbiotic relationship. Indeed, the rise of print journalism closely parallels modernisation and industrialisation. The production and transmission of newspapers themselves is in many respects reliant upon technology popularised during industrialisation.
-
-% The inability of science alone to solve conflicts and debates may be so, but this has little bearing on the usefulness of scientific research within print journalism. Journalism is not typically seeking to resolve, but merely to elucidate, sources of conflict and tension in the world at large.
-
-% We should also note here that the emergence of science reporting does not necessarily mean than non-scientifically informed medical practice is being displaced:
-
-\section{Methodological challenges during the health corpus investigation}
-
-A major issue was the smaller size of the corpus, which necessitated different kinds of analysis. Within keywording and n-gramming, it became clear that broader linguistic change and specific events are difficult to separate. This, however, is where we can see the clearest examples of the link between events and language change. Interspersed throughout the keywords and n-grams are terms ranging in specificity. It is through taxonomisation and categorisation of these varying levels that we can hopefully smooth out our understnading of the influence of specific events on the risk semantic.\endnote{Since finalisation of this report, we have expanded on \texttt{corpkit}'s ability to process keywords in particular: documentation of preliminary findings is available at \url{https://www.github.com/interrogator/corpkit}.}
-
-A second major challenge was an original project aim, to compare risk language in politics, health and economics articles. Despite a number of interrogations of this corpus, we have found the issue of working with three corpora, each containing almost thirty subcorpora, unmanageably complex. Though code can quickly iterate through each corpus, even taking advantage of parallel processing, constructing meaningful discussion of risk 
-
-The huge amount of data and variables necessitates an additional stratum of distance from the texts themselves, and this distance leads to uncertainty in discussions about how and why risk language is changing. To grapple with this issue in the future, we envision a three-pronged approach:
-
-\begin{enumerate}
-  \item Create more sophisticated code and methods, which can point to interesting phenomena within datasets quickly and accurately
-  \item Increase the time spent on contexutalised, qualitative analysis
-  \item Describe in more detail the media production climate and its role in news language
-\end{enumerate}
-
-\section{Summary}
-
-  The smaller size of health subcorpus necessitated different kinds of analysis. Fortunately, such methods are well-documented within corpus assisted discourse studies. Following on from these methodologies, we located particularly frequent terms, and analysed them in their context of use. Patterns quickly emerged: the domains of insurance, politics and infectious disease decrease in frequency over time, while non-infectious\slash lifestyle illnesses, everyday people and science\slash research became more prominent. Though of work on description of health risk in news media is far from complete, we believe we have demonstrated the fruitfulness of combining sophisticated programming concepts with mainstay social science methods such as thematic categorisation.
+    %\begin{itemize}
+    %\item We found that it is very difficult to pinpoint the effect of individual events on risk word usage in the NYT as a whole.
+        %\item Our interrogation of economics, health and politics articles turned up clearer evidence of the effect of real events.
+        %\item Even so, our approach to the creation of the subcorpora was simple, and the topics were very broad. Manually selection of automatically located articles for more specific topics would likely result in clearer indications of the effects of events on risk word usage.
+        %\item The main thrust of our approach was to investigate the sum total of NYT articles during the sampling years.
+        %\item While political risks peaked during US election times, this could not be observed when analysing the corpus as a whole.
+        %\item Accordingly, our findings pointed more toward the influence of broader social movements than to specific events.
+        %\item We interpreted many of the changes in the behaviour of risk words as evidence for \textbf{neoliberalism} and \textbf{reflexive modernity}.
+        %\item Indeed, the corpus developed for this study could be reused in a multitude of ways to 
+        %\item Finally, it must be borne in mind that the NYT is merely one newspaper, and newspapers are merely one genre
+        %\item We selected NYT for its size, consistency, the availability of digitised content, and its influence in global discourse.
+        %\item Most obviously, the emergence of the Web challenges this set of criteria in a number of ways. Popular social networks, as well as the public web, produce exponentially more content than a single newspaper.
+        %\item Mining global news or blog posts via RSS feeds, or Tweets via the Twitter API, allows the quantitative analysis of voices typically marginalised or absent within mainstream media.
+    %\end{itemize}
+    

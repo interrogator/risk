@@ -1,346 +1,297 @@
 %!TEX root = ../risk_report.tex
 
-\chapter{Methodology}
-	
-	The challenge of making sense of enormous datasets is a formidable one, both at the practical level (the creation of scripts and search patterns, the transformation of search results into findings, etc), and at the more theoretical level of Big Data as both dataset and approach. \emph{Big Data} approaches to social sciences and humanities research should be operationalised critically, with an acknowledgement that data size alone does not produce findings of higher truth or objectivity: automatic processing tools such as topic modellers and parsers do not provide perfect results, and their failures may often be buried within such large amounts of data.\endnote{A key cause of incorrect parsing is non-standard language (perhaps regional, colloquial, etc.). Examples of this kind of language in news publications are interesting in their own right, but due to misannotation, are likely to go unfound during corpus interrogation, and thus unanalysed.In our case, this problem was exacerbated by the fact that time contraints precluded a manual scoring of parser accuracy.}~Moreover, as \citeA{boyd_critical_2012} note, even the imagination of phenomena as data itself constitutes an act of interpretation. There is also the potential for researchers to cherry-pick interesting or extreme examples from the set, rather than look for common patterns \cite{mautner_time_2005}. Finally, researchers must remain sensitive to the fact that the phenomenon under investigation (in this case, risk lexis) has been abstracted from its original multimodal context (as a component on a page in a daily paper).
+%\chapter{A comparison of economics, health, and political risks}
 
-	To cope with these concerns in the context of natural language Big Data, we drew upon systemic functional linguistics (SFL) as a theory of language. SFL informed our study in two main respects: first, we relied on its conceptualisation of the stratal relationship between instantiated wordings in texts, their discourse-semantic functions, and the context they both respond to and construct; second, the systemic functional grammar (SFG) guided our attempt to locate specific sites of lexicogrammatical change in clauses containing one or more risk words.
+%In this chapter, we use subcorpora of economics, health and politics articles to understand how risk words change in specific semantic fields. Due to the smaller size of these subcorpora, as a general rule, the kinds of specific grammatical queries used in the previous chapter were not useful, as they generated very low numbers of results. Accordingly, this part of our investigation includes analyses of keywords and n-grams.
 
-	\section{A systemic-functional conceptualisation of language}
+            %\begin{figure}[htb!]
+            %\centering
+            %\includegraphics[width=0.70\textwidth]{../images/clouds.png}
+            %\caption{Key participants in the \emph{Economics}, \emph{Health} and \emph{Politics} subcorpora}
+            %\label{fig:clouds}
+            %\end{figure}
 
-		SFL, as developed by Michael Halliday \cite<see>{halliday_introduction_2004} treats language as sign-system from which users select meanings for the purpose of achieving meaningful social functions. Inspired by the anthropological work of Malinowski, SFL divides the social functions of language into three realms of meaning: \textbf{interpersonal meanings}, which construct and negotiate role-relationships between speakers; \textbf{experiential meanings}, which communicate doings and happenings in the world; and \textbf{textual meanings}, which reflexively organise language into coherent, meaningful sequences.
+            %\begin{figure}[htb!]
+            %\centering
+            %\includegraphics[width=.70\textwidth]{../images/number-of-articles-in-each-subcorpus.png}
+            %\caption{Number of articles in each subcorpus}
+            %\label{fig:article_per_subcorpus}
+            %\end{figure}
 
-		One of the more radical dimensions of SFL is its inversion of the common discourse-analytic aim of analysing \emph{texts in context}: in SFL, context is treated as being \emph{contained within} instantiated texts---`context is in text' \cite{eggins_introduction_2004}. Based on the distribution of certain lexicogrammatical phenomena, we can accurately determine the overall genre/purpose of a text, even in highly decontextualised scenarios: `\emph{Submissions must contain 3--5 references}' can be quickly identified as part of a set of instructions for an undergraduate assignment, based purely on its lexical (submissions, references) and grammatical (nominalisation, modalisation, etc.) properties. In the same way, Halliday conceptualises lexicogrammatical features of texts as probablistically determined by their context. That is to say, a given constellation of interpersonal, experiential and textual variables (e.g. the writing of a professor to undergraduates in a written course overview) will likely contain the kinds of lexicogrammatical features described in the example above \cite{halliday_corpus_1991}.
+            %%
+            %%Due to time constraints, we restricted the topic comparison to domains that had yielded interesting insights in the earlier interrogations. Further, we found that the smaller size of the subcorpora limited us to lexicogrammatical queries that outputted a large enough number of results for quantitative reliability. Thus, we focussed on the following three areas:
 
-		In SFL and its expansions \cite<e.g.>{martin_language_1984,christie_genre_2005}, culturally recognised constellations of these three variables are treated as \emph{genres}, within which other micro-genres may also be contained. In our case, the vast majority of texts under consideration are within the genre of newspaper article, with micro-genres such as sports-journalism, editorials, opinion articles and so on being differentiated by the appearance of different lexicogrammatical choices within both mood (i.e. use of interrogative mood, modalisation to connote subjectivity\slash objectivity) and transitivity systems (what is being spoken about).\endnote{The mode dimension, responsible for reflexively organising language into comprehensible sequences, remains largely static between print news micro-genres, though mode features are likely to be at risk when news is transmitted via different media}~
+             %\begin{table}[htb!]
+             %\centering
+             %\small
+             %\begin{tabular}{|l|l|l|}
+                          %\hline
+                          %\textbf{Economics}   & \textbf{Health}         & \textbf{Politics}     \\ \hline
+                          %political   & high           & political    \\ \hline
+                          %big         & great          & great        \\ \hline
+                          %economic    & low            & big          \\ \hline
+                          %financial   & other          & high         \\ \hline
+                          %great       & serious        & own          \\ \hline
+                          %high        & financial      & serious      \\ \hline
+                          %more        & potential      & new          \\ \hline
+                          %real        & medical        & real         \\ \hline
+                          %systemic    & more           & considerable \\ \hline
+                          %significant & significant    & more         \\ \hline
+                          %new         & cardiovascular & other        \\ \hline
+                          %little      & political      & significant  \\ \hline
+                          %global      & possible       & economic     \\ \hline
+                          %serious     & small          & financial    \\ \hline
+                          %other       & real           & potential    \\ \hline
+                          %excessive   & such           & personal     \\ \hline
+                          %potential   & genetic        & little       \\ \hline
+                          %such        & ovarian        & such         \\ \hline
+                          %much        & same           & public       \\ \hline
+                          %own         & bad            & military     \\ \hline
+                          %\end{tabular}
+                          %\caption{Most common adjectives modifying nominal risks in the topic subcorpora}
+                          %\label{tab:echepo_adjmod}
+            % \end{table}
 
-		\begin{figure}
-		\centering
-		\includegraphics[width=0.85\textwidth]{../images/egginsfixed.jpg}
-		\label{fig:eggins}
-		\caption{Strata and metafunctions of language (from Eggins, 2004)}
-		\end{figure}
+\chapter{\emph{Risk} in health articles in the NYT}
 
-		Three key factors informed our decision to adopt the SFL framework for our study. First, in contrast to most mainstream grammars, SFL conceptualises lexis and grammar as a different ends of the same system: lexis is the most delicate realisation of grammar \cite<see>{hasan_grammarians_1987}. Such a conceptualisation, we believe, is vital to an investigation of the behaviour of a concept in a large text corpus, as much of this behaviour will indeed be grammatical. Accordingly, in this study, automated parsing of corpus texts is used to carry out (often simultaneous) searches of both grammar and lexis.
+    This chapter summarised the methods and results from an investigation of articles annotated as being about health topics. The work presented here is covered  in substantially more detail in our in-press chapter:  name?
 
-		The second benefit of SFL to our research aims is that SFL is explicitly designed as a framework that to make it possible to say meaningful things about how real-world instances of language work to build meanings and perform social functions. It is thus an \emph{appliable linguistics}, built to `empower researchers to undertake projects of investigation and intervention in many contexts that are critical to the workings of communities and the quality of human life' \cite[p.~437]{matthiessen_applying_2013}.
+    \section{Methdological considerations when working with a smaller corpus}
 
-		Finally, SFL contains the best-articulated means of systematically connecting instantiated lexicogrammatical units (i.e. wordings) to the more abstract stratum of discourse-semantics (i.e. meanings) \cite{eggins_analysing_2004}. On the strength of this link is the whole endeavour of corpus-discourse research predicated: absent a systematic connection of these two planes of abstraction, corpus-assisted discourse studies lose much of their explanatory power, and corpus-informed discourse research becomes a contradiction in terms.
+    Our topic subcorpora were much smaller than our main corpus. As a result, lexicogrammatical querying did not tend to yield quantitatively reliable results. Accordingly, other kinds of corpus linguistic investigation, not as reliant on grammatical structures, were applied. 
 
-	\section{Risk words and the systemic functional grammar}
+    First, we considered \emph{keywords}---that is, words that were unusually frequent within the health corpus when compared to the corpus as as a whole. Linear regression was used to determine the slope of each keyword's trajectory over the length of the x-axis. Results were then sorted into two groups, based on the steepness of the incline\slash decline of the slope. Results whose slope significance was over 0.05 were automatically excluded.
 
-		Perhaps the most laudable achievement of SFL is the ability of its grammar (admitted even by critics, e.g. \citeNP{widdowson_text_2008}) to connect the three kinds of meanings to distinct components of lexicogrammar in consistent, stable ways. Interpersonal meanings are made through the \textbf{mood system}, including features such as \emph{modality} and \emph{modulation}. Textual meanings are made through the use of \textbf{systems of reference and conjunction} between and within clauses. Experiential meanings are made via the \textbf{transitivity system} (predicators, their subjects and object arguments, and adjuncts, in more mainstream grammars). This latter system is of most interest to us.\endnote{Though role relationships between journalists and their readership have undergone significant shifts (especially since the popularisation of online news), charting these changes falls largely outside the scope of this project.}~
-
-		\subsection{Risk and the experiential metafunction}
-
-		In SFL, experiential meanings are made via the transitivity system. Transitivity analysis of a clause involves breaking it down into its \emph{process}, \emph{participants} and \emph{circumstances}, realised congruently by verbal groups, nominal groups and adverbials/prepositional phrases, respectively. Most central is the process, whose head (the rightmost verb in a verbal group), may be grouped into five types: \textbf{material processes} (doing and happening: \emph{Risk declined}), \textbf{mental processes} (thinking: \emph{She thought it risky}), \textbf{verbal processes} (saying: \emph{We talked about the risks}), \textbf{existential processes} (\emph{There are risks}) and \textbf{relational processes} (being and having: \emph{It seemed risk-free}). Each type has different configurations of possible participants, and is responsible for selecting the ways in which these participants are realised: mental processes have \emph{Senser} and \emph{Phenomenon} (the sensed); material processes generally have an \emph{Actor}, in subject position, with optional participants such as \emph{Goal}, \emph{Range} and \emph{Beneficiary}. Circumstances (e.g. `\emph{this week}' in Figure \ref{fig:transannotation}) provide specifications such as the manner, extent or location of the process. Circumstances are more syntactically flexible, in that they are often able to be placed in a number of positions within the clause.
-
-			\begin{figure}[htb]
-			\centering \small \onehalfspacing
-    			\begin{tabularx}{0.75\textwidth}{|l|l|X|X|X|}
-    			\hline
-    			\emph{But}     & \emph{the bang of the gavel}             & \emph{can hold}          & \emph{risk} & \emph{for novices}          \\ \hline
-    			~ & Participant: & Process: & Participant: & Circumstance:  \\
-    			    			~ & Carrier & Relational \mbox{attributive} & Attribute &  Extent \\ \hline
-    			\end{tabularx}
-			\caption{Transitivity analysis of a clause}
-			    			\label{fig:transannotation}
-			\end{figure}
-
-		An important caveat remains. SFL considers each kind of meaning as having a \emph{congruent} realisation in the lexicogrammar---participants are congruently nominal; qualities as congruently adjectival. Aside from simply using native speaker intuition tests, SFL theorists argue that congruent forms often can be identified by their \emph{typicality} and their \emph{unmarkedness}: congruent realisations are expected to be more frequent in the language as a whole, and to involve fewer derivational morphemes (\emph{nation} as a thing is less inflected than the quality, \emph{national}) (Lassen, 2003). That said, as \citeA[p.~?]{halliday_introduction_2004} explain, `it is by no means easy to decide what are metaphorical and what are congruent forms'. \emph{Risk} is in itself a good example of a concept that straddles the terrain between participant, process and quality.
-		%Lassen: Imperative readings of grammatical metaphor
-
-		Incongruent choices, however, are also common in many kinds of texts, carrying a `very considerable semantic load' \cite[p.~365]{halliday_introduction_2004}. First, through \emph{grammatical metaphor}, semantic processes may be realised grammatically as participants (`I accepted \emph{the invitation}') for the purpose of packing more information into clauses---a key feature of written journalistic text \cite{simon-vandenbergen_grammatical_2003}. Furthermore, similar meanings may be made at different ranks/strata of language: `a good risk' and `a risk is good' communicate the same positive appraisal of the same participant, but at different levels (group/phrase level via adjectival modification in the first example; clause level via relational ascription in the second). Incongruence poses serious challenges for corpus linguistic studies of discourse, as it limits our ability to locate, for example, all the ways in which risk is evaluated, graded or judged. This issue is exacerbated if, in line with SFL theory, we consider all lexicogrammatical choices to be meaningful and purposive, including the author's decision to invoke an incongruent form \cite<as in>{eggins_introduction_2004}. In some cases, rank-shifted meanings may be found using increasingly complicated lexicogrammatical search queries (see Figure \ref{fig:glossed} for an example). Automatic location of some other cases remain at this point beyond our capabilities: in appraisal at the level of clause-complex (`\emph{I see a risk---it's a big one}') extremely complex grammatical searches would be needed to first recover the identity of \emph{it} and \emph{one} as \emph{a risk}, before we could automatically determine that the risk is being semantically modified by \emph{big}. Accordingly, our analysis is limited to group\slash phrase and clausal levels, with meanings made via the clause complex excluded.
-
-	\begin{table}
-	  \centering
-		  \begin{tabular}{l}
-		  \hline
-		  Clause complex \\ \hline
-		  Clause		 \\ \hline
-		  Group/phrase   \\ \hline
-		  Word		   \\ \hline
-		  Morpheme	   \\ \hline
-		  \end{tabular}
-		  \caption{Rank Scale in SFL}
-		  \label{tab:rank}
-	  \end{table}
-
-
-			%Risk, as well as the French \emph{risque}, have a long history of use as both noun and verb \cite{hamilton_meanings_2007}, though otherwise its etymology is largely unknown. The lack of derivational morphemes makes it difficult to tell whether risk is congruently a process or a participant. Accordingly, we do not assume it to be congruently either.
-
-			We situate our analysis of risk words predominantly within the experiential realm of meaning. At the most abstracted level of this dimension of language, we are interested in changes in the field of discourse in which risk as a concept is instantiated: \emph{has risk shifted, as per key claims of sociological theory, from international relations toward population health?} Then, within these fields, we are interested in the constellations of happenings in which risk may play a role: \emph{when risk is a process, what participants are involved? When risk is a participant, what is it a participant in, and with whom? And when risk is part of a modifier, what kind of participants and processes does it modify, and how?} Through categorisation of the kinds of fields in which risk appears, as well as the kind of participants who are positioned as riskers, risked things and potential harms, we can then empirically test the claims of influential sociological examination of risk discourse. %(See Table \ref{tab:claims}).
-
-				%ARGUABILITY \cite[p.~271{matthiessen_combining_2002}, \cite[p.~115]{halliday_introduction_2004}.
-				%PP as mini relational clause: \cite{matthiessen_lexicogrammatical_1995}
-
-				%\cite{halliday_grammar_1996}
-
-	\subsection{Risk and the interpersonal function: arguability}
-
-		Though our analysis is for the most part concerned with experiential meanings (via the Transitivity system), some aspects of interpersonal meanings (via the Mood system) are also relevant. Accordingly, a brief sketch of the mood system is required.
-
-		In SFL, the Mood system is used to give and request information (semiotic commodities) or goods and services (material commodities). Congruently, interrogatives request information, and imperatives request goods and services. Declaratives provide information. Being by far the most common mood type in news discourse, our analysis is focussed on the structure of the declarative. A declarative clause contains a Mood Block, which contains a Subject and Finite (see Figure \ref{fig:moodannotation}). Locating the constituents of the Mood Block is simple: if a tag question is added to this declarative (\emph{the bang \dots can hold risks \dots, can't it?}), the tag picks up the Subject and the Finite (with polarity reversed).
-
-		Modality, also a component of the interpersonal metafunction, concerns modification of propositions with speaker judgements.\endnote{The corpus contained too few modalised risk predicators for analysis of longitudinal change in modalisation.}
-		Prototypically, Modality is expressed through modal auxiliaries in the Finite position (\emph{I can/should/might go}). Through Modality, speakers `construe the region of uncertainty between yes and no' \cite[p.~147]{halliday_introduction_2004}. In Figure \ref{fig:moodannotation}, for example, \emph{hold} is modalised through \emph{can} in order to express the author's judgement as to the possibility of the banging of the gavel holding risks.
-
-			\begin{figure}[htb]
-			\centering \footnotesize \onehalfspacing
-    			\addvbuffer[12pt 8pt]{\begin{tabularx}{0.75\textwidth}{|l|l|l|X|X|X|}
-    			\hline
-    			\emph{But}     & \emph{the bang of the gavel}             & \emph{can} & \emph{hold}          & \emph{risk} & \emph{for novices}          \\ \hline
-    			~ 				& 		Subject     						& Finite 		& Predicator 		  & Complement & Adjunct  \\ \cline{2-6}
-    			~ 				& 		 \multicolumn{2}{c|}{MOOD} 							& \multicolumn{3}{c|}{RESIDUE} \\ \hline
-    			\end{tabularx}}
-			\caption{Mood analysis of a clause}
-			    			\label{fig:moodannotation}
-			\end{figure}
-
-		%how does this bit work: %Modalised declaratives to some extent pattern with the provision of goods and services, either via de(\emph{I can/will/shall visit you}) or speech acts, (\emph{I pronounce you husband and wife})
-
-		At a greater level of abstraction, these Mood and Modality choices are responsible for the construction of role relationships between interactants: where interactants are of equal status (i.e. friends chatting at a cafe), similar overall frequencies in mood choices for each interactant may be observed. In a situation with interactants of less equal status, mood choice frequencies may vary more widely for the different participants: in a typical interaction between a professor and an undergraduate, only the professor is likely to use imperatives to issue commands. Importantly, as with experiential meanings, incongruence may occur, though the motivation for incongruence is an interpersonal one, such as politeness or face saving (\emph{Shut the door!/Could you shut the door?}). For us, however, this kind of incongruence does not pose the same level of challenge as experiential incongruence, as print news journalism as a genre rarely commands or requests information from the reader, and as the faces of both writer and reader are rarely under threat.
-
-		We are interested in Mood mostly because Mood is the system through which \emph{arguability} of propositions is mediated. In SFL, arguability is used to denote the relative ease of challenging or refuting a proposition, and thus, the level of implicitness of a meaning made about the world.
-
-		Chiefly, arguability rests in the two components in the Mood Block---the Finite and the Subject. To make a proposition arguable, it must be grounded in time and space, or to a speaker judgement of its validity. These are the two potential functions of the Finite. Locating a proposition within time and space is done through adding primary tense (\emph{lives were risked}). Meanings are linked to speaker judgements through modality (\emph{lives might be risked}) \cite[p.~116]{halliday_introduction_2004}. In either case, the Finite grounds the proposition with reference to the current exchange being undertaken by the interactants. Primary tense situates a proposition according to what is present at the time the utterance is made---it indicates `the time relative to now' \cite[p.~116]{halliday_introduction_2004}. Modality either expresses an assessment of the validity (probability, certainty, obligation, etc.) of a proposition (\emph{it might/will/must happen}) or, in an interrogative, invites the addressee to make this assessment (\emph{might/will/must it happen?}).
-
-		The Subject is the second component of arguability. Semantically, SFL treats the Subject as `something by reference to which the proposition can be affirmed or denied' \cite[p.~117]{halliday_introduction_2004}. In the contexts of proposals and commands, it is the one who is supposed to perform the action (\emph{Shut the door, will you?}/\emph{I'll speak to her, shall I?}). In the case of declarative information provision, the Subject is the thing upon propositional validity rests. In \emph{the bang of the gavel can hold risk for novices}, for example, a refutation still requires a coherent Subject and Finite, while the Residue is only required if it is the challenged component:
-
-                        \begin{quote}
-                        \small
-                        \begin{enumerate}	\setlength\itemsep{-0.5em}
-		\item No, \emph{it should} hold risks (refuting Modal Finite/speaker judgement)
-		\item No, but \emph{a handshake can} (refuting Subject)
-		\item No, but \emph{it can} hold excitement (refuting Complement)
-		\item No, but \emph{it can} for experts (refuting Complement)
-                        \end{enumerate}
-                        \end{quote}
-		%
-		Thus, the Mood Block is the most arguable part of a proposition---`it carries the burden of the clause as an interactive event' \cite[p.~118]{halliday_introduction_2004}. The steps an interlocutor needs to take to deny the validity of a meaning are fewest when the disagreement concerns the composition of the Mood Block. Meanings made within Complements and Adjuncts, or within groups or phrases, are more implicit: they support, rather than enact, meanings made within the Mood Block \cite{matthiessen_combining_2002}.
-
-		%In this investigation, as in \citeA{matthiessen_lexicogrammatical_1995,matthiessen_combining_2002}, arguablity is also operationalised as a cline, with meanings ranging from very arguable to very inarguable based on the rank at which they are made.  Heads of processes and participants are arguable. Internal modification of groups, especially within subordinate clauses, are likely to be very inarguable. Circumstances---that is, PPs modifying the process---sit in the middle of the two extremes.
-
-		%\begin{table}
-		%\centering
-		%\footnotesize
-   		%\begin{tabular}{|l|l|l|l||l|}
-		%\cline{1-4}
-		%\multicolumn{2}{|c|}{\textbf{Metafunctions}} & \multicolumn{2}{c||}{\textbf{Lexicogrammar}} & \multicolumn{1}{c}{~} \\ \hline
-   		% \emph{Experiential}  & \emph{Interpersonal}   & \emph{Rank scale}         & \emph{Group structure} & \emph{Arguability} \\ \hline
-   		% Process       & Finite, Subject & Clause       & Head            & \textbf{Higher}                   \\ \hline
-    		%Participant(s)  & Complement      & Group/phrase & Modifier        & \textbf{Medium}                 \\ \hline
-    		%Circumstances & Adjunct         & Word         & Submodifier     & \textbf{Lower}                    \\ \hline
-   		%\end{tabular}
-		%\end{table}
-
-			%\begin{table}
-	  %\centering
-		  %\begin{tabular}{|l|l|}
-		  %\hline
-		 	%\textbf{Rank scale} & \textbf{Arguability} \\ \hline
-		  %%Clause complex & --- \\ \hline
-		  %	Clause	 & Very arguable \\ \hline
-		  %Group/phrase   & Arguable \\ \hline
-		  %Word		   & Somewhat inarguable \\ \hline
-		  %Morpheme	   & Very inarguable \\ \hline
-		  %\end{tabular}
-		  %\caption{Rank scale and arguability as operationalised here}
-		  %\label{tab:rankarg}
-	  %\end{table}
-
-
-	  In the context of risk words, this conceptualisation of arguability can be used to empirically examine key sociological claims. Increasing prevalence of risk words generally would mean that risk words have an inbound trajectory in the NYT generally. Increasing risk words within the Mood Block and Predicator positions would indicate that risk is discussed and argued about. A shift from Mood Block to Residue (especially Complement and Adjunct positions) would indicate greater implicitness and inarguability of risk. At the same time, risk words as heads of groups/phrases would indicate greater discussion of risk, while risk words as modifiers would indicate implicitness.
-
-    \begin{table}
+    \begin{figure}[htb!]
     \centering
-    \footnotesize
-    \begin{tabularx}{.70\textwidth}{|L{.50}|L{.50}|L{2}|}%
-    \hline
-    \textbf{Role}              & \textbf{Arguability} & \textbf{Example} \\ \hline
-    Subject           & Very high   & \emph{For Mobic, the \textbf{risks} of heart attack and stroke rose 37 percent, Dr. Graham's study showed.}       \\ \hline
-    Finite\slash Predicator & High        & \emph{But candid talk about job prospects and debt obligations \textbf{risked} the wrath of management, she said.}       \\ \hline
-    Complement        & Medium      & \emph{This approach holds some \textbf{risk} for a union boss.}       \\ \hline
-    Adjunct           & Low         & \emph{The wire is stretched very tautly, and we are at some significant \textbf{risk} it will snap from overload.}       \\ \hline
-    \end{tabularx}
-    \caption{Arguability of risk words in differing mood constituents}
-    \end{table}
-
-    \begin{table}
+    \begin{minipage}{.48\textwidth}
     \centering
-    \footnotesize
-    \begin{tabularx}{.70\textwidth}{|L{.50}|L{.50}|L{2}|}%
-    \hline
-    \textbf{Role}              & \textbf{Arguability} & \textbf{Example} \\ \hline
-    Head           & Higher   & `\emph{So far, pregnancy \textbf{risk} does seem to come with this class of drugs},' Ms. Glynn said.       \\ \hline
-    Non-head   & Lower   & \emph{They purchased billions of dollars in \textbf{risky} subprime mortgages.}       \\ \hline
-    \end{tabularx}
-    \caption{Arguability of risk words as either head or non-head}
-    \end{table}
+    \includegraphics[width=.95\textwidth]{../images/keywords-increasing.png}
+    \caption{Keywords becoming more key over time}
+    \label{fig:key-inc}
+    \end{minipage}%
+    \begin{minipage}{.48\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{../images/keywords-decreasing.png}
+    \caption{Keywords becoming less key over time}
+    \label{fig:key-dec}
+    \end{minipage}
+    \end{figure}
+    %
+    Interestingly, words relating more closely to everyday life world concerns are increasing over time, while terms relating to healthcare institutions are decreasing.
 
-        The ways in which we operationalise the notion of arguability while interrogating the parsed data are outlined in Section \ref{sect:arguability}.
+    Next, we were interested in \emph{bigrams}---that is, words that occur beside each other multiple times within a corpus. Bigrams containing a stopword were excluded from analysis, as these results were generally common clusters of closed class words (\emph{in the}, \emph{of a}, \emph{one day}, etc.). Again, linear regression was used to group results into increasing and decreasing groups.
 
-		
-	%\section{SFL and news discourse}
+    \noindent
+    \begin{figure}[htb!]
+    \centering
+    \begin{minipage}{.42\textwidth}
+    \centering
+    \includegraphics[width=1\textwidth]{../images/ngrams-increasing.png}
+    \caption{bi-grams becoming more frequent over time}
+    \label{fig:ngram-inc}
+    \end{minipage}%
+    \begin{minipage}{.42\textwidth}
+    \centering
+    \includegraphics[width=1\textwidth]{../images/ngrams-decreasing.png}
+    \caption{bi-grams becoming less frequent over time}
+    \label{fig:ngram-dec}
+    \end{minipage}
+    \end{figure}
 
-		%~\ \todo[inline,color=green!40]{\noindent Still to write ... }
+We grouped these into themes, with results entered into one or more categories. Ambiguous results were often concordanced in order to determine the main context of use: \emph{athlete}, for example, could indicate the health condition (\emph{Athlete's foot}), a chain of footwear stores, or denote athletes themselves. The latter was revealed to be by far the most common context, and athlete was thus added to \emph{People, everyday}.
 
-			%\begin{enumerate}
-			%\item Situate our research area as `hard news' \cite{gonzalez_rodriguez_tracing_2006}
-			%\item Text and context in hard news
-			%\item \citeNP{bednarek_evaluation_2006} % http://books.google.com.au/books?hl=en&lr=&id=8nk0BArolPwC&oi=fnd&pg=PR5&dq=%09+Evaluation+in+media+discourse+:+analysis+of+a+newspaper+corpus&ots=IFz58ZksVq&sig=gRPv0070_O31kOYTCwiBKrLC16Q&redir_esc=y#v=onepage&q=Evaluation%20in%20media%20discourse%20%3A%20analysis%20of%20a%20newspaper%20corpus&f=false
-			%\item Limitations and points of difference
-			%\end{enumerate}
-			%}
+\subsection{Nominal groups in the health subcorpus}
 
-	\section{SFL and corpus linguistics}
+We also looked at key nouns, or nominal groups. By measuring the slope of trend lines, we could ascertain which groups were becoming more or less common.
 
-		Methodologically, our study may be characterised as an attempt to combine the systemic functional conceptualisation of language with practices from diachronic corpus linguistic (CL) research. As \citeA{hunston_systemic_2013} notes, SFL and CL share a number of underlying similarities, such as an emphasis on natural language a focus on register\slash genre as shaping the lexicogrammatical choices made in texts. More fundamentally, both CL and SFL posit that we can learn about these texts through quantification of their various lexical, grammatical and semantic properties. %Less commonly noted are that both SFL and corpus linguistics are probabalistic, and accordingly, both have predictive applications \cite{halliday_corpus_1991}.
-
-		We use SFL and CL in tandem to locate patterns in texts without manual interpretation or categorisation. Sociological insights into key events and movements are then mapped at later stages to observed lexicogrammatical and discourse-semantic change in the behaviour of risk words (challenges in balancing the systemic-functional notion of context-in-text with the use of sociological methods are discussed below). Such an approach is characteristic of the emerging field of \emph{corpus-assisted discourse studies} (CADS). The oft-noted `methodological synergy' of CL and discourse analysis allows researchers a greater degree of empirical and quantitative support for claims, as well as a larger body of examples that can easily be accessed and qualitatively analysed \cite{baker_useful_2008}. In terms of risk, corpus-based methods allow an empirical testing of sociological literature that has tended to invent examples of clauses containing risk words, despite there being little evidence that these phrases are commonly instantiated in general language use \cite{hamilton_meanings_2007}. Research has also tended to conflate risk words with the concept of risk itself, even though the word may not be critical to the experiential meaning of a clause (\emph{the risk management team went for coffee}) and even though the latter is often present without the linguistic instantiation of the former.
-
-		Work within CADS varies chiefly in the extent to which the corpus itself is the focus of the investigation. In \emph{corpus-driven} work, researchers are attempting to demonstrate that the corpus itself contains particular patterns of discourse. Theories are developed inductively according to patterns located in the data. \emph{Corpus-informed} studies, on the other hand, may use the corpus as a body of examples that can be drawn upon in discussion of broader trends in society \cite{baker_useful_2008}.
-
-		Our study is in the latter domain.\endnote{Though we are focussed on corpus-assisted investigation at present, indeed the dataset under investigation is of size and scope as to be of interest to corpus-driven researchers, language and media specialists, etc., and indeed, such projects are forthcoming.}
-		As a diachronic investigation, we can further situate our method within \emph{Modern Diachronic CADS}. As Partington explains, 
-
-		\begin{quote}
-		\lbrack MD-CADS\rbrack~ employs relatively large corpora of a parallel structure and content from different moments of contemporary time \dots in order to track changes in modern language usage but also social, cultural and political changes as reflected in language \citeyear[p.~83]{partington_modern_2010}.
-		\end{quote}
-
-		\noindent As newspapers are well-structured and archived in digital collections, they have formed a common datasource for CADS. \citeA{johnson_`political_2003-1} investigated shifts in the discursive construction of \emph{political correctness} in German newspapers. \citeA{duguid_newspaper_2010} performed thematic categorisation of the keywords from two collections of digitised newspapers from 1995 and 2005. \citeA{freake_cross-linguistic_2012} focussed on the ideological positioning of French and English in Canadian newspapers. %do these consider current events??
-
-		Ours is not the first corpus-based study of risk. Most well-known is \citeA{fillmore_toward_1992}, who studied the behaviour of risk as both noun and verb in a 25 million word corpus of American English. Ultimately, the authors' aims were lexicographic, rather than discourse-analytic, limiting the usefulness of the study's methods for our purposes. A second key point of difference is the small size and lack of structure of their corpus (though their research was a certainly remarkable and groundbreaking effort at the time of publication). Finally, their study was neither longitudinal, nor designed to connect patterns to social/societal change.
-
-		More recently, \citeA{hamilton_meanings_2007} used a frame semantics approach to understand the behaviour of risk in two corpora: the 56 million word \emph{Collins WordbanksOnline Corpus} (N risk tokens) and the five million word \emph{CANCODE} (235 risk tokens). 
-		%Frame semantics is a well-established framework for functional analysis of language. 
-		We depart from their methods in five respects. First, they use general corpora, while we used a specialised corpus. Second, our study is diachronic, while theirs is largely monochronic. Third, we differ dramatically in the number of risk words analysed (approximately 300/over 150,000). Fourth, they relied on collocation (without lemmatisation\endnote{Lemmatisation is the process of counting the base forms of tokens, rather than the token itself. \emph{Taken} would be classified under \emph{take}, for example. While lemmatisation is not \emph{always} the best option, as it can collapse different parts of speech, tense information, etc., it is certainly appropriate when determining the most common predicators, etc.}), while we performed specific queries of the lexicogrammar, using lemmatisation where needed. Sixth, they used frame semantics, while we use SFL (though informed by Filmore and Atkins' \citeyear{fillmore_toward_1992} articulation of the components of the risk frame, as in Figure \ref{fig:fil_atk}). Though these theories have a number of underlying similarities (both are semantically oriented grammars, for example), the two diverge in their treatment of the role of cognition and psychology. While frame semantics argues that lexicogrammatical instantiations are mapped by listeners to pre-existing cognitive frames or schemata, SFL is largely silent on the subject of cognition, preferring to map lexicogrammar to external variables of field, tenor and mode.
-
-            \begin{figure}[htb!]
-            \centering
-            \includegraphics[width=0.6\textwidth]{../images/riskframe.png}
-            \caption{Risk frame (from Fillmore \& Atkins, 1992)}
-            \label{fig:fil_atk}
-            \end{figure}
-
-		%frame semantics vs sfl: http://ucrel.lancs.ac.uk/publications/cl2003/papers/hunston.pdf
-		
-		%They relied on manual thematic categorisation of concordance lines---something not practical for a corpus containing as many tokens as ours. Their reliance on collocation meant that lists of the closest collocates of risk are not organised by part of speech. This makes it hard to draw meaningful conclusions. Results are also not lemmatised---\emph{is} and \emph{are} are both listed as lower-significance collocates, though had they been classed together with all forms of \emph{be}, \emph{be} may have been demonstrated to play a more important role. Also, their corpus is `balanced', while ours is from a single source.
-
-		Notably, our methodology also departs from typical methods of (MD-)CADS in a few key respects. First, CADS is often lexically-oriented, with techniques such as \textbf{keywording} used as a means of disinterring the `aboutness of a text' \cite{baker_querying_2004} and \textbf{clustering} and \textbf{collocation} used to look for the co-occurrence of lexical items absent any consideration of grammar. \citeA{hunston_systemic_2013} contends that despite a number of areas of overlap, SFL and CL are at odds in the sense that SFL is grammatically oriented while CL is lexically oriented. Though the majority of CADS does indeed focus on lexis, this preoccupation stems more from the relative simplicity of searching for tokens in corpora, compared to grammatical features, than it does from any theoretical motivation.\endnote{We need only to look at the number of lines of code needed to develop an accurate tokeniser and an accurate grammatical structure parser to understand the reasons why lexis appears as the de-facto centre of CL/CADS today}~Accordingly, our use of grammatically parsed data and equal consideration of lexical and grammatical features, though in line with SFL, is against the grain of much contemporary CADS literature.
-
-		The second key difference from mainstream CADS is that our investigation did not typically involve common CADS practices such as keywording, clustering, collocation, or the use of stopword lists. Our reasons for avoiding these practices are varied. In the case of keywording, for example, we found the notion of using reference corpora comprised of `general' language to be inherently problematic. The usefulness of this reference corpus is predicated on the idea of corpus balance---that is, the notion that a corpus of texts, if comprised of a wide variety of genres, and if the relative proportion of these texts is akin to their prevalence in culture, may be taken to be representative of language generally \cite{chen_sinica_1996}. As corpus balance is well-acknowledged by CADS practitioners to be only a theoretical ideal (Gries, 2009), we took a different approach. When the size of our corpus permitted, we simply counted the base forms of the most common heads of participants, processes and circumstances in each subcorpus. This also liberated us from the arbitrary nature of stopword lists (lists of very common words that are automatically excluded from search results), as most stopwords are determiners, prepositions, conjunctions and so on, which rarely occupy key experiential roles. In the case of smaller subcorpora, when lexicogrammatical queries typically did not yield large sets, though keywording was performed, we searched for keywords in each subcorpus, and used the entire corpus as the reference corpus, to avoid potential epistemological issues of non-representative or unbalanced data.
-
-		Clustering and collocation, though mainstays of CADS, are also largely absent in our analysis, as they consider only the co-occurrence of lexical items within a specified (and arbitrary) number of words, and accordingly do not take grammatical relationships between lexical items into account. As an example, \emph{Men are from Mars, and women are from Venus} would contribute to an understanding of \emph{Mars} and \emph{women} as collocates, regardless of the fact that the experiential meaning of the clause has the opposite meaning. We instead created nuanced search queries capable of drawing on lemma lists and lists of process types (as in Figure \ref{fig:glossed}). This luxury was afforded by grammatical (phrase structure and dependency) annotation of the corpus, as well as the development of scripts for quickly searching lexicogrammar.
-
-		%Quantitative corpus linguistics with R: a practical introduction
-
-		%This was primarily to avoid conflicts between these practices and the theoretical orientation discourse analysis:
-
-			\begin{figure}
-			\begin{quote}
-			\begin{multicols}{2}
-			\begin{verbatim}
-			__ >># (/(NP|VP|PP)/ > (VP
-			<<# process.relational $ 
-			(@NP <<# /(?i)\brisk.?/)))
-			\end{verbatim}
-			\noindent In relational processes in which a risk word is the Token/Carrier, what is the head of the Value\slash Attribute?
-			\end{multicols}
-			\end{quote}
-			\caption{\emph{Tregex}-based search query and gloss}
-			\label{fig:glossed}
-			\end{figure}
-
-			\section{Discourse-semantic areas of interest}
-
-				Our interest is ultimately in discourse-semantic experiential and interpersonal meanings of risk words. The first point of interest is simply the relative frequency of risk words in the NYT generally, in absolute terms, by word class, and by experiential and interpersonal role. These areas of interest are at the clausal level. Within experiential meaning, we are interested the relative frequency of risk as a participant and as a process, as well as the behaviour of risk when occupying these roles. At the same time, we are interested in meanings made below clause level, within groups and phrases. When risk is a participant or process, we are interested in the ways it is modified. Furthermore, risk itself can be a modifier of participants and processes. Accordingly, we are also interested in both understanding the ways in which this modification happen and finding the participants and processes that risk commonly modifies. Finally, within the interpersonal realm of meaning, we are interested in the arguability of risk words---that is, the extent to which their meaning is symbolically available to negotiation by the writer\slash reader.
-
-				We can summarise our discourse-semantic interests with the following \ref{lst:num} questions. \emph{In terms of longitudinal change in the NYT,}
-
-				\begin{enumerate}\setlength\itemsep{-0.5em}
-					\item \emph{How frequently do risk words appear?}
-					\item \emph{Which experiential roles do risk words occupy?}
-					\item \emph{Is risk more commonly in the position of experiential subject or experiential object?}
-					\item \emph{What processes are involved when risk is a participant?}
-					\item \emph{How are participant risks modified?}
-					\item \emph{What kinds of risk processes are there, and what are their relative frequencies?}
-					\item \emph{When risk is a process, what participants are involved?}
-					\item \emph{When risk is a modifier, what are the most common forms?}
-					\item \emph{When risk is a modifier, what is being modified?}
-					\item \emph{How arguable is risk?} \label{lst:num}
-				\end{enumerate}
-				%
-				These questions are answered in this order in the Findings section. In the Discussion, these answers are synergised in order to perform a broader analysis of discourse-semantic change.
-
-		\section{Lexicogrammatical realisations of discourse-semantic meanings}
-
-			Discourse-semantic meanings are realised in texts by lexicogrammatical patterns. \textbf{Risk as participant} is congruently realised by a risk word at the head of a noun phrase that is an argument of a main verb. Other possible realisations of risk participants are adjectival risk words in participant positions (\emph{The job is risky}) or risk words within prepositional phrases (\emph{Votes were at risk}). SFL also treats prepositional phrases as partially realised relational processes, containing only object arguments. As this is perhaps a controversial analysis within linguistic theory generally, the treatment of risk within PPs is separated from risk as arguments of verbal groups. \textbf{Risk as a process} is congruently realised by a risk word as the main verb of a clause. When risk is instantiated here, we can extract the participants involved in the process. \textbf{Risk as a modifier} is realised by different word classes, depending on what is being modified. Risk can modify participants through pre-head or post-head modification. Analysed in this study\endnote{Modification through embedded clauses (\emph{the children who were at risk}) has been left out for reasons of scope.} are adjectival pre-head modification (\emph{a risky move}), nominal pre-head modification (\emph{risk management}) and post-head modification via a prepositional phrase (\emph{the electorate at risk}). \textbf{Arguability of risk words} can be determined by looking for the functional role of risk words within the Mood system: risk as Subject or Predicator is more arguable than risk as Complement and Adjunct \cite<see>{matthiessen_lexicogrammatical_1995}.
-
-			%Risk can modify either participants or processes. Participants are modifier through pre- or post-head attachments within the nominal group (\emph{a risky decision}; \emph{a man at risk of harm}. Processes are modified by adverbials or by prepositional phrases that attach to the verbal group (\emph{he gambled riskily}; \emph{she told me about the risk}).
-
-			%Risk as a modifier of participant. The first, most congruently, involves the use of risk as an Epithet within an adjectival unit  (e.g. \emph{the risky decision}). Note that this may serve either experiential or interpersonal functions: experiential Epithets are objective properties of the head of the phrase; interpersonal Epithets convey speaker judgements. Also possible is risk as a Classifier nominal classifiers (e.g. \emph{risk management}). Here, the head of the noun is restricted to the provided class. 
-
-			%We can now add lexicogrammatical realisations to our discourse-semantic areas of interest:
-
-				%\begin{enumerate}
-					%\item how frequently do risk words appear?
-					%\item which functional roles (Participant, Process, Modifier) do risk words occupy?
-					%\item Is risk more commonly in the position of experiential subject or experiential object?
-					%\item what processes are involved when risk is a subject%\slash object participant?
-					%\item when risk is a process, what participants are involved?
-					%\item how arguable is risk?
-					%\item when risk is a modifier, what are the most common forms?
-					%\item when risk is a modifier, what is being modified?
-				%\end{enumerate}
-
-			%Risk words may be nominal (\emph{a risk}), verbal (\emph{she risks}), adjectival (\emph{a risky venture}) or, rarely, adverbial (\emph{I riskily decided}).
+    \noindent
+    \begin{figure}[htb!]
+    \centering
+    \begin{minipage}{.42\textwidth}
+    \centering
+    \includegraphics[width=1\textwidth]{../images/1.png}
+    \caption{Absolute frequency of nominal groups becoming more frequent over time}
+    \label{fig:1}
+    \end{minipage}%
+    \begin{minipage}{.42\textwidth}
+    \centering
+    \includegraphics[width=1\textwidth]{../images/2.png}
+    \caption{Relative frequency of nominal groups becoming more frequent over time}
+    \label{fig:2}
+    \end{minipage}
+    \end{figure}
+    \noindent
+    \begin{figure}[htb!]
+    \centering
+    \begin{minipage}{.42\textwidth}
+    \centering
+    \includegraphics[width=1\textwidth]{../images/3.png}
+    \caption{Relative frequency of nominal groups becoming more frequent over time}
+    \label{fig:3}
+    \end{minipage}%
+    \begin{minipage}{.42\textwidth}
+    \centering
+    \includegraphics[width=1\textwidth]{../images/4.png}
+    \caption{Relative frequency of nominal groups becoming less frequent over time}
+    \label{fig:4}
+    \end{minipage}
+    \end{figure}
 
 
-			%Corpus interrogation proceeded through each of these four categories in a wide array of permutations. In each interrogation, we were interested in either a) counting the total occurrences of a lexicogrammatical pattern in each subcorpus (e.g. \emph{How often is a risk word adjectival?}) or b) listing all words matching a search query by total frequency in each subcorpus (e.g. \emph{Which risk-adjectives occur, and how often?}).
+\begin{itemize}
+\item The first major theme that emerges from this interrogation is the shift from infectious to non-infectious disease.
+\item A second point of interest is the decline in terms related to insurance. Though the prevalence of health insurance in mid 1990s articles was unexpected, as it corresponds with Hillary Clinton's efforts to increase health insurance coverage in the USA, unexpected was the lack of an upswing in insurance terms during the pushes for healthcare reform throughout the Obama administration.
+\item Also apparent is an upward trend for nominal groups related to research (\emph{study, percent, research, etc.}).This finding was of particular interest, given that the increasing contestation of academic and scientific research are core hypotheses made by Beck. Concordancing was used to look for evidence of contestation when the nominal groups related to research, researchers, studies, etc. were instantiated (see Table \ref{tab:researcher}).
+\end{itemize}
+%
+Broadly speaking, institutional social actors, political representatives and the like appear to have been displaced by individual human actors and components within their everyday life world. The exception to this rule is the domain of research, which is becoming increasingly salient in health reporting. Though further investigation into the emergence of research as a key semantic domain within risk discourse is needed, we hypothesise that the increase is the cause of both institutional factors (the time- and cost-effectiveness of reporting on science) as well as sociological changes (an increased consciousness of science, etc.) The lack of contestation of research in the NYT, however, is at least partially at odds with Beck's conceptualisation of risk in reflexive modernity. Due to the fact that our data is from only one source, we cannot 
 
-			%\begin{enumerate}[nolistsep]
-				%\item Counting the total occurrences of a lexicogrammatical pattern in each subcorpus (e.g. \emph{How often is a risk word adjectival?})
-				%\item Listing all words matching a search query by total frequency in each subcorpus (e.g. \emph{Which risk-adjectives occur, and how often?})
-			%\end{enumerate}
+If contestation of science and research happens mostly within certain communicative genres (e.g. casual conversation, Tweets, etc.) or among certain demographics, it seems prudent to suggest further research focussing on the presentation of science within different kinds of talk. This could be useful in building an empirically driven account of the genesis, mechanism and effects of contestation of mainstream science and research.
 
-			The scope of our project necessitated some constraints on the kinds of patterns we analysed. Major constraints included our focussing on experiential meaning, perhaps at the expense of interpersonal meaning. Thus, the analysis contains little consideration of how risk may be operationalised in order to construct writer\slash reader or newspaper\slash readership relationships. Also largely unanalysed are the ways in which risk are appraised, judged, and graded in severity. This was mostly due to the lack of available automatic parsers for SFL's appraisal grammar \cite<see>{martin_language_2005}. 
+\afterpage{%
+\begin{table}
+\centering
+\tiny
+\ttfamily
+\begin{tabular}{lrrl}
+1 & We know this now because                           & researchers & tested both theories , side by side , to see which \\
+2 & something the public did not : Yale University     & researchers & had tentatively concluded that PPA was linked to a \\
+3 & Instead ,                                          & researchers & say , young killers must be seen as extremely      \\
+4 & of men with E.D. , or at risk for developing it ,  & researchers & in Italy found that the men could improve their    \\
+5 & If you were an academic                            & researcher  & , you 'd have to persuade your institutional       \\
+6 & Some                                               & researchers & believe hyperthymics may be at increased risk of   \\
+7 & index , smoking and several other risk factors ,   & researchers & found that women on postmenopausal hormone therapy \\
+8 & will have public health consequences , the         & researchers & said                                               \\
+9 & Finally , and perhaps most powerfully ,            & researchers & say that a life in poverty is a life of stress     \\
+10 & Office of Protection from Research Risks said the  & researchers & altered the medical records of patients , then     \\
+11 & In their paper , the                               & researchers & noted that `` countries in which wine is the       \\
+12 & In another study , by                              & researchers & at the University of Connecticut , leg strength    \\
+13 & In an unexpected finding , the                     & researchers & reported that the women receiving goserelin also   \\
+14 & that , far from protecting the heart as many       & researchers & had assumed , the therapy may have put the women   \\
+15 & Now                                                & researchers & have found that elevated risk of psychiatric       \\
+16 & of a New York Fire Department rescue company and a & researcher  & who is exploring the psychological bases of        \\
+17 & Department of Veterans Affairs said the California & researchers & did not properly assess the safety of experimental \\
+18 & Other                                              & researchers & , working with similar kinds of data , have        \\
+19 & The                                                & researchers & concluded that the study '' provides the first     \\
+20 & On the other hand , said Dr. Susan Czajkowski , a  & researcher  & at the National Heart , Lung and Blood Institute   \\
+21 & exactly how a given AIDS patient was infected ,    & researchers & do not know exactly how much the risk of           \\
+22 & In an effort to finance debts , '' the             & researchers & said , `` ordinary people are paying the ultimate  \\
+23 & during the next 25 years of about 6 percent , the  & researchers & found                                              \\
+24 & To obtain consent ,                                & researchers & are required to explain that the experiments are   \\
+25 & slightly increasing their risks of dying earlier , & researchers & reported yesterday                                 \\
+26 & Utah                                               & researchers & have videotaped 150 couples to measure the effect  \\
+27 & blood cells -- became patients ' property ,        & researchers & taking them without detailed consent and explicit  \\
+28 & In mapping the human genome ,                      & researchers & determined that nearly 99 percent of genetic       \\
+29 & The                                                & researchers & were unable to include family history of diabetes  \\
+30 & of Internal Medicine , Dr. Solomon and other       & researchers & looked at the comparative risks posed by different \\
+31 & the perception of risk , said Pete Delaney , a     & researcher  & with the administration , adding that only about 9 \\
+32 & The                                                & researchers & conclude that irregular sleep by itself may be a   \\
+33 & Dr. Bernard H. Fox , a federal                     & researcher  & who became a pioneer in investigating the effect   \\
+34 & The                                                & researchers & said it was unclear why smoking appeared to        \\
+35 & The Stanford                                       & researchers & , who included Dr. Irving Weissman , a leading     \\
+36 & But                                                & researchers & like Dr. Monahan and Dr. McNiel are applying       \\
+37 & A study of 1,240 people by                         & researchers & at Case Western Reserve University in Cleveland    \\
+38 & that of diabetes , '' said Dr. Steven G. Deeks , a & researcher  & at the University of California , San Francisco    \\
+39 & In addition ,                                      & researchers & hope that the studies linking the disorder to      \\
+40 & night on WNBC-TV , that Cornell University         & researchers & have found a risk of alcoholism among New York     \\
+41 & , suggesting chance could play a role , but        & researchers & say the trends are credible because they are       \\
+42 & The                                                & researchers & also found that patients became significantly less \\
+43 & Over all ,                                         & researchers & found that calcium supplements did not lower the   \\
+44 & of the power AIDS activists have mustered to push  & researchers & to do experiments that many experts deem foolish   \\
+45 & The                                                & researchers & next study the extent to which medical treatment   \\
+46 & was the fourth-leading risk factor for death , the & researchers & said                                               \\
+47 & study 's author , Kathleen Miller , an addiction   & researcher  & at the University of Buffalo , says it suggests    \\
+48 & The                                                & researchers & claim that the benefits of the research -- greater \\
+49 & Some                                               & researchers & suspect genetics : Maybe thin people who develop   \\
+50 & Dr. Bishop and Dr. Varmus , along with other       & researchers & , have found that the genes can cause cancer in    \\
+51 & Finally ,                                          & researchers & at Tufts reported last month in The Journal of     \\
+52 & The lead                                           & researcher  & , Dr. Tina V. Hartert , director of the Center for \\
+53 & harmful cholesterol in the blood , even when the   & researchers & accounted for other risk factors for high          \\
+54 & on cases stemming from the Sept. 11 attacks ,      & researchers & found that the more deeply therapists were         \\
+55 & The                                                & researchers & did find an increased risk of other , less common  \\
+56 & The inquiry in Ms. Wan 's case found that          & researchers & had adequately explained the risks to her and that \\
+57 & For example , she said ,                           & researchers & are experimenting with fast-growing carp that      \\
+58 & than 23,000 Greek men and women ages 20 to 86 ,    & researchers & found that napping at least three times a week for \\
+59 & precision afforded by simple computing devices ,   & researchers & say , promise to deliver new insights on risk      \\
+60 & only two categories of risk , minimal and great ,  & researchers & were often discouraged from doing research         \\
+61 & the clear advantage of moderate drinking , the     & researchers & presented their findings with strong caveats       \\
+62 & As the genes become better understood ,            & researchers & expect to find ways to block them if they become   \\
+63 & adolescents followed over a period of nine years , & researchers & at the New York Psychiatric Institute found that   \\
+64 & Health , for example , said that 100 psychiatric   & researchers & gathered in a room would all probably agree that   \\
+65 & smoking might have damaged the fathers ' sperm ,   & researchers & said yesterday                                     \\
+66 & with 20 percent of the control group , the         & researchers & found                                              \\
+67 & The                                                & researchers & found that for each four-inch increase in height   \\
+68 & between height and cancer may help guide           & researchers & to study hormones and growth factors that          \\
+69 & Why do                                             & researchers & and willing patients test the boundaries of        \\
+70 & 's disease as those who have never smoked ,        & researchers & say , and several small studies have indicated     \\
+71 & But                                                & researchers & said they had never seen this before , either in   \\
+72 & In 2012 , British                                  & researchers & , by combining results from clinical trials that   \\
+73 & After adjusting for various health factors , the   & researchers & found that for each increase of 10 micrograms per  \\
+74 & The F.D.A. has asked                               & researchers & at Columbia to reclassify the cases of self-harm   \\
+75 & The                                                & researchers & said this was troubling , given recent studies     \\
+76 &  A large team of                                    & researchers & , led by V. Wendy Setiawan , an assistant          \\
+77 &  and violated Federal regulations because the       & researchers & had not informed patients of the risks             \\
+78 &  Yet                                                & researchers & also concluded the risk of stroke was the same as  \\
+79 &  In 2002 ,                                          & researchers & halted the largest clinical trial ever conducted   \\
+80 &  , and while they might not be surprising to        & researchers & , they were intended to inform the public as well  \\
+81 &  Many                                               & researchers & said anger-prone people could reduce the risk of   \\
+82 &  Using preserved blood samples of pregnant women ,  & researchers & have found that low vitamin D levels are           \\
+83 &  And so now                                         & researchers & have been working on new strategies : Developing   \\
+84 &  This month , Danish                                & researchers & reported on a 15-year study of 12,000 nurses       \\
+85 &  She said                                           & researchers & thought older medicine was riskier because the     \\
+86 &  Last Sunday ,                                      & researchers & released data that showed that outdoor air         \\
+87 &  But when the company and the                       & researcher  & are one and the same , he said , that check is     \\
+88 &  Huntington 's disease and cystic fibrosis , and    & researchers & say tests identifying those at high risk of heart  \\
+89 &  may increase with a father 's advancing age ,      & researchers & reported yesterday                                 \\
+90 &  Denise Juliano-Bult , a                            & researcher  & at the National Institute of Mental Health , said  \\
+91 &  those who gain fat around the hips and thighs ,    & researchers & say                                                \\
+92 &  in the British Medical Journal in August ,         & researchers & in Argentina showed that women who were given      \\
+93 &  Next ,                                             & researchers & said , they want to do a large study like one      \\
+94 &  The                                                & researchers & noted that the drinks contain high levels of       \\
+95 &  The                                                & researchers & offered some other examples of how the risks       \\
+96 &  Some other                                         & researchers & questioned the findings , and most agreed that the \\
+97 &  For purposes of comparison , the                   & researchers & also examined inherited variations in 13 genes     \\
+98 &  And the flaws are compounded , the                 & researchers & said , when journalists do n't report the context  \\
+99 &  A few years ago , Mercedes Carnethon , a diabetes  & researcher  & at the Feinberg School of Medicine at Northwestern \\
+100 &  As with beta carotene ,                            & researchers & were shocked                                       \\
+\end{tabular}
+\caption{100 random instances of \emph{researcher} in the health subcorpus}
+\label{tab:researcher}
+\end{table}
+\clearpage
+}
 
-			Finally, queries returning less salient or ambiguous results are omitted from discussion here. Counting the kinds of determiners that occur before a nominal risk (\emph{this risk}, \emph{a risk}, \emph{the risk}) uncovered no particularly interesting patterns, for example. Because our analysis began with broader sites of change and progressed toward more micro-features upon discovery of interesting initial results (e.g. from the increasing frequency of risk as a modifier to the frequency of the modifier \emph{at-risk}), it is possible that some micro-level features were obscured by the lack of significant change at broader levels.
+\subsubsection{Beck's notion of increasingly contested science}
 
-				%make all queries and results available?
+Key to Beck's notion of Reflexive Modernity is the idea that people confront and contest the science that brought about modernisation via the industrial revolution, as the negative repercussions of this science and modernisation witnessed first-hand (through pollution, etc.) \cite{ross_science_1996}. 
 
-				%MUST CHANGE THESE PARAGRAPHS TO RISK AS PARTICIPANT, PROCESS,
+We found strikingly little evidence for contestation of scientific\slash academic research in the NYT. As can be seen in Table \ref{tab:researcher}, research and researchers are typically presented in a neutral light, with no explicit scepticism of their methods or findings. This is interesting, given that authors of many other kinds of writing, such as academic and fiction, have embraced the critical turn of scientific method against itself, under the banner of post-structuralism. Why not print journalism?
 
+Many explanations are possible. Before we turn to them, it is important to remember that the representation of research in the NYT may be influenced by a number of independent factors. Foremost, it should be noted that print journalism centred on science is increasingly common. It is affordable, as the journalist does not need to investigate or travel in order to access the content, and much of the article body can consist of quotations from the journal article. It is also deemed reliable, having in many cases already been through peer-review. Given the rapid rise in the number of academic journals, as well as the increased ability to access these journals via the Web, increased reporting of academic research is perhaps an expected finding. 
 
-		%\subsection{Dependency querying}
+Of more interest to us is the lack of scepticism. One possible explanation for this is that the NYT might not be the genre in which the contestation occurs. The absence of scepticism toward modern medicine, the pharmaceutical industry does not indicate that there is little scepticism toward these things in society in general. As reasons underlying this scepticism are often subjective and emotional, rather than empirically derived, it makes sense that such discourse would be more common in everyday conversations, for example, than in new journalism. While it is possible that such scepticism is mostly represented in Opinion and Editorial articles in the NYT, such articles comprise only a small fraction of all articles. Further research here would build corpora of different article types, and investigate how health discourse differs by the genre\slash section of the newspaper.
 
-			%\begin{figure}[htb!]
-			%\centering
-			%\includegraphics[width=0.75\textwidth]{../images/depparse}
-			%\caption{A visualised dependency parse, with \emph{risking} as root}
-			%\label{fig:depparse}
-			%\end{figure}		
+Another possible argument is that print news and modernity have a more-or-less symbiotic relationship. Indeed, the rise of print journalism closely parallels modernisation and industrialisation. The production and transmission of newspapers themselves is in many respects reliant upon technology popularised during industrialisation.
 
-			%\section{Operationalising sociological claims}
+% The inability of science alone to solve conflicts and debates may be so, but this has little bearing on the usefulness of scientific research within print journalism. Journalism is not typically seeking to resolve, but merely to elucidate, sources of conflict and tension in the world at large.
 
-			%The discourse-semantic and lexicogrammatical areas of interest can be summarised with regard to related sociological claims.
+% We should also note here that the emergence of science reporting does not necessarily mean than non-scientifically informed medical practice is being displaced:
 
-		      %\begin{table}
-		      %\centering
-		      %\footnotesize
-		      %\begin{tabularx}{1.0\textwidth}{|l|X|X|X|X|}
-		      %\hline
-		      %\textbf{Author}   & \textbf{Claim}   & \textbf{Discourse-semantic realisations(s)}      & \textbf{Congruent lexicogrammatical realisation(s)}    & \textbf{Example(s)}  \\ \hline
-		      %Beck     & Everyday life world characterised by risk    & Common people as increasingly common participants in risk as a process; increasingly localised risked things/potential harms; risk appearing in articles about daily life & Women, children, non-celebrities appearing as heads of nominal groups that are actors in risk processes; Everyday processes and common things appearing as head of verbal and nominal groups that appear after risk processes & \emph{The little girl risked tearing her coat}; \emph{We risked getting rained on/one dollar}; \\ \hline
-		      %Giddens  & ~ & ~    & ~       & ~       \\ \hline
-		      %Zinn     & ~     & ~      & ~       & ~    \\ \hline
-		      %Author x & Increasing focus on risk in health discourse & Medical lexis (diseases, institutions, medications, etc) as increasingly common participants in risk as a process                                                         & Illnesses and risk in nominal compound words; health terminology in modifiers of risk as head of a participant    & \emph{The cancer-risk}; \emph{the risk of heart disease}                                       \\ \hline
-		      %Author y & ~     & ~       & ~       & ~      \\ \hline
-		      %\end{tabularx}
-		      %\caption{Systemic-functional realisations of sociological claims concerning risk discourse}
-		      %\label{tab:claims}
-		      %\end{table}
+\section{Methodological challenges during the health corpus investigation}
 
-			%\subsubsection{Longitudinal trajectory} will be used to refer to a given lexicogrammatical construction increasing in frequency (\emph{inbound trajectory}), becoming less frequent (\emph{outbound trajectory}), or remaining at a similar frequency (\emph{static trajectory}) over time.
+A major issue was the smaller size of the corpus, which necessitated different kinds of analysis. Within keywording and n-gramming, it became clear that broader linguistic change and specific events are difficult to separate. This, however, is where we can see the clearest examples of the link between events and language change. Interspersed throughout the keywords and n-grams are terms ranging in specificity. It is through taxonomisation and categorisation of these varying levels that we can hopefully smooth out our understnading of the influence of specific events on the risk semantic.\endnote{Since finalisation of this report, we have expanded on \texttt{corpkit}'s ability to process keywords in particular: documentation of preliminary findings is available at \url{https://www.github.com/interrogator/corpkit}.}
 
+A second major challenge was an original project aim, to compare risk language in politics, health and economics articles. Despite a number of interrogations of this corpus, we have found the issue of working with three corpora, each containing almost thirty subcorpora, unmanageably complex. Though code can quickly iterate through each corpus, even taking advantage of parallel processing, constructing meaningful discussion of risk 
+
+The huge amount of data and variables necessitates an additional stratum of distance from the texts themselves, and this distance leads to uncertainty in discussions about how and why risk language is changing. To grapple with this issue in the future, we envision a three-pronged approach:
+
+\begin{enumerate}
+  \item Create more sophisticated code and methods, which can point to interesting phenomena within datasets quickly and accurately
+  \item Increase the time spent on contexutalised, qualitative analysis
+  \item Describe in more detail the media production climate and its role in news language
+\end{enumerate}
+
+\section{Summary}
+
+  The smaller size of health subcorpus necessitated different kinds of analysis. Fortunately, such methods are well-documented within corpus assisted discourse studies. Following on from these methodologies, we located particularly frequent terms, and analysed them in their context of use. Patterns quickly emerged: the domains of insurance, politics and infectious disease decrease in frequency over time, while non-infectious\slash lifestyle illnesses, everyday people and science\slash research became more prominent. Though of work on description of health risk in news media is far from complete, we believe we have demonstrated the fruitfulness of combining sophisticated programming concepts with mainstay social science methods such as thematic categorisation.
