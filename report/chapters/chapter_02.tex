@@ -1,6 +1,44 @@
 %!TEX root = ../risk_report.tex
 
-\chapter{Case study: The New York Times, 1963--2014}
+\chapter{The case study: \emph{The New York Times}, 1963, 1987--2014}
+
+\section{Selecting \emph{The New York Times} as a case study}
+
+There is good evidence that the risk semantic has become more common in societal discourses and practices. A direct count of articles which contain a risk token at least once showed how the dynamic of risk developed in many countries after WW2 (Zinn 2011). It clearly shows how risk is mainly a phenomenon that developed a particular dynamic after WW2 in particular in the late 1980s. It also shows that the risk semantic had been around for quite a while without a clear dynamic. This is interesting and invites more long term investigations.
+
+With the current study we wanted to examine in much more detail whether during a historical relatively short period from 1987 to 2014 (we used a sample of the 1963 volume to contrast with the later years) significant shifts can be observed using much more sophisticated research strategies than used in earlier corpus based approaches on the risk semantic (e.g. Hamilton et al, 2007).
+
+Therefore we selected only one newspaper---The New York Times---as a case study after careful consideration of other available resources. We aimed to find a resource that allows longitudinal analysis of long term social change with a limited number of intervening factors. We were looking for a paper which provided a high quality digitised archive and a central news institution over the centuries.
+The (London) Times and the NYT seem suitable because of their important social role within a society. They also fulfil further selection criteria such as wide circulation (not just regional), good accessibility and high data quality. However the NYT has been finally selected because of the central role of the US in the world and the prestige and clout of the NYT. The NYT is a historically central institution of media coverage (Chapman 2005) with a continuously high status and standard of coverage. It is influential, highly circulated and publicly acknowledged news media. It contains extensive coverage of both national and international developments, its digital archive covers all years since WWII and is relatively easy to access.
+Available Australian Newspapers such as The Australian or The Age offer similar digitised archives only for recent decades and at higher cost. Long term historical analyses are much more complicated and will be pursued when we have proven our methodology.
+The project concentrates on a single newspaper and follows a reproduction logic (Yin 1989) for four reasons:
+
+\begin{enumerate}
+\item The `historical change of concepts' (Koselleck 2002) is so general that it can be identified even in specific newspapers though newspaper specific factors have to be considered.
+\item A detailed analysis of available newspapers archives by the CI has found that, in the US, only the Washington Post provides a comparable archive. While both show no significant differences in the general increase of the usage of the risk semantic (Zinn 2010, p. 115), access and data management has proven easier and more reliable with the NYT.
+\item The case study allows a more detailed analysis of how the change of the newspaper might have influenced the use of risk. A collection of newspapers, as in many linguistic text corpuses would not lead to representative results but would create uncontrolled biases. Instead, the case study of a specific newspaper allows a much more detailed analysis of how change of the newspaper itself, such as a change in leadership or style of news reporting, might have influenced the use of risk.
+\item The study limits the amount of data and restricts costs without losing significant outcomes. Originally we wanted to compare the volumes 1963, 1988, 2013 of The New York Times. We soon found out about the availability of a high quality data resource, The New York Times Annotated Corpus (http://catalog.ldc.upenn.edu/LDC2008T19) which covers all articles published from 1987--mid-2007 and includes substantial metadata and contains 1,130,621,175 words. We complemented this dataset with articles from the NYT online archive up to 2013/14.
+In order to further validate our results, future research has been planned that will compare our results with more recent data from other US newspapers. Though in the US many newspapers are digitised the main issue is that some papers are strictly PDF while some of these PDFs have the plain text version also available. We identified major newspapers which are suitable for comparative purposes in future research.
+\end{enumerate}
+
+\section{Building the \emph{Risk Corpus}}
+
+Our investigation centred on digitised texts from New York Times editions in 1963 and between 1987--2014. These texts (defined here as individual, complete chunks of content) are predominantly news articles, but depending on archiving practices, also included in our corpus is text-based advertising, box scores, lists, classifieds, letters to the editor, and so on. More specifically, we were interested in any containing at least one `risk word'---any lexical item whose root is risk (risking, risky, riskers, etc.) or any adjective or adverb containing this root (e.g. at-risk, risk-laden, no-risk).
+
+We relied on two sources for our data. \emph{The New York Times Annotated Corpus} was used as the source for all articles published between 1987--2006. ProQuest was used to search for and download articles containing a risk word from 2007--2014, alongside some metadata, in HTML format. We also created a subcorpus of articles from NYT 1963 editions through optimal character recognition (OCR) of PDF documents archived by ProQuest as containing a risk word in either metadata (i.e. title, lede) or content. Due to the time-intensive nature of manual correction of OCR, a random sample of one-third (1218 texts) was selected, with paragraphs of texts containing a risk word being manually corrected by hand.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     Our investigation centred on digitised texts from \emph{New York Times} editions in 1963 and between 1987--2014. These texts (defined here as individual, complete chunks of content) are predominantly news articles, but depending on archiving practices, also included in our corpus is text-based advertising, box scores, lists, classifieds, letters to the editor, and so on. More specifically, we were interested in any  containing at least one `risk word'---any lexical item whose root is risk (\emph{risking}, \emph{risky}, \emph{riskers}, etc.) or any adjective or adverb containing this root (e.g. \emph{at-risk}, \emph{risk-laden}, \emph{no-risk}).\endnote{This was operationalised through the case-insensitive regular expression \textbf{\textbackslash brisk.*?\textbackslash b}, where \textbf{\textbackslash b} acts as a word-boundary marker.}~
 
@@ -15,71 +53,70 @@
     %\endnote{It would also be possible to create corpora of subtopics: from the politics domain, we could quickly find articles in which Clinton, Bush or Obama are keywords and look for differences in the behaviour of risk words for each politician. Though this seems an interesting area for future research, it was beyond our scope.}~
 
     \begin{table}\footnotesize \centering
-    \begin{tabular}{|l|l|}
-    \hline
-    \textbf{Tag} & \textbf{Content}  \\ \hline
-    MA    & Author(s)       \\ \hline
-    MC    & Librarian-added category tags     \\ \hline
-    MD    & Date of publication        \\ \hline
-    MI    & Unique identifier       \\ \hline
-    MK   & MALLET topic        \\ \hline
-    MM    & Manually annotated topic  \\ \hline
-    MP    & Section of newspaper \\ \hline
-    MS    & Risk concordance line  \\ \hline
-    MT    & Article title        \\ \hline
-    MU    & URL for article         \\ \hline
-    MZ    & Annotator comment(s)       \\ \hline
+    \begin{tabular}{ll}
+    \toprule
+    \textbf{Tag} & \textbf{Content}  \\ \midrule
+    MA    & Author(s)       \\ 
+    MC    & Librarian-added category tags     \\ 
+    MD    & Date of publication        \\ 
+    MI    & Unique identifier       \\ 
+    MK    & MALLET topic        \\ 
+    MM    & Manually annotated topic  \\ 
+    MP    & Section of newspaper \\ 
+    MS    & Risk concordance line  \\ 
+    MT    & Article title        \\ 
+    MU    & URL for article         \\ 
+    MZ    & Annotator comment(s)       \\ \bottomrule
     \end{tabular}
     \caption{Metadata tags and content}
 \end{table}
     
     We used some of the metadata fields to identify and remove listings (of best-selling books, plays, TV guides, etc.). Reasons for this were threefold. First, the jargon, abbreviations and non-clausal nature of listing language was not handled well by the parser. Second, list content was often repeated verbatim in multiple files, potentially skewing counts. Third, our two data sources archived listings in different ways. Listings were located by querying metadata fields in a number of ways. Files with titles such as \emph{Spare Times}, \emph{Best Sellers}, articles with keywords such as `theater', `listing', or days of the week. If a file contained only a listing, the file was removed. If a risk word appeared only within the list portion of an article, the file was deleted. If a file contained both a body and listing, only the listing was removed.
 
-    After all data processing, we had a 150 million word corpus of nearly 150,000 unique articles containing a risk word published in the NYT or \url{NYT.com} in 1963, and between 1987 and mid 2014. The corpus had 29 annual subcorpora. The health subcorpus contained a subset of these articles. A breakdown of the size and composition of each annual subcorpus is provided in Table \ref{tab:stats}. During analysis, when conducting absolute frequency analysis, frequency counts in the 1963 subcorpus were multiplied by four, to account for the smaller sample size. Frequency counts for 2014 were multiplied by 1.37 to fill in the uncaptured period between August 18--December 31.
+    After all data processing, we had a 150 million word corpus of nearly 150,000 unique articles containing a risk word published in the NYT or \url{NYT.com} in 1963, and between 1987 and mid 2014. The corpus had 29 annual subcorpora. The health subcorpus contained a subset of 8,524023 words, 6,944 articles and 36,547 risk words. A breakdown of the size and composition of each annual subcorpus is provided in Table \ref{tab:stats}. During analysis, when conducting absolute frequency analysis, frequency counts in the 1963 subcorpus were multiplied by four, to account for the smaller sample size. Frequency counts for 2014 were multiplied by 1.37 to fill in the uncaptured period between August 18--December 31.
 
     \begin{table}
         \centering
         \footnotesize
-    \begin{tabular}{p{1.5cm}|l|l|l|l|}
+    \begin{tabular}{p{1.5cm}rrr}
 
 %\multicolumn{1}{|l}{Annual subcorpora} \\ \hline
 %multicolumn{3}{c|}{RESIDUE}
-\hline
-
-\multicolumn{1}{|p{1.5cm}|}{Annual subcorpora} & \textbf{Subcorpus} & \textbf{Words} & \textbf{Articles} & \textbf{Risk words}   \\ \hline
-~ & \textbf{1963} & 83,188* & 1218 &  1,584  \\ \cline{2-5}
-~ & \textbf{1987} & 4,885,883 & 4,878 &  7,690  \\ \cline{2-5}
-~ & \textbf{1988} & 4,834,791 & 4,703 &  7,430  \\ \cline{2-5}
-~ & \textbf{1989} & 5,059,517 & 4,997 &  7,810  \\ \cline{2-5}
-~ & \textbf{1990} & 5,416,187 & 5,250 &  8,244  \\ \cline{2-5}
-~ & \textbf{1991} & 4,748,975 & 4,774 &  7,493  \\ \cline{2-5}
-~ & \textbf{1992} & 4,923,509 & 4,818 &  7,329  \\ \cline{2-5}
-~ & \textbf{1993} & 4,686,181 & 4,615 &  7,330  \\ \cline{2-5}
-~ & \textbf{1994} & 4,857,729 & 4,762 &  7,384  \\ \cline{2-5}
-~ & \textbf{1995} & 5,130,206 & 5,150 &  7,834  \\ \cline{2-5}
-~ & \textbf{1996} & 4,969,911 & 4,773 &  7,257  \\ \cline{2-5}
-~ & \textbf{1997} & 5,121,088 & 4,759 &  7,318  \\ \cline{2-5}
-~ & \textbf{1998} & 6,085,810 & 5,437 &  8,351  \\ \cline{2-5}
-~ & \textbf{1999} & 6,053,731 & 5,392 &  8,248  \\ \cline{2-5}
-~ & \textbf{2000} & 6,472,727 & 5,717 &  8,434  \\ \cline{2-5}
-~ & \textbf{2001} & 6,603,456 & 5,902 &  8,722  \\ \cline{2-5}
-~ & \textbf{2002} & 6,865,631 & 6,423 & 10,288  \\ \cline{2-5}
-~ & \textbf{2003} & 6,795,591 & 6,481 & 10,066  \\ \cline{2-5}
-~ & \textbf{2004} & 6,776,200 & 6,215 &  9,989  \\ \cline{2-5}
-~ & \textbf{2005} & 6,722,240 & 6,191 & 10,031  \\ \cline{2-5}
-~ & \textbf{2006} & 6,722,592 & 6,278 &  9,965  \\ \cline{2-5}
-~ & \textbf{2007} & 4,757,290** & 5,110 &  8,976  \\ \cline{2-5}
-~ & \textbf{2008} & 5,300,254 & 5,384 &  9,645  \\ \cline{2-5}
-~ & \textbf{2009} & 4,926,381 & 5,189 &  9,236  \\ \cline{2-5}
-~ & \textbf{2010} & 5,443,658 & 5,527 &  9,560  \\ \cline{2-5}
-~ & \textbf{2011} & 5,617,002 & 5,773 & 10,055  \\ \cline{2-5}
-~ & \textbf{2012} & 5,366,342 & 5,302 &  9,095  \\ \cline{2-5}
-~ & \textbf{2013} & 5,271,006 & 5,176 &  9,083  \\ \cline{2-5}
-~ & \textbf{2014} & 3,331,580 & 3,310 &  5,635 \\ \cline{2-5}
-~ & \textbf{Total} & \textbf{153,828,656} & \textbf{149,504} & \textbf{240,082} \\ \hline
-\multicolumn{1}{|p{1.5cm}|}{Topic \mbox{subcorpora}} & \textbf{Subcorpus} & \textbf{Words} & \textbf{Articles} & \textbf{Risk words}   \\ \hline
+\toprule
+\textbf{Subcorpus} & \textbf{Words} & \textbf{Articles} & \textbf{Risk words}  \\ \midrule
+\textbf{1963} & 83,188* & 1218 &  1,584  \\ 
+\textbf{1987} & 4,885,883 & 4,878 &  7,690  \\ 
+\textbf{1988} & 4,834,791 & 4,703 &  7,430  \\ 
+\textbf{1989} & 5,059,517 & 4,997 &  7,810  \\ 
+\textbf{1990} & 5,416,187 & 5,250 &  8,244  \\ 
+\textbf{1991} & 4,748,975 & 4,774 &  7,493  \\ 
+\textbf{1992} & 4,923,509 & 4,818 &  7,329  \\ 
+\textbf{1993} & 4,686,181 & 4,615 &  7,330  \\ 
+\textbf{1994} & 4,857,729 & 4,762 &  7,384  \\ 
+\textbf{1995} & 5,130,206 & 5,150 &  7,834  \\ 
+\textbf{1996} & 4,969,911 & 4,773 &  7,257  \\ 
+\textbf{1997} & 5,121,088 & 4,759 &  7,318  \\ 
+\textbf{1998} & 6,085,810 & 5,437 &  8,351  \\ 
+\textbf{1999} & 6,053,731 & 5,392 &  8,248  \\ 
+\textbf{2000} & 6,472,727 & 5,717 &  8,434  \\ 
+\textbf{2001} & 6,603,456 & 5,902 &  8,722  \\ 
+\textbf{2002} & 6,865,631 & 6,423 & 10,288  \\ 
+\textbf{2003} & 6,795,591 & 6,481 & 10,066  \\ 
+\textbf{2004} & 6,776,200 & 6,215 &  9,989  \\ 
+\textbf{2005} & 6,722,240 & 6,191 & 10,031  \\ 
+\textbf{2006} & 6,722,592 & 6,278 &  9,965  \\ 
+\textbf{2007} & 4,757,290** & 5,110 &  8,976  \\ 
+\textbf{2008} & 5,300,254 & 5,384 &  9,645  \\ 
+\textbf{2009} & 4,926,381 & 5,189 &  9,236  \\ 
+\textbf{2010} & 5,443,658 & 5,527 &  9,560  \\ 
+\textbf{2011} & 5,617,002 & 5,773 & 10,055  \\ 
+\textbf{2012} & 5,366,342 & 5,302 &  9,095  \\ 
+\textbf{2013} & 5,271,006 & 5,176 &  9,083  \\ 
+\textbf{2014} & 3,331,580 & 3,310 &  5,635 \\ 
+\textbf{Total} & \textbf{153,828,656} & \textbf{149,504} & \textbf{240,082} \\ \bottomrule
+% \multicolumn{1}{p{1.5cm}}{Topic \mbox{subcorpora}} & \textbf{Subcorpus} & \textbf{Words} & \textbf{Articles} & \textbf{Risk words}   \\ \hline
 % ~ & \textbf{Economics} & 10,489,137 & 8,286 & 32,448 \\ \cline{2-5}
-~ & \textbf{Health}    & 8,524,023  & 6,944 & 36,547 \\ \cline{2-5}
+% ~ & \textbf{Health}    & 8,524,023  & 6,944 & 36,547 \\ \cline{2-5}
 % ~ & \textbf{Politics}  & 9,465,115  & 7,428 & 20,904 \\ \cline{2-5}
 %~ & \textbf{Total} & \textbf{28,478,275} & \textbf{22,658} & \textbf{89,899} \\ \cline{2-5}
 \end{tabular}
@@ -88,14 +125,14 @@
     \medskip % induce some separation between caption and explanatory material
 \begin{minipage}{0.9\textwidth} % choose width suitably
 {\footnotesize *~Only a small window of co-text---usually two sentences either side of the risk word---was preserved in this subcorpus, hence the smaller size of this sample.~\\
-**~The drop in word-count here coincides with the switch from NYT Annotated Corpus to ProQuest as the data-source.\par}
+ \mbox{*}\mbox{*}~The drop in word-count here coincides with the switch from NYT Annotated Corpus to ProQuest as the data-source.\par}
 \end{minipage}
 \end{table}
 
             %\begin{table}
             %\centering
             %\small
-            %\begin{tabular}{|llll|}
+            %\begin{tabular}{llll}
             %\hline
             %Economics & 10489137 & 8286 & 32448 \\ \hline
             %Health    & 8524023  & 6944 & 36547 \\ \hline
@@ -131,20 +168,19 @@ Special tools needed to be developed to work with the very large dataset of both
 \begin{table}[h!]
 \small
 \centering
-\begin{tabularx}{0.5\textwidth}{|l|X|} \hline
+\begin{tabularx}{0.75\textwidth}{lX} \toprule
 
-\textbf{Function name} &  \textbf{Purpose}     \\ \hline
-\texttt{interrogator()}  &  interrogate parse trees, find keywords, collocates, etc.    \\ \hline
-\texttt{plotter()}       &  visualise \texttt{interrogator()} results  \\ \hline
-\texttt{quickview()}     &  view \texttt{interrogator()} results       \\ \hline
-\texttt{editor()}       &  edit \texttt{interrogator()} results       \\ \hline
-\texttt{conc()}          &  complex concordancing of subcorpora  \\ \hline
-\texttt{keywords()}          &  get keywords and ngrams from corpus\slash subcorpus\slash concordance lines  \\ \hline
-\texttt{collocates()}          &  get collocates from corpus\slash subcorpus\slash concordance lines \\ \hline
-\texttt{quicktree()}          &  visually represent a parse tree  \\ \hline
-\texttt{searchtree()}          &  search a parse tree with a Tregex query  \\ \hline
+\textbf{Function name} &  \textbf{Purpose}     \\ \midrule
+\texttt{interrogator()}  &  interrogate parse trees, find keywords, collocates, etc.    \\ 
+\texttt{plotter()}       &  visualise \texttt{interrogator()} results  \\ 
+\texttt{quickview()}     &  view \texttt{interrogator()} results       \\ 
+\texttt{editor()}       &  edit \texttt{interrogator()} results       \\ 
+\texttt{conc()}          &  complex concordancing of subcorpora  \\ 
+\texttt{collocates()}          &  get collocates from corpus\slash subcorpus\slash concordance lines \\ 
+\texttt{quicktree()}          &  visually represent a parse tree  \\ 
+\texttt{searchtree()}          &  search a parse tree with a Tregex query  \\ \bottomrule
 \end{tabularx}
-\caption{Python functions developed for our investigation}
+\caption{Core Python functions developed for our investigation}
 \label{tab:pyfunc}
 \end{table}
 
