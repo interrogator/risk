@@ -1,5 +1,4 @@
 \documentclass{report}
-    \usepackage{blindtext}
     %\addtokomafont{disposition}{\rmfamily}
     \usepackage[T1]{fontenc}
     \usepackage[a4paper]{geometry}
@@ -8,7 +7,7 @@
     \usepackage{xcolor}
     \usepackage{wrapfig}
     \usepackage[T1]{fontenc}
-    \usepackage[scaled=0.85]{beramono}
+    \usepackage[scaled=.8]{beramono}
     \usepackage{booktabs}
     \usepackage{tcolorbox}
     \usepackage{fullpage}
@@ -56,7 +55,7 @@
      % this one is important for italics and stuff. 
     %from memory another may be needed. you mess with a b and c, and the 1 and 2 ... it can be done
     %\title{\emph{I am not my bipolar}: a corpus-driven discourse analysis of an online support group}
-    \title{Discourse-semantics of risk in the \emph{New York Times}, 1963, 1987--2014: \\ a corpus linguistic approach}
+    \title{Discourse-semantics of risk in \emph{The New York Times}, 1963, 1987--2014: a corpus linguistic approach}
     \author{
     Jens O. Zinn\\
     \texttt{jzinn@unimelb.edu.au}
@@ -79,7 +78,7 @@
 
 \begin{abstract}
 
-    Since the 1980s and 1990s the notion of risk has become increasingly influential in societal discourses and scholarly debate \cite{skolbekken_risk_1995}. From early work on risk and culture \cite{douglas_risk_1986,douglas_risk_2013} to the \emph{risk society} thesis \cite{beck_risk_1992,beck_world_2009,giddens_runaway_2002}, from governmentality theorists working in the tradition of Foucault \cite{dean_governmentality:_2010,omalley_risk_2012,rose_powers_1999} to modern systems theory \cite{luhmann_risk:_1993} all have built their work around the notion of risk and implicitly or explicitly refer to linguistic changes. Though this body of literature offers different explanations for the shift towards \emph{risk} and its connection to social change, to date there has been no attempt to empirically examine their relative ability to explain this change in the communication of possible harm. 
+    \noindent Since the 1980s and 1990s the notion of risk has become increasingly influential in societal discourses and scholarly debate \cite{skolbekken_risk_1995}. From early work on risk and culture \cite{douglas_risk_1986,douglas_risk_2013} to the \emph{risk society} thesis \cite{beck_risk_1992,beck_world_2009,giddens_runaway_2002}, from governmentality theorists working in the tradition of Foucault \cite{dean_governmentality:_2010,omalley_risk_2012,rose_powers_1999} to modern systems theory \cite{luhmann_risk:_1993} all have built their work around the notion of risk and implicitly or explicitly refer to linguistic changes. Though this body of literature offers different explanations for the shift towards \emph{risk} and its connection to social change, to date there has been no attempt to empirically examine their relative ability to explain this change in the communication of possible harm. 
 
     % We will address this deficit by examining a number of claims made by different sociological risk approaches in more detail. We will utilise a corpus based approach to examine in detail how the institutional and sociocultural shift towards risk has manifested linguistically.
 
@@ -93,13 +92,17 @@
     %\setlength{\cftbeforetoctitleskip}{-3em}
     \singlespacing
     \tableofcontents
-    \onehalfspacing
     \cleardoublepage
+    \listoftables
+    \cleardoublepage
+    \listoffigures
+    \cleardoublepage
+    \onehalfspacing
     \pagenumbering{arabic}
 
-\section*{Executive Summary}
+\section*{Executive summary}
 
-Since the middle of the 1980s sociologists have started to argue that after WW2 significant social transformations took place in most Western industrialised societies which have manifested in a shift towards the risk semantic. Risk has become pervasive in public and scholarly debates and practices in Europe and elsewhere in the world. Following the common assumption that societal changes and language changes are closely linked, this research report aims to contribute to advancing understanding of this social shift towards risk. 
+\noindent Since the middle of the 1980s sociologists have started to argue that after WW2 significant social transformations took place in most Western industrialised societies which have manifested in a shift towards the risk semantic. Risk has become pervasive in public and scholarly debates and practices in Europe and elsewhere in the world. Following the common assumption that societal changes and language changes are closely linked, this research report aims to contribute to advancing understanding of this social shift towards risk. 
 
 There is a wealth of literature and several sociological theories (e.g. risk society, socio-cultural, governmentality, systems theory, edgework) which offer different explanations for the shift towards risk and its connection to social change. Yet, to date there has been little attempts to empirically examine their relative ability to explain this change in the communication of possible harm. This research report addresses this deficit by:
 %
@@ -116,7 +119,7 @@ Following the corpus interrogation, we use functional linguistics and sociologic
 
 This report is accompanied by an interactive IPython Notebook interface to our corpus and developed computational tools. Key findings from this report are stored there, as well as additional information (e.g. concordance lines, keywords, collocations), that could not be included in this report due to spatial considerations. It is available for both interactive and static viewing at \url{https://github.com/interrogator/risk}.
 
-\section*{Research Question, hypotheses} 
+\section*{Research question, hypotheses} 
 
 Most generally, the study examines \emph{how the institutionalisation of new societal practices manifest linguistically in the change of risk discourses and the use of risk language}. We also examine a number of hypotheses derived from mainstream sociological risk theorising:
 
@@ -160,19 +163,6 @@ At the time of writing, our investigation is ongoing. In forthcoming work, we se
 \end{enumerate}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 \include{chapters/chapter_01} % Introduction
 
 \include{chapters/chapter_02} % Case study
@@ -181,11 +171,17 @@ At the time of writing, our investigation is ongoing. In forthcoming work, we se
 
 \include{chapters/chapter_04} % Findings: annual
 
-\chapter{\emph{Risk} in health articles in the NYT}
+\include{chapters/health_article}
 
-    This chapter is currently being prepared for publication, and cannot be included here. See: \\ 
 
-    Zinn, J. O. \& McDonald, D. (2015). \emph{Changing Discourses of Risk and Health-Risk: a corpus analysis of the usage of risk language in The New York Times}. Chamberlain, M. (ed.) 2015/6: Medicine, Discourse, Power and Risk. Routledge
+
+
+
+
+
+
+
+
 
 \include{chapters/chapter_06} % Discourse semantics in NYT
 
