@@ -1,105 +1,110 @@
 \documentclass{report}
-    %\addtokomafont{disposition}{\rmfamily}
-    \usepackage[T1]{fontenc}
-    \usepackage[a4paper]{geometry}
-    \usepackage{comment}
-    \usepackage{afterpage}
-    \usepackage{xcolor}
-    \usepackage{wrapfig}
-    \usepackage[T1]{fontenc}
-    \usepackage[scaled=.8]{beramono}
-    \usepackage{booktabs}
-    \usepackage{tcolorbox}
-    \usepackage{fullpage}
-    \usepackage{minted}
-    \usepackage{pdflscape}
-    \usepackage[doublespacing]{setspace}
-    \usepackage{enotez}
-    \usepackage{subcaption}
-    %\usepackage[singlelinecheck=off]{caption}
-    \usepackage{url}
-    \usepackage{verbatimbox}
-    \usepackage{listings}
-    \usepackage{todonotes}
-    \usepackage[raggedright]{titlesec}
-    \titlelabel{\thetitle.\quad} % dot after section number
-    \usepackage{array,multirow,graphicx}
-    \usepackage{multicol}
-    \usepackage[hidelinks]{hyperref}
-    \usepackage{tocloft} 
-    \usepackage[english]{babel}
-    \usepackage{graphicx}
-    \usepackage{enumitem}
-    \usepackage[section]{placeins}
-    \makeatletter
-    \AtBeginDocument{%
-    \expandafter\renewcommand\expandafter\section\expandafter{%
-    \expandafter\@fb@secFB\section
-    }%
-    }
-    \makeatother
-    \usepackage[notocbib]{apacite}
-    \setcounter{tocdepth}{4}
-    \usepackage{tabularx}
-    \renewcommand\thesection{\arabic{section}}
-    \raggedbottom
-    \newcolumntype{L}[1]{>{\hsize=#1\hsize\raggedright\arraybackslash}X}%
-    \newcolumntype{R}[1]{>{\hsize=#1\hsize\raggedleft\arraybackslash}X}%
-    \newcolumntype{C}[2]{>{\hsize=#1\hsize\columncolor{#2}\centering\arraybackslash}X}%
-    \renewcommand{\APACrefatitle}[2]{#1}
-    \renewcommand{\APACrefbtitle}[2]{#1}
-    \renewcommand{\APACrefbtitle}[2]{\Bem{#1}}
-    \renewcommand{\APACrefaetitle}[2]{[#2]}
-    \renewcommand{\APACrefbetitle}[2]{[#2]}
-    \newcommand{\citepos}[1]{\citeauthor{#1}'s \citeyear{#1}}
-     % this one is important for italics and stuff. 
-    %from memory another may be needed. you mess with a b and c, and the 1 and 2 ... it can be done
-    %\title{\emph{I am not my bipolar}: a corpus-driven discourse analysis of an online support group}
-    \title{Discourse-semantics of risk in \emph{The New York Times}, 1963, 1987--2014: a corpus linguistic approach}
-    \author{
-    Jens O. Zinn\\
-    \texttt{jzinn@unimelb.edu.au}
-    \and
-    Daniel McDonald\\
-    \texttt{mcdonaldd@unimelb.edu.au}\\
-    %\multicolumn{1}{p{.7\textwidth}}{\centering\emph{University of Melbourne, Australia}}
-    }
+%\addtokomafont{disposition}{\rmfamily}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper]{geometry}
+\usepackage{comment}
+\usepackage{afterpage}
+\usepackage{xcolor}
+\usepackage{wrapfig}
+\usepackage[T1]{fontenc}
+\usepackage[scaled=.8]{beramono}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+\usepackage{fullpage}
+\usepackage{minted}
+\usepackage{pdflscape}
+\usepackage[doublespacing]{setspace}
+\usepackage{enotez}
+\usepackage{subcaption}
+%\usepackage[singlelinecheck=off]{caption}
+\usepackage{url}
+\usepackage{verbatimbox}
+\usepackage{listings}
+\usepackage{todonotes}
+\usepackage[raggedright]{titlesec}
+\titlelabel{\thetitle.\quad} % dot after section number
+\usepackage{array,multirow,graphicx}
+\usepackage{multicol}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tocloft} 
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[section]{placeins}
+\makeatletter
+\AtBeginDocument{%
+\expandafter\renewcommand\expandafter\section\expandafter{%
+\expandafter\@fb@secFB\section
+}%
+}
+\makeatother
+\usepackage[notocbib]{apacite}
+\setcounter{tocdepth}{4}
+\usepackage{tabularx}
+\renewcommand\thesection{\arabic{section}}
+\raggedbottom
+% column types
+\newcolumntype{L}[1]{>{\hsize=#1\hsize\raggedright\arraybackslash}X}%
+\newcolumntype{R}[1]{>{\hsize=#1\hsize\raggedleft\arraybackslash}X}%
+\newcolumntype{C}[2]{>{\hsize=#1\hsize\columncolor{#2}\centering\arraybackslash}X}%
+% reference formatting
+\renewcommand{\APACrefatitle}[2]{#1}
+\renewcommand{\APACrefbtitle}[2]{#1}
+\renewcommand{\APACrefbtitle}[2]{\Bem{#1}}
+\renewcommand{\APACrefaetitle}[2]{[#2]}
+\renewcommand{\APACrefbetitle}[2]{[#2]}
+% possessive cite
+\newcommand{\citepos}[1]{\citeauthor{#1}'s \citeyear{#1}}
 
-    \date{University of Melbourne, Australia\\
-    ~\\
-    \today}
-    \begin{document}
-        
-    \hyphenation{under-lying language forums socia-bility dis-cur-sive pred-icator conc-ord-ancing Lee-uwen object-ivity lexico-grammar lexico-gramm-atical meta-function Esco-bedo}
+%\title{\emph{I am not my bipolar}: a corpus-driven discourse analysis of an online support group}
+\title{Discourse-semantics of risk in \emph{The New York Times}, 1963, 1987--2014: a corpus linguistic approach}
+\author{
+Jens O. Zinn\\
+\texttt{jzinn@unimelb.edu.au}
+\and
+Daniel McDonald\\
+\texttt{mcdonaldd@unimelb.edu.au}\\
+}
 
-    \renewcommand{\abstractname}{Abstract}
+\date{University of Melbourne, Australia\\
+~\\
+\today}
 
-    \maketitle
+\begin{document}
+
+% words that need line breaks
+\hyphenation{under-lying language forums socia-bility dis-cur-sive pred-icator conc-ord-ancing Lee-uwen object-ivity lexico-grammar lexico-gramm-atical meta-function Esco-bedo}
+
+% abstract heading
+\renewcommand{\abstractname}{Abstract}
+
+% make title page
+\maketitle
 
 \begin{abstract}
+\noindent Since the 1980s and 1990s the notion of risk has become increasingly influential in societal discourses and scholarly debate \cite{skolbekken_risk_1995}. From early work on risk and culture \cite{douglas_risk_1986,douglas_risk_2013} to the \emph{risk society} thesis \cite{beck_risk_1992,beck_world_2009,giddens_runaway_2002}, from governmentality theorists working in the tradition of Foucault \cite{dean_governmentality:_2010,omalley_risk_2012,rose_powers_1999} to modern systems theory \cite{luhmann_risk:_1993} all have built their work around the notion of risk and implicitly or explicitly refer to linguistic changes. Though this body of literature offers different explanations for the shift towards \emph{risk} and its connection to social change, to date there has been no attempt to empirically examine their relative ability to explain this change in the communication of possible harm. 
 
-    \noindent Since the 1980s and 1990s the notion of risk has become increasingly influential in societal discourses and scholarly debate \cite{skolbekken_risk_1995}. From early work on risk and culture \cite{douglas_risk_1986,douglas_risk_2013} to the \emph{risk society} thesis \cite{beck_risk_1992,beck_world_2009,giddens_runaway_2002}, from governmentality theorists working in the tradition of Foucault \cite{dean_governmentality:_2010,omalley_risk_2012,rose_powers_1999} to modern systems theory \cite{luhmann_risk:_1993} all have built their work around the notion of risk and implicitly or explicitly refer to linguistic changes. Though this body of literature offers different explanations for the shift towards \emph{risk} and its connection to social change, to date there has been no attempt to empirically examine their relative ability to explain this change in the communication of possible harm. 
+% We will address this deficit by examining a number of claims made by different sociological risk approaches in more detail. We will utilise a corpus based approach to examine in detail how the institutional and sociocultural shift towards risk has manifested linguistically.
 
-    % We will address this deficit by examining a number of claims made by different sociological risk approaches in more detail. We will utilise a corpus based approach to examine in detail how the institutional and sociocultural shift towards risk has manifested linguistically.
+To address this defecit, we conduct a corpus-based investigation of risk words in \emph{The New York Times} between 1963 and mid-2014. The investigation involves the creation of an annotated corpus of over 150,000 unqique risk tokens and their co-text. Purpose-built functions for manipulating this dataset and visualising results were created and used to investigate the corpus according to a systemic-functional conceptualisation of the transitivity and mood systems of language. This toolkit is freely available at \url{https://github.com/interrogator/corpkit}. Following the corpus interrogation, we use functional linguistics and sociological risk theory in tandem to analyse the findings. First, systemic-functional linguistics is used to link lexicogrammatical phenomena to discourse-semantic meaning of the texts. Longitudinal changes in risk language are then mapped to key events, as well as broader social movements.
 
-    To address this defecit, we conduct a corpus-based investigation of risk words in \emph{The New York Times} between 1963 and mid-2014. The investigation involves the creation of an annotated corpus of over 150,000 unqique risk tokens and their co-text. Purpose-built functions for manipulating this dataset and visualising results were created and used to investigate the corpus according to a systemic-functional conceptualisation of the transitivity and mood systems of language. This toolkit is freely available at \url{https://github.com/interrogator/corpkit}. Following the corpus interrogation, we use functional linguistics and sociological risk theory in tandem to analyse the findings. First, systemic-functional linguistics is used to link lexicogrammatical phenomena to discourse-semantic meaning of the texts. Longitudinal changes in risk language are then mapped to key events, as well as broader social movements.
+This report is accompanied by an interactive \emph{IPython Notebook} interface to our corpus and developed computational tools. Key findings from this report are stored there, as well as additional information (e.g. concordance lines, keywords, collocations), that could not be included in this report due to spatial considerations. It is available for both interactive and static viewing at \url{https://github.com/interrogator/risk}.
 
-    This report is accompanied by an interactive \emph{IPython Notebook} interface to our corpus and developed computational tools. Key findings from this report are stored there, as well as additional information (e.g. concordance lines, keywords, collocations), that could not be included in this report due to spatial considerations. It is available for both interactive and static viewing at \url{https://github.com/interrogator/risk}.
+\end{abstract}
+\cleardoublepage
+\pagenumbering{roman}
+%\setlength{\cftbeforetoctitleskip}{-3em}
+\singlespacing
+\tableofcontents
+\cleardoublepage
+\listoftables
+\cleardoublepage
+\listoffigures
+\cleardoublepage
+\onehalfspacing
+\pagenumbering{arabic}
 
-    \end{abstract}
-    \cleardoublepage
-    \pagenumbering{roman}
-    %\setlength{\cftbeforetoctitleskip}{-3em}
-    \singlespacing
-    \tableofcontents
-    \cleardoublepage
-    \listoftables
-    \cleardoublepage
-    \listoffigures
-    \cleardoublepage
-    \onehalfspacing
-    \pagenumbering{arabic}
-
+% summary without toc entries
 \section*{Executive summary}
 
 \noindent Since the middle of the 1980s sociologists have started to argue that after WW2 significant social transformations took place in most Western industrialised societies which have manifested in a shift towards the risk semantic. Risk has become pervasive in public and scholarly debates and practices in Europe and elsewhere in the world. Following the common assumption that societal changes and language changes are closely linked, this research report aims to contribute to advancing understanding of this social shift towards risk. 
@@ -152,7 +157,7 @@ The Language processing tools developed and\slash or used in this study also hav
 
 % Automated querying of lexicogrammatical patterns in of large data sets have limits due to the complexity of linguistic expressions of meaning. It necessarily has to focus on the more common patterns.
 
-\section*{Perspectives}
+\section*{Perspectives} % not sure about this heading title
 
 At the time of writing, our investigation is ongoing. In forthcoming work, we seek to:
 
@@ -162,7 +167,6 @@ At the time of writing, our investigation is ongoing. In forthcoming work, we se
 \item Perform qualitative analysis of indivudal texts, in order to explore particular observations made in this report and their institutional contexts in more detail.
 \end{enumerate}
 
-
 \include{chapters/chapter_01} % Introduction
 
 \include{chapters/chapter_02} % Case study
@@ -171,17 +175,7 @@ At the time of writing, our investigation is ongoing. In forthcoming work, we se
 
 \include{chapters/chapter_04} % Findings: annual
 
-\include{chapters/health_article}
-
-
-
-
-
-
-
-
-
-
+\include{chapters/chapter_05} % Findings: health corpus
 
 \include{chapters/chapter_06} % Discourse semantics in NYT
 
@@ -189,38 +183,19 @@ At the time of writing, our investigation is ongoing. In forthcoming work, we se
 
 %end matter
 
-    \cleardoublepage
-    \singlespacing
-    %\footnotesize
-    \printendnotes
-    \cleardoublepage
-    \singlespacing
-    \bibliographystyle{apacite}
-    \bibliography{references/references}
-    \cleardoublepage
+\cleardoublepage
+\singlespacing
+%\footnotesize
+\printendnotes
+\cleardoublepage
+\singlespacing
+\bibliographystyle{apacite}
+\bibliography{references/references}
+\cleardoublepage
 
-    \end{document}
+\end{document}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% various outtakes, not printed
 
 \section{New approaches to risk research}
 
@@ -236,17 +211,11 @@ It is also more and more feasible to build particular corpora for particular inv
 
 \subsection{Functional linguistics}
 
-    Central to any well-considered study of language use is a theory of language, which may either implicitly or explicitly inform the kinds of analyses being done. A number of frameworks exist for connecting lexis and grammar to functional meanings. Notable within risk research has been frame semantics, which has been used to categorise different risk frames and their constituents \cite{fillmore_toward_1992}. One such framework is \emph{systemic functional linguistics} \cite<see>{halliday_introduction_2004}, which conceptualises language as a \emph{sign system} that is employed by users in order to achieve \emph{social functions}. This theory explicitly underlies our investigation.
+Central to any well-considered study of language use is a theory of language, which may either implicitly or explicitly inform the kinds of analyses being done. A number of frameworks exist for connecting lexis and grammar to functional meanings. Notable within risk research has been frame semantics, which has been used to categorise different risk frames and their constituents \cite{fillmore_toward_1992}. One such framework is \emph{systemic functional linguistics} \cite<see>{halliday_introduction_2004}, which conceptualises language as a \emph{sign system} that is employed by users in order to achieve \emph{social functions}. This theory explicitly underlies our investigation.
 
-    We use SFL for three main reasons. First, it is the most detailed functional grammar \cite{eggins_analysing_2004}: when compared with frame semantics, it provides a more rigorous description of how risk can behave \emph{lexicogrammatically}---that is, in relation to both other words and grammatical features---within a clause. This makes it possible to search parsed texts in nuanced ways. Second, it is a functional-semantic theory, rather than a cognitive-semantic one. While the remarkable achievement of frame semantics is its mapping out of cognitive frames, we are largely unable to operationalise these with our dataset, as we have little information regarding the specific interactants (writers and readers) of the original texts. Moreover, cognitive understandings of text are complicated in situations where the text's author is producing the text within an institutional context, for a readership. Without downplaying the potential importance of cognitivist accounts of risk, we have instead opted here to focus on risk words as \emph{instantiations of parts of the linguistic system for the purposes of meaning-making}, rather than as a \emph{representation of the cognitive schemata that underlie our behaviour}.
+We use SFL for three main reasons. First, it is the most detailed functional grammar \cite{eggins_analysing_2004}: when compared with frame semantics, it provides a more rigorous description of how risk can behave \emph{lexicogrammatically}---that is, in relation to both other words and grammatical features---within a clause. This makes it possible to search parsed texts in nuanced ways. Second, it is a functional-semantic theory, rather than a cognitive-semantic one. While the remarkable achievement of frame semantics is its mapping out of cognitive frames, we are largely unable to operationalise these with our dataset, as we have little information regarding the specific interactants (writers and readers) of the original texts. Moreover, cognitive understandings of text are complicated in situations where the text's author is producing the text within an institutional context, for a readership. Without downplaying the potential importance of cognitivist accounts of risk, we have instead opted here to focus on risk words as \emph{instantiations of parts of the linguistic system for the purposes of meaning-making}, rather than as a \emph{representation of the cognitive schemata that underlie our behaviour}.
 
-    The third benefit of SFL is that it provides not only a grammar, but a a conceptualisation of the relationship between text and context. A foundational tenet of SFL, and a point of departure from other linguistic theories, is the notion that we can create a description of context based \emph{solely} on the lexicogrammatical content of the text. This is particularly suitable for us, given that our texts arrived to us abstracted from their original contexts. This context was then further obscured through the parsing process. As such, SFL provides an ability to account for discourse-semantics using corpora that other theories cannot.
-
-
-%\section{Outcomes of the study}
-
-%Our project makes significant contributions to both sociological theory and digital humanities methodology.
-
+The third benefit of SFL is that it provides not only a grammar, but a a conceptualisation of the relationship between text and context. A foundational tenet of SFL, and a point of departure from other linguistic theories, is the notion that we can create a description of context based \emph{solely} on the lexicogrammatical content of the text. This is particularly suitable for us, given that our texts arrived to us abstracted from their original contexts. This context was then further obscured through the parsing process. As such, SFL provides an ability to account for discourse-semantics using corpora that other theories cannot.
 
 
 
