@@ -12,7 +12,7 @@ Our *IPython Notebook* presents the code used in our analysis side-by-side with 
 <img style="float:left" src="https://raw.githubusercontent.com/interrogator/risk/master/images/types-of-risk-modifiers.png" height="230" width="400"/>
 </p>
 
-Theoretically, our interest is in empirically examining sociological claims about risk made by (e.g.) Beck, Giddens and Luhmann. To do this, we rely on *Systemic Functional Linguistics* (e.g. Halliday & Matthiessen, 2004), with particular focus on experiential meaning. Our report, which contextualises and elaborates on these results, is available [as PDF](https://raw.githubusercontent.com/interrogator/risk/master/report/risk_report.pdf) and (bleeding-edge) [.tex source](https://github.com/interrogator/risk/blob/master/report/risk_report.tex).
+Theoretically, our interest is in empirically examining sociological claims about risk made by (e.g.) Beck, Giddens and Luhmann. To do this, we rely on *Systemic Functional Linguistics* (e.g. Halliday & Matthiessen, 2004), with particular focus on experiential meaning. Our report, which contextualises and elaborates on these results, is available [as PDF](https://raw.githubusercontent.com/interrogator/risk/master/documents/report/risk_report.pdf) and [.tex source](https://github.com/interrogator/risk/blob/master/documents/report/risk_report.tex).
 
 If you want to download and interrogate the corpus yourself, read on.
 
