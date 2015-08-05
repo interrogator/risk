@@ -1670,6 +1670,34 @@ plotter('Risk by modifier type', mods.results, y_label = 'Percentage of risk wor
 
 
 
+# <markdowncell>
+# # Distance from root
+
+# <codecell>
+# risk_distance_from_root = load_result('risk_distance_from_root')
+risk_distance_from_root = interrogator('data/nyt/years', 'a', r'(?i)\brisk')
+
+# <codecell>
+d = {'1963': r'1963',
+     '1987--1990': r'(198.|1990)',
+     '2011--2014': r'201.'}
+
+d = {'1963': ['1963'],
+     '1987--1990': ['1987', '1988', '1989', '1990'],
+     '2011--2014': ['2011', '2012', '2013', '2014']}
+
+     
+e = editor(risk_distance_from_root.results, '%', 'self', merge_subcorpora = d, 
+           keep_top = 10, just_subcorpora = d.keys())
+f = editor(risk_distance_from_root.results, '%', 'self', keep_top = 10)
+
+# <codecell>
+plotter('Distance of risk words from root: three periods', e.results.T)
+
+# <codecell>
+plotter('Distance of risk words from root: three periods', f.results.T, colours = 'summer')
+
+
 
 
 
