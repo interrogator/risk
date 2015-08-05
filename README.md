@@ -1,5 +1,7 @@
 ## Discourse-semantics of risk in *The New York Times*, 1963&ndash;2014: a corpus linguistic approach
 
+[![DOI](https://zenodo.org/badge/14568/interrogator/risk.svg)](https://zenodo.org/badge/latestdoi/14568/interrogator/risk)
+
 This repository contains much of what was created for our longitudinal analysis of risk language in *The New York Times*. The investigation involves systematic analysis of over 150,000 NYT paragraphs containing a risk token (*risk*, *risking*, *at-risk*, *risk-to-reward*, *risk-laden*, etc). These paragraphs have been parsed with *Stanford CoreNLP*, and are interrogated using [`corpkit`](https://github.com/interrogator/corpkit), which was developed for this project.
 
 Our *IPython Notebook* presents the code used in our analysis side-by-side with our results. It can be viewed via either [*GitHub*](https://github.com/interrogator/risk/blob/master/risk.ipynb) or [*nbviewer*](http://nbviewer.ipython.org/github/interrogator/risk/blob/master/risk.ipynb). Basically, we were interrogating the corpus for lexicogrammatical features of risk, and looking for sites of change. Here are a few examples, made using `corpkit`'s `interrogator()` and `plotter()` functions:
