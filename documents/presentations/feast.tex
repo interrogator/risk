@@ -28,7 +28,7 @@
 \setcounter{tocdepth}{1} 
 \usecolortheme{orchid}
 \title[FEAST]{Shifting discourse-semantics of risk in US newspapers, 1987--2014}
-\author[McDonald \& Zinn]{Daniel McDonald \and Jens Zinn~\\~\\\texttt{@interro\_gator}~\\~\\This slideshow is available at: \url{http://git.io/vY0M4}~\\~\\}
+\author[McDonald \& Zinn]{Daniel McDonald \and Jens Zinn~\\~\\\texttt{@interro\_gator}~\\~\\This slideshow is available at: \url{http://git.io/vBfbw}~\\~\\}
 
 \date{\today}
 
@@ -53,7 +53,7 @@
     \item Sociological significance of the results
     \end{itemize}
 
-    ~\\ This slideshow is available at: \url{http://git.io/vY0M4}
+    ~\\ This slideshow is available at: \url{http://git.io/vBfbw}
 
 \end{frame}
 
@@ -273,15 +273,18 @@ How to investigate this huge dataset, and make the investigation transparent\sla
 \begin{frame}[fragile]
 \frametitle{Example code}
 
-\begin{minted}[fontsize=\footnotesize,linenos=true]{python}
-from corpkit import *
-corpus = 'data/NYT-parsed'
-# get pos of risk words
-res = interrogator(corpus, 'words', r'\brisk', show = 'pos')
+\begin{minted}[fontsize=\normalsize,linenos=true]{python}
+# import module
+>>> from corpkit import *
+# set path to data
+>>> corpus = 'data/NYT-parsed'
+# get pos of risk words, show word class
+>>> res = interrogator(corpus, 'words', r'\brisk', 
+...    show = ['p'], lemmatise = True)
 # get relative frequency
-rel = editor(res.results, '%', res.totals)
+>>> rel = editor(res.results, '%', res.totals)
 # visualise
-plotter('POS of risk words', rel.results)
+>>> plotter('POS of risk words', rel.results)
 \end{minted}
 
 \end{frame}
@@ -432,7 +435,7 @@ Our first investigation was of the NYT only:
     \end{itemize}
     This slideshow:
     \begin{itemize}
-    \item \url{http://git.io/vY0M4}
+    \item \url{http://git.io/vBfbw}
     \end{itemize}
 \end{frame}
 
