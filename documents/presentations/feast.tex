@@ -270,23 +270,50 @@ How to investigate this huge dataset, and make the investigation transparent\sla
 \end{itemize}
 \end{frame}
 
+\begin{frame}
+    \frametitle{\texttt{corpkit}: GUI}
+    \centering
+    \includegraphics[width=0.95\textwidth]{../../images/interrogate}
+\end{frame}
+
+\begin{frame}
+    \frametitle{\texttt{corpkit}: concordancer}
+    \centering
+    \includegraphics[width=0.95\textwidth]{../../images/conc2}
+\end{frame}
+
+\begin{frame}
+    \frametitle{\texttt{corpkit}: plotting}
+    \centering
+    \includegraphics[width=0.95\textwidth]{../../images/plott}
+\end{frame}
+
+
 \begin{frame}[fragile]
-\frametitle{Example code}
+\frametitle{\texttt{corpkit}: Example code}
 
 \begin{minted}[fontsize=\normalsize,linenos=true]{python}
-# import module
+# import module and set data path
 >>> from corpkit import *
-# set path to data
 >>> corpus = 'data/NYT-parsed'
+
 # get pos of risk words, show word class
 >>> res = interrogator(corpus, 'words', r'\brisk', 
 ...    show = ['p'], lemmatise = True)
-# get relative frequency
->>> rel = editor(res.results, '%', res.totals)
-# visualise
->>> plotter('POS of risk words', rel.results)
-\end{minted}
 
+# get relative frequency
+>>> rel = editor(res.results, '%', res.totals, keep_top = 4)
+
+# visualise
+>>> plotter('Word class of risk words', rel.results, 
+...    kind = 'area', style = 'seaborn-talk')
+\end{minted}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Example output}
+    \centering
+    \includegraphics[width=0.90\textwidth]{../../images/pos_sb}
 \end{frame}
 
 \begin{frame}
@@ -297,7 +324,7 @@ Our first investigation was of the NYT only:
 \end{frame}
 
 \begin{frame}
-    \frametitle{Output: nominalisation of risk}
+    \frametitle{Nominalisation of risk}
     \centering
     \includegraphics[width=0.99\textwidth]{../../images/percentage-of-open-word-classes-that-are-risk-words}
 \end{frame}
