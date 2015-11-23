@@ -75,18 +75,48 @@ All investigations involve making longitudinally structured, parsed corpora and 
 \begin{frame}
     \frametitle{Context: sociological risk theory}
     
-    From previous sociological and linguistic research, we know that:
+    Risk as concept is sociologically important:
 
-    \begin{itemize}
-    \item Risk as concept is sociologically important
     \begin{itemize}
         \item New global risks \cite{beck_risk_1992}
         \item Calculative technologies \cite{dean_governmentality:_1999}
-        \item Individualisation (Beck) and Technologies of the Self \cite{dean_risk_1998}
+        \item Individualisation (Tradition to decision)
+        \item Technologies of the Self \cite{dean_risk_1998}
         \item Risk-taking \cite{luhmann_risk:_1993}
     \end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Context: risk as word}
+\begin{itemize} 
+    \item Risk can be nominal, verbal, adjectival, adverbial
     \item Risk as lexical item is increasingly frequent in print journalism (Zinn 2011)
     \item Risk as a lexical item in naturalistic text may behave contrary to expectations \cite{hamilton_meanings_2007}
+    \item Meaning of risk moves toward \emph{threat\slash danger}
+\end{itemize}
+Risk as participant is more closely related to negative outcomes than risk as process:
+\begin{itemize}
+    \item \emph{They risked it all and won}
+    \item \emph{Risks\slash rewards}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Context: new methodologies}
+
+    New kinds of data and tools make it possible to empirically analyse risk language in new ways:
+    
+    \begin{itemize}
+    \item Digitisation of newspapers means we have large, well-structured datasets
+    \item Parsing makes it possible to search for lexical and grammatical features in tandem
+    \item Programmatic approaches to social science research facilitate:
+    \begin{itemize}
+        \item Automation
+        \item Reproducibility
+        \item Transparency
+        \item Ability to deploy methods on new data
+        \item \emph{Objectivity?}
+    \end{itemize}
     \end{itemize}
 \end{frame}
 
@@ -104,48 +134,32 @@ All investigations involve making longitudinally structured, parsed corpora and 
             \item \emph{Chicago Tribune}
             \item \emph{Wall Street Journal}
         \end{enumerate}
+        \item 54,288,152 words
+        \item 1,031,208 risk words
+        \item 43GB when parsed
     \end{enumerate}
 \end{frame}
 
 \begin{frame}
     \frametitle{Increasing frequency of \emph{risk} lemma}
     \centering
-    \includegraphics[width=0.90\textwidth]{../../images/risk_related_june_colour}
+    \includegraphics[width=1\textwidth]{../../images/risk_related_june_colour}
 \end{frame}
 
 \begin{frame}
     \frametitle{Research questions}
 
-    \begin{itemize}
-        \item What are risk words doing in the NYT?
-        \item How has the behaviour of risk words changed in the NYT between 1963 and 2014?
-        \item Can we connect these findings to sociological theories of risk?
-        \item What kinds of tools and methods can we use\slash develop to do this kind of research?
-    \end{itemize}
+    We span the sociological, linguistic and computational:
+
+    \begin{enumerate}
+        \item How does the institutionalisation of new societal practices manifest linguistically in the change of risk discourses and the use of risk language?
+        \item How do risk words behave longitudinally at the lexicogrammatical and discourse-semantic strata?
+        \item What kinds of tools or methods are needed for this kind of (digital humanities) research?
+    \end{enumerate}
 \end{frame}
 
 \begin{frame}
-    \frametitle{New methodologies}
-
-    New kinds of data and tools make it possible to empirically analyse risk language in new ways:
-    
-    \begin{itemize}
-    \item Digitisation of newspapers means we have large, well-structured datasets
-    \item Parsing makes it possible to search for lexical and grammatical features in tandem
-    \item Programmatic approaches to social science research facilitate:
-    \begin{itemize}
-        \item Automation
-        \item Reproducibility
-        \item Transparency
-        \item Ability to deploy methods on new data
-        \item \emph{Objectivity?}
-    \end{itemize}
-    \end{itemize}
-
-\end{frame}
-
-\begin{frame}
-    \frametitle{Frame semantic approach}
+    \frametitle{Linguistics: frame semantic approach}
 
     Frame semantics: risk as a cognitive schema \cite{fillmore_toward_1992}
 
@@ -204,7 +218,7 @@ All investigations involve making longitudinally structured, parsed corpora and 
     
     \begin{itemize}
     \item Get all paragraphs containing \texttt{\textbackslash brisk} in all 1987--mid 2014 articles
-    \item Annotate\slash parse the data with full \emph{Stanford CoreNLP} suite
+    \item Annotate\slash parse the data with full \emph{Stanford CoreNLP} suite with embarrassingly parallel HPC
     \item Develop \texttt{corpkit}, a toolkit for searching the corpus and communicating results
     \item Interrogate the corpus according to notions from systemic functional grammar
     \item Connect to sociological theory
@@ -212,18 +226,16 @@ All investigations involve making longitudinally structured, parsed corpora and 
 \end{frame}
 
 \begin{frame}
-\frametitle{SFL: Introduction}
+\frametitle{SFL: the basics}
 \begin{itemize}
-\item \emph{Systemic}: focus on relationships between signs in the sign-system
+\item \emph{Systemic}: lexis as delicate grammar
 \item \emph{Functional}: focus on language as a tool for the performance of functions
 \begin{enumerate}
     \item Interpersonal: negotiating relationships
     \item \textbf{Experiential: representing the world}
     \item Textual: reflexive organisation into meaninful sequences
 \end{enumerate}
-In general, print news in a single publication is fairly stable in terms of interpersonal and textual features.
 \end{itemize}
-
 \end{frame}
 
 \begin{frame}
@@ -286,14 +298,14 @@ How to investigate this huge dataset, and make the investigation transparent\sla
         \item \texttt{plotter()}: visualise via \emph{matplotlib} 
         \item \texttt{conc()}: concordance via parses 
     \end{itemize}
-    \item Sciptable, multiprocessing, handles arbitrary data, open-source
+    \item Scriptable, multiprocessing, handles arbitrary data, open-source
     \item Systemic-functionally aware
     \item More recently, a GUI, aimed at corpus linguists
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{\texttt{corpkit} GUI: interrogation}
+    \frametitle{\texttt{corpkit} GUI: interrogating}
     \centering
     \includegraphics[width=0.95\textwidth]{../../images/interrogate}
 \end{frame}
@@ -311,7 +323,7 @@ How to investigate this huge dataset, and make the investigation transparent\sla
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{\texttt{corpkit}: Example code}
+\frametitle{\texttt{corpkit}: example code}
 
 \begin{minted}[fontsize=\normalsize,linenos=true]{python}
 # import module and set data path
@@ -338,14 +350,7 @@ How to investigate this huge dataset, and make the investigation transparent\sla
 \end{frame}
 
 \begin{frame}
-\frametitle{Initial investigation: NYT}
-
-Our first investigation was of the NYT only
-
-\end{frame}
-
-\begin{frame}
-    \frametitle{Nominalisation of risk}
+    \frametitle{Nominalisation of risk in the NYT}
     \centering
     \includegraphics[width=0.99\textwidth]{../../images/percentage-of-open-word-classes-that-are-risk-words}
 \end{frame}
@@ -396,7 +401,7 @@ Our first investigation was of the NYT only
     \frametitle{First investigation: key findings}
     
     \begin{itemize}
-    \item Nominalisation and \emph{participantification}
+    \item Nominalisation and \emph{participantification}: synonymy of risk and negative outcome
     \begin{itemize}
         \item risking harm $\rightarrow$ risk assessment
         \item Meaning of risk expanding beyond the \emph{risk frame}
@@ -407,10 +412,7 @@ Our first investigation was of the NYT only
         \item Risk as increasingly present, but decreasingly debated
     \end{itemize}
     \item More everyday exposure to risk, but less risking
-    \begin{itemize}
-        \item Neoliberal conceptualisations of agency: institutional expectation to take risk
-        \item Reporting of `\emph{the scandal of not being in control}' \cite{beck_risk_1992}
-    \end{itemize}
+    \item Neoliberal conceptualisations of agency: institutional expectation to take risk, absolution of responsibility for institutions themselves
     \end{itemize}
 \end{frame}
 
@@ -446,12 +448,17 @@ Our first investigation was of the NYT only
 
 \begin{frame}\frametitle{\emph{To take risk}}
     \centering
-    \includegraphics[width=1\textwidth]{../../images/to-put-at-risk}
+    \includegraphics[width=.9\textwidth]{../../images/to-put-at-risk}
 \end{frame}
 
 \begin{frame}\frametitle{\emph{To put at risk}}
     \centering
-    \includegraphics[width=1\textwidth]{../../images/to-run-risk}
+    \includegraphics[width=.9\textwidth]{../../images/to-run-risk}
+\end{frame}
+
+\begin{frame}\frametitle{\emph{Risk processes}}
+    \centering
+    \includegraphics[width=1\textwidth]{../../images/longitudinal-behaviour-of-risk-processes-in-us-print-media}
 \end{frame}
 
 \begin{frame}\frametitle{Less risking}
@@ -468,7 +475,6 @@ Our first investigation was of the NYT only
     \frametitle{Mood role of risk words}
     \centering
     \includegraphics[width=1\textwidth]{../../images/moodrole-6}
-
     Arguable $\rightarrow$ inarguable
 \end{frame}
 
@@ -483,14 +489,11 @@ Our first investigation was of the NYT only
 \end{frame}
 
 \begin{frame}
-    \frametitle{Discussion of methodology}
-    
+    \frametitle{Discussion: using SFL}
     \begin{itemize}
     \item SFL proves a useful means of dividing up and investigating the behaviour of a given word
-    \item Systemic categories are often more telling than formal\slash constituency\slash dependency labels
-    \item SFL parsing is difficult, as is converting concepts from (esp. formal) grammars
-    \item Difficult SF concepts: rank shift, grammatical metaphor, appraisal, process types \cite{yan_automatic_2014,costetchi_semantic_2013,heyvaert_nominalization_2003}
-    \item That said, though theoretical orientations are different, much of the grammar (esp. at group\slash phrase levels) are similar
+    \item Systemic categories are \emph{sometimes} more telling than formal\slash constituency\slash dependency labels
+    \item Though theoretical orientations are different, much of the grammar (esp. at group\slash phrase levels) are actually very similar
     \end{itemize}
 \end{frame}
 
@@ -500,7 +503,6 @@ Our first investigation was of the NYT only
     \item This is a study of risk words, not risk
     \item Congruent realisations are analysed at the expense of the incongruent
     \item Little concordancing, close reading of individual texts
-    \item Difficulty translating between grammars
     \item Parser accuracy
     \item Lack of reference corpus to compare related words\slash general language
 \end{itemize}
@@ -518,6 +520,10 @@ Our first investigation was of the NYT only
     \begin{itemize}
     \item NYT: \url{http://git.io/vIM2W}
     \item All: \url{http://git.io/vBTHI}
+    \end{itemize}
+    Project report:
+    \begin{itemize}
+        \item \url{http://git.io/vZ7yh}
     \end{itemize}
     This slideshow:
     \begin{itemize}
