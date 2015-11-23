@@ -8,6 +8,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{minted}
 \usepackage{upquote}
+\usepackage{tabularx}
 \AtBeginDocument{%
 \def\PYZsq{\textquotesingle}%
 }
@@ -107,6 +108,12 @@ All investigations involve making longitudinally structured, parsed corpora and 
 \end{frame}
 
 \begin{frame}
+    \frametitle{Increasing frequency of \emph{risk} lemma}
+    \centering
+    \includegraphics[width=0.90\textwidth]{../../images/risk_related_june_colour}
+\end{frame}
+
+\begin{frame}
     \frametitle{Research questions}
 
     \begin{itemize}
@@ -124,12 +131,14 @@ All investigations involve making longitudinally structured, parsed corpora and 
     
     \begin{itemize}
     \item Digitisation of newspapers means we have large, well-structured datasets
-    \item Automatic annotation of text makes it possible to search for lexical and grammatical features in tandem
-    \item Modern programming languages facilitate:
+    \item Parsing makes it possible to search for lexical and grammatical features in tandem
+    \item Programmatic approaches to social science research facilitate:
     \begin{itemize}
         \item Automation
         \item Reproducibility
         \item Transparency
+        \item Ability to deploy methods on new data
+        \item \emph{Objectivity?}
     \end{itemize}
     \end{itemize}
 
@@ -196,7 +205,7 @@ All investigations involve making longitudinally structured, parsed corpora and 
     \begin{itemize}
     \item Get all paragraphs containing \texttt{\textbackslash brisk} in all 1987--mid 2014 articles
     \item Annotate\slash parse the data with full \emph{Stanford CoreNLP} suite
-    \item Develop \texttt{corpkit}, a toolkit for manipulating the corpus and communicating results
+    \item Develop \texttt{corpkit}, a toolkit for searching the corpus and communicating results
     \item Interrogate the corpus according to notions from systemic functional grammar
     \item Connect to sociological theory
     \end{itemize}
@@ -232,6 +241,19 @@ In general, print news in a single publication is fairly stable in terms of inte
 \end{itemize}
 \end{frame}
 
+\begin{frame}\frametitle{SF transitivity analysis}
+
+~\\
+~\\
+\small
+\begin{tabularx}{0.99\textwidth}{|l|l|X|X|X|}
+\hline
+\emph{But}     & \emph{the bang of the gavel}             & \emph{can hold}          & \emph{risk} & \emph{for novices}          \\ \hline
+~ & Participant: & Process: & Participant: & Circumstance:  \\
+~ & Carrier & Relational \mbox{attributive} & Attribute &  Extent \\ \hline
+\end{tabularx}
+\end{frame}
+
 \begin{frame}
     \frametitle{Constituency grammar}
     \centering
@@ -253,12 +275,11 @@ The question: \emph{Can we get systemic functional information from constituency
 The answer: \emph{Yep, quite a lot.}
 \end{frame}
 
-
 \begin{frame}\frametitle{Developing tools}
 How to investigate this huge dataset, and make the investigation transparent\slash reproducible?
 
 \begin{itemize}
-    \item \texttt{corpkit}: a Python module designed for parsed and structured corpora, with some systemic functional awareness
+    \item \texttt{corpkit}: a Python module designed for parsed and structured corpora
     \begin{itemize}
         \item \texttt{interrogator()}: search for lexicogrammatical phenomena in each subcorpus, tally results, output Pandas objects
         \item \texttt{editor()}: edit results, calculate keyness, linear regression 
@@ -266,12 +287,13 @@ How to investigate this huge dataset, and make the investigation transparent\sla
         \item \texttt{conc()}: concordance via parses 
     \end{itemize}
     \item Sciptable, multiprocessing, handles arbitrary data, open-source
+    \item Systemic-functionally aware
     \item More recently, a GUI, aimed at corpus linguists
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{\texttt{corpkit}: GUI}
+    \frametitle{\texttt{corpkit} GUI: interrogation}
     \centering
     \includegraphics[width=0.95\textwidth]{../../images/interrogate}
 \end{frame}
@@ -287,7 +309,6 @@ How to investigate this huge dataset, and make the investigation transparent\sla
     \centering
     \includegraphics[width=0.95\textwidth]{../../images/plott}
 \end{frame}
-
 
 \begin{frame}[fragile]
 \frametitle{\texttt{corpkit}: Example code}
@@ -319,7 +340,7 @@ How to investigate this huge dataset, and make the investigation transparent\sla
 \begin{frame}
 \frametitle{Initial investigation: NYT}
 
-Our first investigation was of the NYT only:
+Our first investigation was of the NYT only
 
 \end{frame}
 
@@ -349,6 +370,9 @@ Our first investigation was of the NYT only:
     \frametitle{Risk and power}
     \centering
     \includegraphics[width=0.99\textwidth]{../../images/risk-and-power-2}
+
+    $\rightarrow$ Powerful and influential people \emph{do} risking
+
 \end{frame}
 
 \begin{frame}
@@ -356,7 +380,15 @@ Our first investigation was of the NYT only:
     \centering
     \includegraphics[width=1\textwidth]{../../images/distance-of-risk-words-from-root}
 
-    ... looked promising, but seems to be a general phenomenon.
+    $\rightarrow$ looked promising, but seems to be a general phenomenon.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Mood role of risk words (NYT)}
+    \centering
+    \includegraphics[width=1\textwidth]{../../images/mood-role-of-risk-words}
+
+    Arguable $\rightarrow$ inarguable
 \end{frame}
 
 
@@ -384,69 +416,95 @@ Our first investigation was of the NYT only:
 
 \begin{frame}\frametitle{Health risk}
 
+\begin{itemize}
+\item As earlier studies have shown, risk words often occur in health domains.
+\item The NYT Annotated Corpus had some manually added topic tags
+\item We created a subcorpus of health articles
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Decreasing participants in health discourse}
+    \centering
+    \includegraphics[width=0.99\textwidth]{../../images/decline-of-health-institution-risks-in-the-nyt-1987-2014}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Increasing participants in health discourse}
+    \centering
+    \includegraphics[width=0.99\textwidth]{../../images/part_health_inc_final_colour}
 \end{frame}
 
 \begin{frame}\frametitle{Six newspapers}
 \begin{itemize}
-\item We've only just started interrogating the six newspaper corpus.
+\item We've only just started interrogating the six newspaper corpus
 \item First, we'd like to check if the NYT findings are generalisable to other publications.
-\item Would love help on dealing with the complexity of the data structure
+\item Then, understanding the reason for differences and similarities would be nice
+\item Would love help on dealing with the complexity of the data structure!
 \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Health risk}
-
+\begin{frame}\frametitle{\emph{To take risk}}
+    \centering
+    \includegraphics[width=1\textwidth]{../../images/to-put-at-risk}
 \end{frame}
 
-\begin{frame}\frametitle{Health risk}
+\begin{frame}\frametitle{\emph{To put at risk}}
+    \centering
+    \includegraphics[width=1\textwidth]{../../images/to-run-risk}
+\end{frame}
 
+\begin{frame}\frametitle{Less risking}
+    \centering
+    \includegraphics[width=1\textwidth]{../../images/percentage-of-noun-lemmata-in-the-risker-position}
+\end{frame}
+
+\begin{frame}\frametitle{Risk and power across publications}
+    \centering
+    \includegraphics[width=1\textwidth]{../../images/rp6}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Mood role of risk words}
+    \centering
+    \includegraphics[width=1\textwidth]{../../images/moodrole-6}
+
+    Arguable $\rightarrow$ inarguable
 \end{frame}
 
 
 \begin{frame}\frametitle{Preliminary findings}
 \begin{itemize}
-    \item Most phenomena generalisable
+    \item Many phenomena generalisable
     \item Some newspaper specific constructions: \emph{risk appetite} in the WSJ
     \item Fewer grammatical riskers, but risk characterising more participants and processes
     \item Hints of influence of newspaper's politican position
-    \item 
 \end{itemize}
-
 \end{frame}
-
-
-
-
-
-
 
 \begin{frame}
     \frametitle{Discussion of methodology}
     
     \begin{itemize}
     \item SFL proves a useful means of dividing up and investigating the behaviour of a given word
+    \item Systemic categories are often more telling than formal\slash constituency\slash dependency labels
     \item SFL parsing is difficult, as is converting concepts from (esp. formal) grammars
     \item Difficult SF concepts: rank shift, grammatical metaphor, appraisal, process types \cite{yan_automatic_2014,costetchi_semantic_2013,heyvaert_nominalization_2003}
     \item That said, though theoretical orientations are different, much of the grammar (esp. at group\slash phrase levels) are similar
-
     \end{itemize}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Discussion: sociology and linguistics}
+\begin{frame}\frametitle{Limitations}
+
+\begin{itemize}
+    \item This is a study of risk words, not risk
+    \item Congruent realisations are analysed at the expense of the incongruent
+    \item Little concordancing, close reading of individual texts
+    \item Difficulty translating between grammars
+    \item Parser accuracy
+    \item Lack of reference corpus to compare related words\slash general language
+\end{itemize}
     
-    Though SFL treats context as embedded in the lexicogrammar of texts, sociological theory can theorise the influence of salient events, people
-
-    \begin{itemize}
-        \item Did Chernobyl\slash Sept. 11 \emph{change} language use in the NYT?
-    \end{itemize}
-
-    Functional linguistic theory and corpus\slash computational linguistic provide sociology research with:
-
-    \begin{itemize}
-        \item Empiricism
-        \item Reproducibility
-    \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -456,9 +514,10 @@ Our first investigation was of the NYT only:
     \item \url{https://www.github.com/interrogator/risk}
     \item \url{https://www.github.com/interrogator/corpkit}
     \end{itemize}
-    Findings are presented dynamically in an IPython Notebook: 
+    Findings are presented dynamically in an Jupyter Notebook: 
     \begin{itemize}
-    \item \url{http://git.io/vIM2W}
+    \item NYT: \url{http://git.io/vIM2W}
+    \item All: \url{http://git.io/vBTHI}
     \end{itemize}
     This slideshow:
     \begin{itemize}
